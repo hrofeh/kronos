@@ -38,9 +38,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:17.0.0'
     implementation "com.google.code.gson:gson:2.8.5"
 
-    implementation project(':aircon')
-    implementation project(':aircon-sources:firebase')
-    implementation project(':aircon-converters:gson')
+    implementation project(':airconkt')
+    implementation project(':airconkt-sources:firebase')
+    implementation project(':airconkt-converters:gson')
 }
 
 configurations.all {

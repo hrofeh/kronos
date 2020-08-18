@@ -30,7 +30,7 @@ android {
 apply from: rootProject.file('gradle/android_mvn_push.gradle')
 
 dependencies {
-    implementation project(':aircon')
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation project(':airconkt')
+    implementation 'com.google.firebase:firebase-config:19.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

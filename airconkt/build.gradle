@@ -1,6 +1,11 @@
+plugins {
+    id 'jacoco'
+}
 apply plugin: 'com.android.library'
-apply from: '../../versions.gradle'
+apply from: '../versions.gradle'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: "de.mannodermaus.android-junit5"
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION
@@ -30,7 +35,16 @@ android {
 apply from: rootProject.file('gradle/android_mvn_push.gradle')
 
 dependencies {
-    implementation project(':aircon')
-    implementation 'com.google.firebase:firebase-config:19.2.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Test
+    testImplementation "io.mockk:mockk:$mockk_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+    testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spek_version"
+    testImplementation "org.spekframework.spek2:spek-runner-junit5:$spek_version"
+    testImplementation 'com.google.code.gson:gson:2.8.5'
+    testImplementation project(":airconkt-converters:gson")
 }
