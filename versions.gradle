@@ -11,4 +11,6 @@ ext {
     COMPILE_SDK_VERSION = 29
     MIN_SDK_VERSION = 21
     TARGET_SDK_VERSION = 29
+
+    dslint = "1.0.1"
 }

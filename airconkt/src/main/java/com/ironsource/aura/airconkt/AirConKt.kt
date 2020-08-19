@@ -6,6 +6,8 @@ import com.ironsource.aura.airconkt.logging.AndroidLogger
 import com.ironsource.aura.airconkt.logging.Logger
 import com.ironsource.aura.airconkt.source.ConfigSource
 import com.ironsource.aura.airconkt.source.ConfigSourceRepository
+import com.ironsource.aura.dslint.annotations.DSLMandatory
+import com.ironsource.aura.dslint.annotations.DSLint
 
 /**
  * AirCon SDK entry point.
@@ -15,8 +17,7 @@ object AirConKt {
     /**
      * Initializes the SDK with configuration
      */
-    fun init(context: Context,
-             block: Options.() -> Unit) {
+    fun init(block: Options.() -> Unit) {
         if (initialized) {
             return
         }
@@ -68,7 +69,11 @@ object AirConKt {
  *
  * @see AirConKt.init
  */
+@DSLint
 interface Options {
+
+    @set:DSLMandatory
+    var context: Context
 
     /**
      * Json converter to be used with jsonConfig
@@ -93,6 +98,8 @@ private class OptionsBuilder : Options {
         operator fun invoke(block: Options.() -> Unit) = OptionsBuilder().apply(
                 block)
     }
+
+    override lateinit var context: Context
 
     override lateinit var jsonConverter: JsonConverter
 

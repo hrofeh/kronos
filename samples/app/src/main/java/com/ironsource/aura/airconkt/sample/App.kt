@@ -21,7 +21,8 @@ class App : Application() {
                 .setMinimumFetchIntervalInSeconds(0)
                 .build())
 
-        AirConKt.init(this) {
+        AirConKt.init {
+            context = applicationContext
             jsonConverter = GsonConverter()
             logging {
                 enabled = BuildConfig.DEBUG
@@ -50,7 +51,8 @@ private fun getLogger(): Logger {
             Log.i(TAG, msg)
         }
 
-        override fun e(msg: String, e: Exception?) {
+        override fun e(msg: String,
+                       e: Exception?) {
             Log.e(TAG, msg)
             e?.printStackTrace()
         }
