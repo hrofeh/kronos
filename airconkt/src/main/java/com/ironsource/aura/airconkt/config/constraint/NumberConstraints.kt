@@ -1,6 +1,8 @@
 package com.ironsource.aura.airconkt.config.constraint
 
 import com.ironsource.aura.airconkt.config.Config
+import com.ironsource.aura.dslint.annotations.DSLMandatory
+import com.ironsource.aura.dslint.annotations.DSLint
 
 var <T> Config<T, *>.minValue: T
         where T : Number, T : Comparable<T>
@@ -12,7 +14,7 @@ var <T> Config<T, *>.minValue: T
 
 fun <T> Config<T, *>.minValue(block: RangeConstraint<T>.() -> Unit)
         where T : Number, T : Comparable<T> {
-    val rangeConstraint = RangeConstraint(block)
+    val rangeConstraint = RangeConstraintBuilder(block)
     rangeFallback("min value", rangeConstraint) { it >= rangeConstraint.value!! }
 }
 
@@ -26,7 +28,7 @@ var <T> Config<T, *>.maxValue: T
 
 fun <T> Config<T, *>.maxValue(block: RangeConstraint<T>.() -> Unit)
         where T : Number, T : Comparable<T> {
-    val rangeConstraint = RangeConstraint(block)
+    val rangeConstraint = RangeConstraintBuilder(block)
     rangeFallback("max value", rangeConstraint) { it <= rangeConstraint.value!! }
 }
 
@@ -47,14 +49,24 @@ enum class FallbackPolicy {
     RANGE
 }
 
-class RangeConstraint<T> private constructor() {
+@DSLint
+interface RangeConstraint<T> {
 
-    var value: T? = null
-    var fallbackPolicy = FallbackPolicy.DEFAULT
+    @set:DSLMandatory
+    var value: T?
+
+    @set:DSLMandatory
+    var fallbackPolicy: FallbackPolicy
+}
+
+class RangeConstraintBuilder<T> private constructor() : RangeConstraint<T> {
+
+    override var value: T? = null
+    override lateinit var fallbackPolicy: FallbackPolicy
 
     companion object {
         internal operator fun <T> invoke(
-                block: RangeConstraint<T>.() -> Unit) = RangeConstraint<T>().apply(
+                block: RangeConstraintBuilder<T>.() -> Unit) = RangeConstraintBuilder<T>().apply(
                 block)
     }
 }

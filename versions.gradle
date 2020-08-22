@@ -12,5 +12,5 @@ ext {
     MIN_SDK_VERSION = 21
     TARGET_SDK_VERSION = 29
 
-    dslint = "1.0.1"
+    dslint = "1.0.3"
 }

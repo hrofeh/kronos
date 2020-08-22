@@ -25,7 +25,7 @@ object SimpleGetTest : Spek(airConTest {
             val someStringSet by stringSetConfig { default = setOf() }
             val someBoolean by booleanConfig { default = false }
             val someTyped by typedConfig<Label> { default = Label("default") }
-            var someLabel by typedStringConfig<Label> {
+            var someLabel by adaptedStringConfig<Label> {
                 default = Label("default")
                 adapt {
                     get { Label(it) }

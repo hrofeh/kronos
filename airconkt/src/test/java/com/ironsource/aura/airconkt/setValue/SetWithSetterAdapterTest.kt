@@ -4,7 +4,7 @@ import com.ironsource.aura.airconkt.common.Label
 import com.ironsource.aura.airconkt.common.airConTest
 import com.ironsource.aura.airconkt.common.mapConfig
 import com.ironsource.aura.airconkt.config.FeatureRemoteConfig
-import com.ironsource.aura.airconkt.config.type.typedStringConfig
+import com.ironsource.aura.airconkt.config.type.adaptedStringConfig
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
@@ -14,7 +14,7 @@ object SetWithSetterAdapterTest : Spek(airConTest {
     describe("Simple config field set should return set value") {
 
         class Config : FeatureRemoteConfig by mapConfig() {
-            var someLabel by typedStringConfig<Label> {
+            var someLabel by adaptedStringConfig<Label> {
                 default = Label("default")
                 adapt {
                     get { Label(it) }

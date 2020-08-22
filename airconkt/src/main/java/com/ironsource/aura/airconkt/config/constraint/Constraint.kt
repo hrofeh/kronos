@@ -1,15 +1,24 @@
 package com.ironsource.aura.airconkt.config.constraint
 
 import com.ironsource.aura.airconkt.utils.toCached
+import com.ironsource.aura.dslint.annotations.DSLMandatory
+import com.ironsource.aura.dslint.annotations.DSLint
 
+@DSLint
 interface Constraint<Test, Fallback> {
 
     var fallbackToPrimitive: Test
     var fallbackTo: Fallback
 
+    @DSLMandatory(group = "constraint",
+            message = "At least one constraint of type 'acceptIf' or 'denyIf' must be defined")
     fun acceptIf(block: (Test) -> Boolean)
+
+    @DSLMandatory(group = "constraint")
     fun denyIf(block: (Test) -> Boolean)
+
     fun fallbackToPrimitive(fallbackProvider: (Test) -> Test)
+
     fun fallbackTo(cache: Boolean = true,
                    fallbackProvider: (Test) -> Fallback)
 }

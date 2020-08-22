@@ -14,26 +14,26 @@ object ConfigPropertyFactory {
 
     internal fun <Raw, Actual> from(sourceTypeResolver: SourceTypeResolver<Raw>,
                                     validator: (Raw) -> Boolean = { true },
-                                    block: AdaptableConfig<Raw, Actual>.() -> Unit):
+                                    block: AdaptedConfig<Raw, Actual>.() -> Unit):
             ConfigProperty<Actual> =
             ConfigDelegate<Raw, Actual>(sourceTypeResolver, validator).apply(block)
 
     fun <T> fromPrimitive(sourceTypeResolver: SourceTypeResolver<T>,
                           validator: (T) -> Boolean = { true },
-                          block: AdaptableConfig<T, T>.() -> Unit):
+                          block: AdaptedConfig<T, T>.() -> Unit):
             ConfigProperty<T> =
             ConfigDelegate<T, T>(sourceTypeResolver, validator, { it }, { it }).apply(block)
 
     fun <T> fromNullablePrimitive(sourceTypeResolver: SourceTypeResolver<T>,
                                   validator: (T) -> Boolean = { true },
-                                  block: AdaptableConfig<T, T?>.() -> Unit):
+                                  block: AdaptedConfig<T, T?>.() -> Unit):
             ConfigProperty<T?> =
             ConfigDelegate<T, T?>(sourceTypeResolver, validator, { it }, { it }).apply(block)
 
     fun <Raw, Actual> from(sourceTypeResolver: SourceTypeResolver<Raw>,
                            validator: (Raw) -> Boolean = { true },
                            getterAdapter: (Raw) -> Actual?,
-                           block: AdaptableConfig<Raw, Actual>.() -> Unit):
+                           block: AdaptedConfig<Raw, Actual>.() -> Unit):
             ReadOnlyConfigProperty<Actual> =
             ConfigDelegate(sourceTypeResolver, validator, getterAdapter).apply(block)
 
@@ -41,7 +41,7 @@ object ConfigPropertyFactory {
                            validator: (Raw) -> Boolean = { true },
                            getterAdapter: (Raw) -> Actual?,
                            setterAdapter: (Actual) -> Raw?,
-                           block: AdaptableConfig<Raw, Actual>.() -> Unit):
+                           block: AdaptedConfig<Raw, Actual>.() -> Unit):
             ConfigProperty<Actual> =
             ConfigDelegate(sourceTypeResolver, validator, getterAdapter, setterAdapter).apply(block)
 }
@@ -50,7 +50,7 @@ private class ConfigDelegate<Raw, Actual> internal constructor(typeResolver: Sou
                                                                validator: (Raw) -> Boolean)
     : ConfigProperty<Actual>,
         ReadOnlyConfigProperty<Actual>,
-        AdaptableConfig<Raw, Actual>
+        AdaptedConfig<Raw, Actual>
 //        ,ConfigDelegateApi<Raw, Actual>
 {
 
@@ -301,12 +301,6 @@ private fun <T, S> ConstraintBuilder<T, S>.verify(value: T): Boolean {
     }
 
     return true
-}
-
-interface Adapter<Raw, Actual> {
-
-    fun get(block: (Raw) -> Actual?)
-    fun set(block: (Actual) -> Raw?)
 }
 
 private class AdapterBuilder<Raw, Actual> : Adapter<Raw, Actual> {
