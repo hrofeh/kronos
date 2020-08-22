@@ -13,12 +13,12 @@ typealias SimpleConfig<T> = Config<T, T>
 @DSLint
 interface Defaulted<T> {
 
+    @set:DSLMandatory(group = "default")
+    var default: T
+
     @DSLMandatory(group = "default")
     fun default(cache: Boolean = true,
                 provider: () -> T)
-
-    @set:DSLMandatory(group = "default")
-    var default: T
 
     @set:DSLMandatory(group = "default")
     var defaultRes: Int
