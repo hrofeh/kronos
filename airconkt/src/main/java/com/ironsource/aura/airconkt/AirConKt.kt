@@ -14,29 +14,6 @@ import com.ironsource.aura.dslint.annotations.DSLint
  */
 object AirConKt {
 
-    /**
-     * Initializes the SDK with configuration
-     */
-    fun init(block: Options.() -> Unit) {
-        if (initialized) {
-            return
-        }
-
-        this.context = context.applicationContext
-
-        val options = OptionsBuilder(block)
-
-        if (options.loggingOptions.enabled) {
-            logger = options.loggingOptions.logger
-        }
-
-        if (options.hasJsonConverter()) {
-            jsonConverter = options.jsonConverter
-        }
-
-        configSourceRepository = options.configSourceRepository
-    }
-
     private var initialized = ::context.isInitialized
 
     lateinit var context: Context
@@ -62,6 +39,29 @@ object AirConKt {
      */
     lateinit var configSourceRepository: ConfigSourceRepository
         private set
+
+    /**
+     * Initializes the SDK with configuration
+     */
+    fun init(block: Options.() -> Unit) {
+        if (initialized) {
+            return
+        }
+
+        val options = OptionsBuilder(block)
+
+        this.context = options.context.applicationContext
+
+        if (options.loggingOptions.enabled) {
+            logger = options.loggingOptions.logger
+        }
+
+        if (options.hasJsonConverter()) {
+            jsonConverter = options.jsonConverter
+        }
+
+        configSourceRepository = options.configSourceRepository
+    }
 }
 
 /**

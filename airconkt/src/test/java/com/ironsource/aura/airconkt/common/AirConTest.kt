@@ -10,7 +10,8 @@ fun airConTest(block: Root.() -> Unit): Root.() -> Unit {
     return {
 
         beforeGroup {
-            AirConKt.init(mockContext()) {
+            AirConKt.init {
+                context = mockContext()
                 logging {
                     logger = ConsoleLogger()
                 }

@@ -9,7 +9,10 @@ var <T> Config<T, *>.minValue: T
     @Deprecated("", level = DeprecationLevel.ERROR)
     get() = throw UnsupportedOperationException()
     set(value) {
-        minValue { this.value = value }
+        minValue {
+            this.value = value
+            this.fallbackPolicy = FallbackPolicy.DEFAULT
+        }
     }
 
 fun <T> Config<T, *>.minValue(block: RangeConstraint<T>.() -> Unit)
@@ -23,7 +26,10 @@ var <T> Config<T, *>.maxValue: T
     @Deprecated("", level = DeprecationLevel.ERROR)
     get() = throw UnsupportedOperationException()
     set(value) {
-        maxValue { this.value = value }
+        maxValue {
+            this.value = value
+            this.fallbackPolicy = FallbackPolicy.DEFAULT
+        }
     }
 
 fun <T> Config<T, *>.maxValue(block: RangeConstraint<T>.() -> Unit)
@@ -65,6 +71,7 @@ class RangeConstraintBuilder<T> private constructor() : RangeConstraint<T> {
     override lateinit var fallbackPolicy: FallbackPolicy
 
     companion object {
+
         internal operator fun <T> invoke(
                 block: RangeConstraintBuilder<T>.() -> Unit) = RangeConstraintBuilder<T>().apply(
                 block)
