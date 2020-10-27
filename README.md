@@ -1,7 +1,4 @@
-![Logo](images/logo.png)
-[ ![Download](https://api.bintray.com/packages/ironsource-aura/AirCon/aircon/images/download.svg) ](https://bintray.com/ironsource-aura/AirCon/aircon/_latestVersion)
-
-AirConKt
+Kronos
 ============
 
 Control over the air

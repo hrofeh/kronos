@@ -50,7 +50,7 @@ allprojects {
         }
 
         maven {
-            url "https://dl.bintray.com/ironsource-aura/AirCon"
+            url "https://dl.bintray.com/ironsource-aura/Kronos"
         }
     }
 }
@@ -61,7 +61,7 @@ task clean(type: Delete) {
 
 task publishSdk {
     dependsOn 'clean'
-    dependsOn 'aircon:bintrayUpload'
+    dependsOn 'kronos:bintrayUpload'
 //    dependsOn 'firebase-source:bintrayUpload'
 //    dependsOn 'gson-converter:bintrayUpload'
 }

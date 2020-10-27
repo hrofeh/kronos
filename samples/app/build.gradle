@@ -9,18 +9,12 @@ ext{
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.ironsource.aura.aircon.sample"
+        applicationId "com.ironsource.aura.kronos.sample"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = ['baseAirConPackage': applicationId]
-            }
-        }
     }
     buildTypes {
         release {
@@ -38,9 +32,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:17.0.0'
     implementation "com.google.code.gson:gson:2.8.5"
 
-    implementation project(':airconkt')
-    implementation project(':airconkt-sources:firebase')
-    implementation project(':airconkt-converters:gson')
+    implementation project(':kronos')
+    implementation project(':kronos-sources:firebase')
+    implementation project(':kronos-converters:gson')
 }
 
 configurations.all {

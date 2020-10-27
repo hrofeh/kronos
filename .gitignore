@@ -6,6 +6,6 @@
 /build
 /captures
 .externalNativeBuild
-aircon-sources/*/build/
+kronos-sources/*/build/
 local/
 /RELEASING.md

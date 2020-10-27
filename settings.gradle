@@ -1,4 +1,4 @@
-include ':airconkt'
-include 'airconkt-converters:gson'
-include 'airconkt-sources:firebase'
+include ':kronos'
+include 'kronos-converters:gson'
+include 'kronos-sources:firebase'
 include 'samples:app'
