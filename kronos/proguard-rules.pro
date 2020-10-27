@@ -30,7 +30,7 @@
 # Preserve all public classes, and their public and protected fields and
 # methods.
 
--keep @com.ironsource.aura.kronos.Internal public class com.ironsource.aura.kronos.** {
+-keep public class com.ironsource.aura.kronos.** {
     public protected *;
 }
 

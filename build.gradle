@@ -62,6 +62,6 @@ task clean(type: Delete) {
 task publishSdk {
     dependsOn 'clean'
     dependsOn 'kronos:bintrayUpload'
-//    dependsOn 'firebase-source:bintrayUpload'
-//    dependsOn 'gson-converter:bintrayUpload'
+    dependsOn 'kronos-converters:gson:bintrayUpload'
+    dependsOn 'kronos-sources:firebase:bintrayUpload'
 }
