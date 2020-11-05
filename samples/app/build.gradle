@@ -32,13 +32,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:17.0.0'
     implementation "com.google.code.gson:gson:2.8.5"
 
-    implementation 'com.ironsource.aura.kronos:kronos:1.0.0-alpha2'
-    implementation 'com.ironsource.aura.kronos:firebase:1.0.0-alpha2'
-    implementation 'com.ironsource.aura.kronos:gson:1.0.0-alpha2'
+//    implementation 'com.ironsource.aura.kronos:kronos:1.0.0-alpha2'
+//    implementation 'com.ironsource.aura.kronos:firebase:1.0.0-alpha2'
+//    implementation 'com.ironsource.aura.kronos:gson:1.0.0-alpha2'
 
-//    implementation project(':kronos')
-//    implementation project(':kronos-sources:firebase')
-//    implementation project(':kronos-converters:gson')
+    implementation project(':kronos')
+    implementation project(':kronos-sources:firebase')
+    implementation project(':kronos-converters:gson')
 }
 
 configurations.all {

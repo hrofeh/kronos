@@ -11,19 +11,13 @@ import java.lang.reflect.Type
 
 class GsonConverter constructor(private val gson: Gson = Gson()) : JsonConverter {
 
-    override fun toJson(obj: Any?): String? {
+    override fun toJson(obj: Any?,
+                        type: Type): String? {
         return gson.toJson(obj)
     }
 
-    override fun <T> fromJson(json: String?, clazz: Class<T>): Response<T, JsonException> {
-        return try {
-            Success(gson.fromJson(json, clazz))
-        } catch (e: JsonSyntaxException) {
-            Fail(JsonException(e))
-        }
-    }
-
-    override fun <T> fromJson(json: String?, type: Type): Response<T, JsonException> {
+    override fun <T> fromJson(json: String?,
+                              type: Type): Response<T, JsonException> {
         return try {
             Success(gson.fromJson(json, type))
         } catch (e: JsonSyntaxException) {
