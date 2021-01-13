@@ -3,7 +3,11 @@ Kronos
 
 Control over the air
 ---
- 
+Remote config management Android library based on Kotlin delegated properties.
+
+Supports adding any config source (FireBase support included in library).
+Supports custom validation and adaptation of config values.
+
 Usage
 ---
 
