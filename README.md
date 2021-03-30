@@ -1,4 +1,4 @@
-Kronos - I'm so tired
+Kronos
 ============
 
 Control over the air
