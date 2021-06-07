@@ -88,6 +88,7 @@ private class ConfigDelegate<Raw, Actual> internal constructor(typeResolver: Sou
     // Cache
     private var value: Actual? = null
     private var valueSet: Boolean = false
+    private var cacheSet: Boolean = false
 
     private val getterAdapter
         get() = adapter!!.getter!!
@@ -139,9 +140,12 @@ private class ConfigDelegate<Raw, Actual> internal constructor(typeResolver: Sou
         val source = resolveSource(thisRef)
 
         // Check cache
-        this.value?.let {
-            return cacheAndReturn(property, key, source, it, if (valueSet) "set" else "cached",
-                    "Found cached value")
+        if (cacheSet) {
+            Kronos.logger?.v(
+                    "${source::class.simpleName}: Found cached value - using value \"$key\"=$value")
+
+            @Suppress("UNCHECKED_CAST")
+            return value as Actual
         }
 
         assertRequiredGetterValues(property)
@@ -179,7 +183,8 @@ private class ConfigDelegate<Raw, Actual> internal constructor(typeResolver: Sou
                     "Failed to adapt remote value $value")
         }
 
-        return cacheAndReturn(property, key, source, adaptedValue, "remote", "Remote value configured")
+        return cacheAndReturn(property, key, source, adaptedValue, "remote",
+                "Remote value configured")
     }
 
     private fun assertRequiredGetterValues(property: KProperty<*>) {
@@ -241,8 +246,9 @@ private class ConfigDelegate<Raw, Actual> internal constructor(typeResolver: Sou
     }
 
     private fun setCache(property: KProperty<*>,
-                         value: Actual?) {
+                         value: Actual) {
         this.value = value
+        this.cacheSet = true
         cleanup(property)
     }
 
@@ -305,6 +311,7 @@ private fun <T, S> ConstraintBuilder<T, S>.verify(value: T): Boolean {
 
 private class AdapterBuilder<Raw, Actual> : Adapter<Raw, Actual> {
     companion object {
+
         operator fun <Raw, Actual> invoke(block: Adapter<Raw, Actual>.() -> Unit) =
                 AdapterBuilder<Raw, Actual>().apply(block)
     }
