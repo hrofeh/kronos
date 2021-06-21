@@ -6,10 +6,6 @@ apply from: '../versions.gradle'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: "de.mannodermaus.android-junit5"
-apply plugin: 'maven-publish'
-
-group = 'com.github.hananrh'
-version = VERSION_NAME
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION
@@ -35,6 +31,9 @@ android {
         }
     }
 }
+
+apply from: rootProject.file('gradle/mvn_push.gradle')
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
@@ -51,18 +50,4 @@ dependencies {
     testImplementation "org.spekframework.spek2:spek-runner-junit5:$spek_version"
     testImplementation 'com.google.code.gson:gson:2.8.5'
     testImplementation project(":kronos-converters:gson")
-}
-
-afterEvaluate {
-    publishing {
-        publications {
-            // Creates a Maven publication called "release".
-            release(MavenPublication) {
-                from components.release
-                groupId = group
-                artifactId = 'kronos'
-                version = VERSION_NAME
-            }
-        }
-    }
 }

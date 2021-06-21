@@ -52,6 +52,8 @@ allprojects {
         maven {
             url "https://dl.bintray.com/ironsource-aura/Kronos"
         }
+
+        maven { url 'https://jitpack.io' }
     }
 }
 
