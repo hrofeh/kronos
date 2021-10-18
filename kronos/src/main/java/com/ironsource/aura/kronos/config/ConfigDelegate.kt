@@ -133,6 +133,8 @@ private class ConfigDelegate<Raw, Actual> internal constructor(typeResolver: Sou
         this.processor = processor
     }
 
+    @Suppress("FoldInitializerAndIfToElvis")
+    @Synchronized
     override fun getValue(thisRef: FeatureRemoteConfig,
                           property: KProperty<*>): Actual {
         // Prepare
