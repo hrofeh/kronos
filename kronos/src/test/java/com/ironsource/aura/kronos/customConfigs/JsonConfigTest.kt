@@ -10,6 +10,7 @@ import com.ironsource.aura.kronos.config.type.jsonListConfig
 import com.ironsource.aura.kronos.config.type.jsonMapConfig
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.reflect.KClass
 import kotlin.test.assertEquals
 
 object JsonConfigTest : Spek(kronosTest {

@@ -1,13 +1,15 @@
 package com.ironsource.aura.kronos
 
 import android.content.Context
+import com.ironsource.aura.dslint.annotations.DSLMandatory
+import com.ironsource.aura.dslint.annotations.DSLint
 import com.ironsource.aura.kronos.config.type.util.JsonConverter
 import com.ironsource.aura.kronos.logging.AndroidLogger
 import com.ironsource.aura.kronos.logging.Logger
 import com.ironsource.aura.kronos.source.ConfigSource
 import com.ironsource.aura.kronos.source.ConfigSourceRepository
-import com.ironsource.aura.dslint.annotations.DSLMandatory
-import com.ironsource.aura.dslint.annotations.DSLint
+import com.ironsource.aura.kronos.source.SourceDefinition
+import kotlin.reflect.KClass
 
 /**
  * Kronos SDK entry point.
@@ -88,13 +90,21 @@ interface Options {
     /**
      * Add a config source.
      * A config can have only one instance of the same class.
+     * Use configSourceFactory to support multiple instances for the same source.
      */
     fun configSource(configSource: () -> ConfigSource)
+
+    /**
+     * Add a config source factory.
+     */
+    fun <S : ConfigSource, T : Any> configSourceFactory(sourceClass: KClass<S>,
+                                                        configSourceFactory: ConfigSourceRepository.ConfigSourceFactory<S, T>)
 }
 
 private class OptionsBuilder : Options {
 
     companion object {
+
         operator fun invoke(block: Options.() -> Unit) = OptionsBuilder().apply(
                 block)
     }
@@ -116,6 +126,12 @@ private class OptionsBuilder : Options {
     override fun configSource(configSource: () -> ConfigSource) {
         configSourceRepository.addSource(configSource())
     }
+
+    override fun <S : ConfigSource, T : Any> configSourceFactory(sourceClass: KClass<S>,
+                                                                 configSourceFactory: ConfigSourceRepository.ConfigSourceFactory<S, T>) {
+        configSourceRepository.addSourceFactory(SourceDefinition.Class(sourceClass),
+                configSourceFactory)
+    }
 }
 
 interface LoggingOptions {
@@ -135,6 +151,7 @@ interface LoggingOptions {
 private class LoggingOptionsBuilder : LoggingOptions {
 
     companion object {
+
         operator fun invoke(block: LoggingOptionsBuilder.() -> Unit) = LoggingOptionsBuilder().apply(
                 block)
     }

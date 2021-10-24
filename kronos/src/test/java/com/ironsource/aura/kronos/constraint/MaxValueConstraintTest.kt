@@ -11,6 +11,7 @@ import com.ironsource.aura.kronos.config.type.intConfig
 import com.ironsource.aura.kronos.config.type.longConfig
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.reflect.KClass
 import kotlin.test.assertEquals
 
 object MaxValueConstraintTest : Spek(kronosTest {

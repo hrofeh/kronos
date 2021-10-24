@@ -9,6 +9,7 @@ import com.ironsource.aura.kronos.config.FeatureRemoteConfig
 import com.ironsource.aura.kronos.config.SourceTypeResolver
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.reflect.KClass
 import kotlin.test.assertEquals
 
 data class Label(val value: String)
@@ -24,6 +25,7 @@ fun FeatureRemoteConfig.labelConfig(block: Config<String, Label>.() -> Unit) =
 object UserCustomConfigTest : Spek(kronosTest {
 
     class Config : FeatureRemoteConfig by mapConfig() {
+
         var someLabel by labelConfig {
             default = Label("default")
             cached = false

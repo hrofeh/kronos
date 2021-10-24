@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.ironsource.aura.kronos.Kronos
 import com.ironsource.aura.kronos.config.FeatureRemoteConfig
 import com.ironsource.aura.kronos.converter.gson.GsonConverter
+import com.ironsource.aura.kronos.source.typedSource
 import org.spekframework.spek2.dsl.Root
 
 fun kronosTest(block: Root.() -> Unit): Root.() -> Unit {
@@ -25,16 +26,15 @@ fun kronosTest(block: Root.() -> Unit): Root.() -> Unit {
     }
 }
 
-fun mapConfig() = object : FeatureRemoteConfig {
-    override val source = MapSource::class
+class MapConfig : FeatureRemoteConfig {
+
+    override val sourceDefinition = typedSource<MapSource>()
 }
 
-fun map2Config() = object : FeatureRemoteConfig {
-    override val source = MapSource2::class
-}
+fun mapConfig() = MapConfig()
 
 fun withRemoteMap(vararg pairs: Pair<String, Any?>) {
-    Kronos.configSourceRepository.addSource(MapSource(mutableMapOf(*pairs)))
+    Kronos.configSourceRepository.addSource(MapSource(map = mutableMapOf(*pairs)))
 }
 
 fun withRemoteMap2(vararg pairs: Pair<String, Any?>) {

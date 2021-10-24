@@ -4,8 +4,8 @@ import com.ironsource.aura.kronos.Kronos
 import com.ironsource.aura.kronos.config.constraint.Constraint
 import com.ironsource.aura.kronos.config.constraint.ConstraintBuilder
 import com.ironsource.aura.kronos.source.ConfigSource
+import com.ironsource.aura.kronos.source.SourceDefinition
 import com.ironsource.aura.kronos.utils.toCached
-import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KProperty
 
@@ -74,7 +74,7 @@ private class ConfigDelegate<Raw, Actual> internal constructor(typeResolver: Sou
 
     // Base
     override lateinit var key: String
-    override lateinit var source: KClass<out ConfigSource>
+    override lateinit var sourceDefinition: SourceDefinition<out Any>
     override var cached: Boolean = true
 
     // Disposables - nullified after first cached get
@@ -268,8 +268,8 @@ private class ConfigDelegate<Raw, Actual> internal constructor(typeResolver: Sou
             if (::key.isInitialized) key else property.name
 
     private fun resolveSource(thisRef: FeatureRemoteConfig): ConfigSource {
-        val sourceClass = if (::source.isInitialized) source else thisRef.source
-        return Kronos.configSourceRepository.getSource(sourceClass)
+        val sourceId = if (::sourceDefinition.isInitialized) sourceDefinition else thisRef.sourceDefinition
+        return Kronos.configSourceRepository.getSource(sourceId)
     }
 
     private fun mutableCleanup() {

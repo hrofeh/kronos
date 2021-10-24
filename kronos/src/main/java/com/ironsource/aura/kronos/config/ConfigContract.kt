@@ -1,12 +1,11 @@
 package com.ironsource.aura.kronos.config
 
-import com.ironsource.aura.kronos.config.constraint.Constraint
-import com.ironsource.aura.kronos.source.ConfigSource
 import com.ironsource.aura.dslint.annotations.DSLMandatory
 import com.ironsource.aura.dslint.annotations.DSLint
+import com.ironsource.aura.kronos.config.constraint.Constraint
+import com.ironsource.aura.kronos.source.SourceDefinition
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KClass
 
 typealias SimpleConfig<T> = Config<T, T>
 
@@ -25,11 +24,13 @@ interface Defaulted<T> {
 }
 
 interface Constrained<Test, Fallback> {
+
     fun constraint(name: String? = null,
                    block: Constraint<Test, Fallback?>.() -> Unit)
 }
 
 interface Processable<T> {
+
     fun process(processor: (T) -> T)
 }
 
@@ -56,7 +57,7 @@ interface Config<Raw, Actual> :
         Processable<Actual> {
 
     var key: String
-    var source: KClass<out ConfigSource>
+    var sourceDefinition: SourceDefinition<out Any>
     var cached: Boolean
 }
 

@@ -10,6 +10,7 @@ import com.ironsource.aura.kronos.config.type.intEnumConfig
 import com.ironsource.aura.kronos.config.type.stringEnumConfig
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.reflect.KClass
 import kotlin.test.assertEquals
 
 enum class Location {

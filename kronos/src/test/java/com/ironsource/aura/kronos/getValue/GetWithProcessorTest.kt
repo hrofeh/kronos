@@ -8,6 +8,7 @@ import com.ironsource.aura.kronos.config.FeatureRemoteConfig
 import com.ironsource.aura.kronos.config.type.*
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.reflect.KClass
 import kotlin.test.assertEquals
 
 object GetWithProcessorTest : Spek(kronosTest {

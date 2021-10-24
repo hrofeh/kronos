@@ -7,6 +7,7 @@ import com.ironsource.aura.kronos.config.FeatureRemoteConfig
 import com.ironsource.aura.kronos.config.type.intConfig
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.reflect.KClass
 import kotlin.test.assertEquals
 
 object KeyTest : Spek(kronosTest {

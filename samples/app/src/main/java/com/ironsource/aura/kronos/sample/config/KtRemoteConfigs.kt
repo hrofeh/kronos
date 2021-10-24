@@ -1,13 +1,15 @@
 package com.ironsource.aura.kronos.sample.config
 
-import com.ironsource.aura.kronos.config.*
+import com.ironsource.aura.kronos.config.FeatureRemoteConfig
 import com.ironsource.aura.kronos.config.type.*
 import com.ironsource.aura.kronos.config.type.annotations.RemoteIntValue
 import com.ironsource.aura.kronos.config.type.annotations.RemoteStringValue
 import com.ironsource.aura.kronos.source.FireBaseConfigSource
+import com.ironsource.aura.kronos.source.SourceDefinition
 
 class CoolKtConfig : FeatureRemoteConfig {
-    override val source = FireBaseConfigSource::class
+
+    override val sourceDefinition = SourceDefinition.Class(FireBaseConfigSource::class)
 
     var someInt by intConfig {
         default = 20
