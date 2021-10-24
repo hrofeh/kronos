@@ -59,12 +59,15 @@ class ConfigSourceRepository internal constructor() {
     @Suppress("UNCHECKED_CAST")
     @Synchronized
     fun <T : Any> getSource(sourceDefinition: SourceDefinition<T>): ConfigSource {
+        // Check scoped and return instance
         if (sourceDefinition is SourceDefinition.Scoped) {
             return sourceDefinition.configSource
         }
 
+        // Check sources map
         configSourcesMap[sourceDefinition]?.let { return it }
 
+        // Check if identifiable source and create instance
         if (sourceDefinition is SourceDefinition.IdentifiableClass<T>) {
             val configSourceFactory = configSourceFactories[SourceDefinition.Class(
                     sourceDefinition.sourceClass)] as ConfigSourceFactory<*, T>?
