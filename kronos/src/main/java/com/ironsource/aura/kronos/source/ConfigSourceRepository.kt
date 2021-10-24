@@ -59,6 +59,10 @@ class ConfigSourceRepository internal constructor() {
     @Suppress("UNCHECKED_CAST")
     @Synchronized
     fun <T : Any> getSource(sourceDefinition: SourceDefinition<T>): ConfigSource {
+        if (sourceDefinition is SourceDefinition.Scoped) {
+            return sourceDefinition.configSource
+        }
+
         configSourcesMap[sourceDefinition]?.let { return it }
 
         if (sourceDefinition is SourceDefinition.IdentifiableClass<T>) {
@@ -87,7 +91,12 @@ sealed class SourceDefinition<T> {
     data class Class(val sourceClass: KClass<out ConfigSource>) : SourceDefinition<Nothing>()
     data class IdentifiableClass<T : Any>(val sourceClass: KClass<out ConfigSource>,
                                           val id: T) : SourceDefinition<T>()
+
+    data class Scoped(val configSource: ConfigSource) : SourceDefinition<Nothing>()
 }
+
+fun FeatureRemoteConfig.scopedSource(configSource: ConfigSource) = SourceDefinition.Scoped(
+        configSource)
 
 inline fun <reified T : ConfigSource> FeatureRemoteConfig.typedSource() = SourceDefinition.Class(
         T::class)
