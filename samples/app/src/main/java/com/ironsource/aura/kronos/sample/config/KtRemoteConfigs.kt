@@ -5,11 +5,11 @@ import com.ironsource.aura.kronos.config.type.*
 import com.ironsource.aura.kronos.config.type.annotations.RemoteIntValue
 import com.ironsource.aura.kronos.config.type.annotations.RemoteStringValue
 import com.ironsource.aura.kronos.source.FireBaseConfigSource
-import com.ironsource.aura.kronos.source.SourceDefinition
+import com.ironsource.aura.kronos.source.typedSource
 
 class CoolKtConfig : FeatureRemoteConfig {
 
-    override val sourceDefinition = SourceDefinition.Class(FireBaseConfigSource::class)
+    override val sourceDefinition = typedSource<FireBaseConfigSource>()
 
     var someInt by intConfig {
         default = 20
