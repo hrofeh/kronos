@@ -20,7 +20,7 @@ object ConfigSourceFactoryTest : Spek({
                 logger = ConsoleLogger()
             }
             configSourceFactory<MapSource, String>(MapSource::class) {
-                MapSource("prefix", mutableMapOf("prefixSomeInt" to 1))
+                MapSource(it, mutableMapOf("prefixSomeInt" to 1))
             }
         }
     }
