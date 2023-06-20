@@ -1,5 +1,6 @@
 package com.ironsource.aura.kronos
 
+import android.annotation.SuppressLint
 import android.content.Context
 import com.ironsource.aura.dslint.annotations.DSLMandatory
 import com.ironsource.aura.dslint.annotations.DSLint
@@ -14,6 +15,7 @@ import kotlin.reflect.KClass
 /**
  * Kronos SDK entry point.
  */
+@SuppressLint("StaticFieldLeak")
 object Kronos {
 
     private var initialized = ::context.isInitialized
