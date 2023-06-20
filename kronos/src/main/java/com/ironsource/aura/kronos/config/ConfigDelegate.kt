@@ -75,7 +75,7 @@ private class ConfigDelegate<Raw, Actual> internal constructor(typeResolver: Sou
     // Base
     override lateinit var key: String
     override lateinit var sourceDefinition: SourceDefinition<out Any>
-    override var cached: Boolean = true
+    override var cached: Boolean = false
 
     // Disposables - nullified after first cached get
     private var typeResolver: SourceTypeResolver<Raw>? = typeResolver
