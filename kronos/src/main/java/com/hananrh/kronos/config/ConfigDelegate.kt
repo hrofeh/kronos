@@ -1,5 +1,8 @@
+@file:Suppress("RedundantVisibilityModifier")
+
 package com.hananrh.kronos.config
 
+import com.hananrh.kronos.Kronos
 import com.hananrh.kronos.config.constraint.Constraint
 import com.hananrh.kronos.config.constraint.ConstraintBuilder
 import com.hananrh.kronos.source.ConfigSource
@@ -15,34 +18,26 @@ object ConfigPropertyFactory {
 		sourceTypeResolver: SourceTypeResolver<Raw>,
 		validator: (Raw) -> Boolean = { true },
 		block: AdaptedConfig<Raw, Actual>.() -> Unit
-	):
-			ConfigProperty<Actual> =
-		ConfigDelegate<Raw, Actual>(sourceTypeResolver, validator).apply(block)
+	): ConfigProperty<Actual> = ConfigDelegate<Raw, Actual>(sourceTypeResolver, validator).apply(block)
 
 	fun <T> fromPrimitive(
 		sourceTypeResolver: SourceTypeResolver<T>,
 		validator: (T) -> Boolean = { true },
 		block: AdaptedConfig<T, T>.() -> Unit
-	):
-			ConfigProperty<T> =
-		ConfigDelegate<T, T>(sourceTypeResolver, validator, { it }, { it }).apply(block)
+	): ConfigProperty<T> = ConfigDelegate(sourceTypeResolver, validator, { it }, { it }).apply(block)
 
 	fun <T> fromNullablePrimitive(
 		sourceTypeResolver: SourceTypeResolver<T>,
 		validator: (T) -> Boolean = { true },
 		block: AdaptedConfig<T, T?>.() -> Unit
-	):
-			ConfigProperty<T?> =
-		ConfigDelegate<T, T?>(sourceTypeResolver, validator, { it }, { it }).apply(block)
+	): ConfigProperty<T?> = ConfigDelegate<T, T?>(sourceTypeResolver, validator, { it }, { it }).apply(block)
 
 	fun <Raw, Actual> from(
 		sourceTypeResolver: SourceTypeResolver<Raw>,
 		validator: (Raw) -> Boolean = { true },
 		getterAdapter: (Raw) -> Actual?,
 		block: AdaptedConfig<Raw, Actual>.() -> Unit
-	):
-			ReadOnlyConfigProperty<Actual> =
-		ConfigDelegate(sourceTypeResolver, validator, getterAdapter).apply(block)
+	): ReadOnlyConfigProperty<Actual> = ConfigDelegate(sourceTypeResolver, validator, getterAdapter).apply(block)
 
 	fun <Raw, Actual> from(
 		sourceTypeResolver: SourceTypeResolver<Raw>,
@@ -50,19 +45,15 @@ object ConfigPropertyFactory {
 		getterAdapter: (Raw) -> Actual?,
 		setterAdapter: (Actual) -> Raw?,
 		block: AdaptedConfig<Raw, Actual>.() -> Unit
-	):
-			ConfigProperty<Actual> =
-		ConfigDelegate(sourceTypeResolver, validator, getterAdapter, setterAdapter).apply(block)
+	): ConfigProperty<Actual> = ConfigDelegate(sourceTypeResolver, validator, getterAdapter, setterAdapter).apply(block)
 }
 
 private class ConfigDelegate<Raw, Actual> internal constructor(
-	typeResolver: SourceTypeResolver<Raw>,
+	private val typeResolver: SourceTypeResolver<Raw>,
 	validator: (Raw) -> Boolean
 ) : ConfigProperty<Actual>,
 	ReadOnlyConfigProperty<Actual>,
-	AdaptedConfig<Raw, Actual>
-//        ,ConfigDelegateApi<Raw, Actual>
-{
+	AdaptedConfig<Raw, Actual>, ConfigDelegateApi<Raw, Actual> {
 
 	constructor(
 		typeResolver: SourceTypeResolver<Raw>,
@@ -81,18 +72,17 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 		typeResolver: SourceTypeResolver<Raw>,
 		validator: (Raw) -> Boolean,
 		getterAdapter: (Raw) -> Actual?
-	) :
-			this(typeResolver, validator) {
+	) : this(typeResolver, validator) {
 		adapt { get(getterAdapter) }
 	}
 
 	// Base
 	override lateinit var key: String
 	override lateinit var sourceDefinition: SourceDefinition<out Any>
+
 	override var cached: Boolean = false
 
 	// Disposables - nullified after first cached get
-	private var typeResolver: SourceTypeResolver<Raw>? = typeResolver
 	private var validator: ((Raw) -> Boolean)? = validator
 	private var processor: ((Actual) -> Actual)? = null
 	private var adapter: AdapterBuilder<Raw, Actual>? = null
@@ -123,8 +113,8 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 		set(value) {
 			default {
 				val adapted = getterAdapter(
-					typeResolver!!.resourcesResolver.resourcesGetter(
-						com.hananrh.kronos.Kronos.context.resources,
+					typeResolver.resourcesResolver.resourcesGetter(
+						Kronos.context.resources,
 						value
 					)
 				)
@@ -166,7 +156,7 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 
 		// Check cache
 		if (cacheSet) {
-			com.hananrh.kronos.Kronos.logger?.v(
+			Kronos.logger?.v(
 				"${source::class.simpleName}: Found cached value - using value \"$key\"=$value"
 			)
 
@@ -177,7 +167,7 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 		assertRequiredGetterValues(property)
 
 		// Resolve value
-		val value = typeResolver!!.configSourceResolver.sourceGetter(source, key)
+		val value = typeResolver.configSourceResolver.sourceGetter(source, key)
 		if (value == null) {
 			return cacheAndReturn(
 				property, key, source, resolveDefault(), "default",
@@ -251,7 +241,7 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 		type: String,
 		msg: String
 	): Actual {
-		com.hananrh.kronos.Kronos.logger?.v("${source::class.simpleName}: $msg - using $type value \"$key\"=$value")
+		Kronos.logger?.v("${source::class.simpleName}: $msg - using $type value \"$key\"=$value")
 
 		if (cached) {
 			setCache(property, value)
@@ -270,7 +260,7 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 		val source = resolveSource(thisRef)
 		val key = resolveKey(property)
 
-		com.hananrh.kronos.Kronos.logger?.v("${source::class.simpleName}: Setting value \"$key\"=$value")
+		Kronos.logger?.v("${source::class.simpleName}: Setting value \"$key\"=$value")
 
 		typeResolver!!.configSourceResolver.sourceSetter(source, key, setterAdapter(value))
 
@@ -308,7 +298,7 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 
 	private fun resolveSource(thisRef: FeatureRemoteConfig): ConfigSource {
 		val sourceId = if (::sourceDefinition.isInitialized) sourceDefinition else thisRef.sourceDefinition
-		return com.hananrh.kronos.Kronos.configSourceRepository.getSource(sourceId)
+		return Kronos.configSourceRepository.getSource(sourceId)
 	}
 
 	private fun mutableCleanup() {
@@ -319,7 +309,6 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 	}
 
 	private fun readOnlyCleanup() {
-		typeResolver = null
 		adapter = null
 	}
 
@@ -334,12 +323,10 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 		}
 	}
 
-//    override fun getRawValue(thisRef: FeatureRemoteConfig,
-//                             property: KProperty<*>): Raw? {
-//        val key = resolveKey(property)
-//        val source = resolveSource(thisRef)
-//        return typeResolver.configSourceResolver.sourceGetter(source, key)
-//    }
+	override fun getRawValue(
+		thisRef: FeatureRemoteConfig,
+		property: KProperty<*>
+	) = typeResolver.configSourceResolver.sourceGetter(resolveSource(thisRef), resolveKey(property))
 }
 
 private fun <T, S> ConstraintBuilder<T, S>.verify(value: T): Boolean {
@@ -369,4 +356,13 @@ private class AdapterBuilder<Raw, Actual> : Adapter<Raw, Actual> {
 	override fun set(block: (Actual) -> Raw?) {
 		setter = block
 	}
+}
+
+public interface ConfigDelegateApi<Raw, Actual> {
+	val default: Actual
+
+	fun getRawValue(
+		thisRef: FeatureRemoteConfig,
+		property: KProperty<*>
+	): Raw?
 }

@@ -36,6 +36,7 @@ plugins {
     id 'org.jetbrains.kotlin.android' version "$kotlin_version" apply false
     id 'org.jetbrains.kotlin.jvm' version "$kotlin_version" apply false
     id 'com.google.gms.google-services' version "4.4.1" apply false
+    id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlin_version" apply false
 }
 
 allprojects {
@@ -53,13 +54,6 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-task publishSdk {
-    dependsOn 'clean'
-    dependsOn 'kronos:bintrayUpload'
-    dependsOn 'kronos-converters:gson:bintrayUpload'
-    dependsOn 'kronos-sources:firebase:bintrayUpload'
 }
 
 allprojects {

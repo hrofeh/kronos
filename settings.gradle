@@ -7,6 +7,6 @@ pluginManagement {
 }
 
 include ':kronos'
-include 'kronos-converters:gson'
 include 'kronos-converters:kotlinx-serialization'
 include 'kronos-sources:firebase'
+include 'extensions:core'

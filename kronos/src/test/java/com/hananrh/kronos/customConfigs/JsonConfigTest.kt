@@ -1,11 +1,11 @@
 package com.hananrh.kronos.customConfigs
 
-import com.hananrh.kronos.config.FeatureRemoteConfig
-import com.hananrh.kronos.config.type.jsonConfig
 import com.hananrh.kronos.common.Label
 import com.hananrh.kronos.common.kronosTest
 import com.hananrh.kronos.common.mapConfig
 import com.hananrh.kronos.common.withRemoteMap
+import com.hananrh.kronos.config.FeatureRemoteConfig
+import com.hananrh.kronos.config.type.jsonConfig
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
@@ -37,9 +37,9 @@ object JsonConfigTest : Spek(kronosTest {
 
 		it("Should return remote json value when valid") {
 			withRemoteMap(
-				"someJson" to "{val:\"remote\"}",
-				"someJsonList" to "[{val:\"remote\"}, {val:\"remote2\"}]",
-				"someJsonMap" to "{\"remote\": {val:\"remote\"}}"
+				"someJson" to "{\"val\":\"remote\"}",
+				"someJsonList" to "[{\"val\":\"remote\"}, {\"val\":\"remote2\"}]",
+				"someJsonMap" to "{\"remote\": {\"val\":\"remote\"}}"
 			)
 
 			assertEquals(

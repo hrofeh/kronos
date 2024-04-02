@@ -1,7 +1,10 @@
 package com.hananrh.kronos.common
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Label(
-        @SerializedName("val")
-        val value: String = "")
+	@SerialName("val")
+	val value: String = ""
+)

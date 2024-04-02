@@ -1,4 +1,4 @@
-package com.hananrh.kronos.common
+package com.hananrh.kronos.extensions.core.common
 
 import com.hananrh.kronos.source.ConfigSource
 
