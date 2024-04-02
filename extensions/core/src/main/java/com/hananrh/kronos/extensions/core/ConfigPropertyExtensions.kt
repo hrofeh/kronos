@@ -2,10 +2,12 @@ package com.hananrh.kronos.extensions.core
 
 import com.hananrh.kronos.config.ConfigDelegateApi
 import com.hananrh.kronos.config.FeatureRemoteConfig
+import java.lang.IllegalArgumentException
 import kotlin.reflect.KProperty1
 import kotlin.reflect.jvm.isAccessible
 
 interface ConfigPropertyApi<Raw, Actual> {
+	val key: String
 	val defaultValue: Actual
 	val rawValue: Raw?
 }
@@ -17,6 +19,9 @@ private class ConfigPropertyApiImpl<FeatureRemoteConfigType : FeatureRemoteConfi
 	private val property: KProperty1<FeatureRemoteConfigType, Actual>,
 	private val configDelegate: ConfigDelegateApi<Raw, Actual>
 ) : ConfigPropertyApi<Raw, Actual> {
+
+	override val key: String
+		get() = configDelegate.getKey(property)
 
 	override val defaultValue: Actual
 		get() = configDelegate.default
@@ -36,7 +41,7 @@ private fun <FeatureRemoteConfigType : FeatureRemoteConfig, Actual> KProperty1<F
 	isAccessible = true
 	val delegate = getDelegate(instance)
 	if (delegate !is ConfigDelegateApi<*, *>) {
-		throw IllegalStateException("This function can only be called on config properties")
+		throw IllegalArgumentException("This function can only be called on config properties")
 	}
 	return delegate as ConfigDelegateApi<*, Actual>
 }

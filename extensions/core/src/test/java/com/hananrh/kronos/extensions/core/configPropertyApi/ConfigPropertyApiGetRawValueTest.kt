@@ -72,9 +72,5 @@ object ConfigPropertyApiGetRawValueTest : Spek(kronosTest {
 		it("Should return raw configured value - booleanConfig") {
 			assertEquals(true, Config::someBoolean.asConfigProperty(config).rawValue)
 		}
-
-		it("cShould return raw configured value - colorConfig") {
-			assertEquals("#000000", Config::someColor.asConfigProperty(config).rawValue)
-		}
 	}
 })

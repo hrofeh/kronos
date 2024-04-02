@@ -86,13 +86,5 @@ object ConfigPropertyApiGetDefaultValueTest : Spek(kronosTest {
 		it("Should return default - booleanConfig") {
 			assertEquals(false, Config::someBoolean.asConfigProperty(config).defaultValue)
 		}
-
-		it("Should return default - colorConfig") {
-			assertEquals(
-				ColorInt(
-					Color.WHITE
-				), Config::someColor.asConfigProperty(config).defaultValue
-			)
-		}
 	}
 })

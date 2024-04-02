@@ -7,7 +7,6 @@ import org.spekframework.spek2.dsl.Root
 
 fun kronosTest(block: Root.() -> Unit): Root.() -> Unit {
 	return {
-
 		beforeGroup {
 			Kronos.init {
 				context = mockContext()

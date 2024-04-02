@@ -6,7 +6,7 @@ buildscript {
 
     ext.kotlin_version = '1.8.20'
     ext.spek_version = '2.0.12'
-    ext.mockk_version = '1.10.0'
+    ext.mockk_version = '1.12.2'
 
     repositories {
         google()

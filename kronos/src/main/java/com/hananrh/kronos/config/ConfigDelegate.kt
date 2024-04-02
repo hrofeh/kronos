@@ -262,13 +262,15 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 
 		Kronos.logger?.v("${source::class.simpleName}: Setting value \"$key\"=$value")
 
-		typeResolver!!.configSourceResolver.sourceSetter(source, key, setterAdapter(value))
+		typeResolver.configSourceResolver.sourceSetter(source, key, setterAdapter(value))
 
 		if (cached) {
 			setCache(property, value)
 			valueSet = true
 		}
 	}
+
+	override fun getKey(property: KProperty<*>) = resolveKey(property)
 
 	private fun assertRequiredSetterValues(property: KProperty<*>) {
 		checkNotNull(property, adapter?.setter, "set", "setter adapter")
@@ -360,6 +362,8 @@ private class AdapterBuilder<Raw, Actual> : Adapter<Raw, Actual> {
 
 public interface ConfigDelegateApi<Raw, Actual> {
 	val default: Actual
+
+	fun getKey(property: KProperty<*>): String
 
 	fun getRawValue(
 		thisRef: FeatureRemoteConfig,
