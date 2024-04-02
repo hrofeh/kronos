@@ -102,7 +102,7 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 
 	override var default: Actual
 		@Deprecated("", level = DeprecationLevel.ERROR)
-		get() = throw UnsupportedOperationException()
+		get() = resolveDefault()
 		set(value) {
 			default { value }
 		}
