@@ -1,15 +1,16 @@
 package com.ironsource.aura.kronos.config.type.util
 
-import com.ironsource.aura.kronos.utils.Response
-import java.lang.reflect.Type
+import kotlin.reflect.KType
 
 interface JsonConverter {
 
-    fun toJson(obj: Any?,
-               type: Type): String?
+	fun toJson(
+		obj: Any,
+		type: KType
+	): String?
 
-    fun <T> fromJson(json: String?,
-                     type: Type): Response<T, JsonException>
+	fun <T> fromJson(
+		jsonStr: String,
+		type: KType
+	): T?
 }
-
-class JsonException(cause: Throwable) : Exception(cause)

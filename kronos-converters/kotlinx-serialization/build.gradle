@@ -1,0 +1,38 @@
+apply plugin: 'com.android.library'
+apply from: '../../versions.gradle'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion COMPILE_SDK_VERSION
+
+    namespace "com.ironsource.aura.kronos.converters.kotlinx_serialization"
+
+    defaultConfig {
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
+        versionCode VERSION_CODE
+        versionName VERSION_NAME
+
+        consumerProguardFiles 'proguard-consumer-rules.pro'
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+        }
+        release {
+            debuggable false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+apply from: rootProject.file('gradle/mvn_push.gradle')
+
+dependencies {
+    implementation project(':kronos')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
+}

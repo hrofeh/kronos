@@ -1,42 +1,39 @@
 package com.ironsource.aura.kronos.sample
 
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-
-private const val TAG = "MainActivity"
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.ironsource.aura.kronos.sample.config.SomeFeatureConfig
 
 class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        loadFireBaseConfig()
-    }
+	private lateinit var titleView: TextView
 
-    private fun loadFireBaseConfig() {
-//        FirebaseRemotegetInstance()
-//                .fetch(0)
-//                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(final Void aVoid) {
-//                        FirebaseRemotegetInstance()
-//                                .activate();
-//                        Log.i(App.TAG, "Firebase config loaded");
-//                        onFireBaseConfigLoaded();
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull final Exception e) {
-//                        Log.e(App.TAG, "Failed to load firebase config: " + e);
-//                        onFireBaseConfigLoaded();
-//                    }
-//                });
-    }
+	private val someFeatureConfig = SomeFeatureConfig()
 
-    private fun onFireBaseConfigLoaded() {
-        Toast.makeText(this, "FireBase remote config loaded", Toast.LENGTH_SHORT)
-                .show()
-    }
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		setContentView(R.layout.activity_main)
+
+		titleView = findViewById(R.id.title)
+
+		loadFireBaseConfig()
+	}
+
+	private fun loadFireBaseConfig() {
+		FirebaseRemoteConfig.getInstance()
+			.fetch(0)
+			.addOnSuccessListener {
+				FirebaseRemoteConfig.getInstance().activate()
+				onFireBaseConfigLoaded()
+			}
+	}
+
+	private fun onFireBaseConfigLoaded() {
+		Toast.makeText(this, "FireBase remote config loaded", Toast.LENGTH_SHORT).show()
+
+		titleView.text = someFeatureConfig.someMap.toString()
+	}
 }

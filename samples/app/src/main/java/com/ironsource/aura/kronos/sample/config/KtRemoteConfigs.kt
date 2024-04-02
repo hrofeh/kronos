@@ -1,80 +1,93 @@
 package com.ironsource.aura.kronos.sample.config
 
 import com.ironsource.aura.kronos.config.FeatureRemoteConfig
-import com.ironsource.aura.kronos.config.type.*
+import com.ironsource.aura.kronos.config.type.adaptedIntConfig
 import com.ironsource.aura.kronos.config.type.annotations.RemoteIntValue
 import com.ironsource.aura.kronos.config.type.annotations.RemoteStringValue
+import com.ironsource.aura.kronos.config.type.booleanConfig
+import com.ironsource.aura.kronos.config.type.floatConfig
+import com.ironsource.aura.kronos.config.type.intConfig
+import com.ironsource.aura.kronos.config.type.intEnumConfig
+import com.ironsource.aura.kronos.config.type.jsonConfig
+import com.ironsource.aura.kronos.config.type.longConfig
+import com.ironsource.aura.kronos.config.type.nullableStringConfig
+import com.ironsource.aura.kronos.config.type.stringConfig
+import com.ironsource.aura.kronos.config.type.stringEnumConfig
 import com.ironsource.aura.kronos.source.FireBaseConfigSource
 import com.ironsource.aura.kronos.source.typedSource
 
-class CoolKtConfig : FeatureRemoteConfig {
+class SomeFeatureConfig : FeatureRemoteConfig {
 
-    override val sourceDefinition = typedSource<FireBaseConfigSource>()
+	override val sourceDefinition = typedSource<FireBaseConfigSource>()
 
-    var someInt by intConfig {
-        default = 20
-    }
+	var someInt by intConfig {
+		default = 20
+	}
 
-    var someLong by longConfig {
-        default = 999999999999999999
-    }
+	var someLong by longConfig {
+		default = 999999999999999999
+	}
 
-    val someFloat by floatConfig {
-        default = 0.5f
-    }
+	val someFloat by floatConfig {
+		default = 0.5f
+	}
 
-    val someString by stringConfig {
-        default = ""
-    }
+	val someString by stringConfig {
+		default = ""
+	}
 
-    val someBoolean by booleanConfig {
-        default = true
-    }
+	val someBoolean by booleanConfig {
+		default = true
+	}
 
-    val someList by jsonConfig<List<Int>> {
-        default = listOf(1, 2)
-    }
+	val someList by jsonConfig<List<String>> {
+		default = emptyList()
+	}
 
-    val someNullableString by nullableStringConfig {
-        default = null
-    }
+	val someMap by jsonConfig<Map<String, List<String>>> {
+		default = emptyMap()
+	}
 
-    val location by intEnumConfig<Location> {
-        default = Location.TOP
-    }
+	val someNullableString by nullableStringConfig {
+		default = null
+	}
 
-    val size by stringEnumConfig<Size> {
-        default = Size.SMALL
-    }
+	val location by intEnumConfig<Location> {
+		default = Location.TOP
+	}
 
-    val feature_enabled by booleanConfig {
-        default = false
-    }
+	val size by stringEnumConfig<Size> {
+		default = Size.SMALL
+	}
 
-    val someTypedInt by adaptedIntConfig<String> {
-        default = ""
-        adapt {
-            get { "$it" }
-        }
-    }
+	val feature_enabled by booleanConfig {
+		default = false
+	}
 
-    val someLabelConfig by labelConfig {
-        default = Label("Default")
-    }
+	val someTypedInt by adaptedIntConfig {
+		default = ""
+		adapt {
+			get { "$it" }
+		}
+	}
+
+	val someLabelConfig by labelConfig {
+		default = Label("Default")
+	}
 }
 
 enum class Location {
-    @RemoteIntValue(0)
-    TOP,
+	@RemoteIntValue(0)
+	TOP,
 
-    @RemoteIntValue(1)
-    BOTTOM
+	@RemoteIntValue(1)
+	BOTTOM
 }
 
 enum class Size {
-    @RemoteStringValue("s")
-    SMALL,
+	@RemoteStringValue("s")
+	SMALL,
 
-    @RemoteStringValue("l")
-    LARGE
+	@RemoteStringValue("l")
+	LARGE
 }
