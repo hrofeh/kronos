@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion COMPILE_SDK_VERSION
 
-    namespace "com.ironsource.aura.kronos.converters.kotlinx_serialization"
+    namespace "com.hananrh.kronos.converters.kotlinx_serialization"
 
     defaultConfig {
         minSdkVersion MIN_SDK_VERSION

@@ -7,9 +7,9 @@ apply plugin: 'kotlin-android'
 apply plugin: "de.mannodermaus.android-junit5"
 
 android {
-    compileSdkVersion COMPILE_SDK_VERSION
+    compileSdk COMPILE_SDK_VERSION
 
-    namespace "com.ironsource.aura.kronos"
+    namespace "com.hananrh.kronos"
 
     defaultConfig {
         minSdkVersion MIN_SDK_VERSION

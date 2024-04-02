@@ -1,4 +1,4 @@
 # Rules that need to be applied on the main app
--keep class com.ironsource.aura.kronos.** { *; }
+-keep class com.hananrh.kronos.** { *; }
 
--keepclassmembernames class * implements com.ironsource.aura.kronos.config.FeatureRemoteConfig { *; }
+-keepclassmembernames class * implements com.hananrh.kronos.config.FeatureRemoteConfig { *; }
