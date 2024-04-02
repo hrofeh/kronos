@@ -7,61 +7,19 @@ import com.hananrh.kronos.config.constraint.Constraint
 import com.hananrh.kronos.config.constraint.ConstraintBuilder
 import com.hananrh.kronos.source.ConfigSource
 import com.hananrh.kronos.source.SourceDefinition
-import com.hananrh.kronos.utils.toCached
-import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KProperty
 
-// This factory exposes API for user custom configs definition
-object ConfigPropertyFactory {
-
-	internal fun <Raw, Actual> from(
-		sourceTypeResolver: SourceTypeResolver<Raw>,
-		validator: (Raw) -> Boolean = { true },
-		block: AdaptedConfig<Raw, Actual>.() -> Unit
-	): ConfigProperty<Actual> = ConfigDelegate<Raw, Actual>(sourceTypeResolver, validator).apply(block)
-
-	fun <T> fromPrimitive(
-		sourceTypeResolver: SourceTypeResolver<T>,
-		validator: (T) -> Boolean = { true },
-		block: AdaptedConfig<T, T>.() -> Unit
-	): ConfigProperty<T> = ConfigDelegate(sourceTypeResolver, validator, { it }, { it }).apply(block)
-
-	fun <T> fromNullablePrimitive(
-		sourceTypeResolver: SourceTypeResolver<T>,
-		validator: (T) -> Boolean = { true },
-		block: AdaptedConfig<T, T?>.() -> Unit
-	): ConfigProperty<T?> = ConfigDelegate<T, T?>(sourceTypeResolver, validator, { it }, { it }).apply(block)
-
-	fun <Raw, Actual> from(
-		sourceTypeResolver: SourceTypeResolver<Raw>,
-		validator: (Raw) -> Boolean = { true },
-		getterAdapter: (Raw) -> Actual?,
-		block: AdaptedConfig<Raw, Actual>.() -> Unit
-	): ReadOnlyConfigProperty<Actual> = ConfigDelegate(sourceTypeResolver, validator, getterAdapter).apply(block)
-
-	fun <Raw, Actual> from(
-		sourceTypeResolver: SourceTypeResolver<Raw>,
-		validator: (Raw) -> Boolean = { true },
-		getterAdapter: (Raw) -> Actual?,
-		setterAdapter: (Actual) -> Raw?,
-		block: AdaptedConfig<Raw, Actual>.() -> Unit
-	): ConfigProperty<Actual> = ConfigDelegate(sourceTypeResolver, validator, getterAdapter, setterAdapter).apply(block)
-}
-
-private class ConfigDelegate<Raw, Actual> internal constructor(
+internal class ConfigDelegate<Raw, Actual> internal constructor(
 	private val typeResolver: SourceTypeResolver<Raw>,
-	validator: (Raw) -> Boolean
-) : ConfigProperty<Actual>,
-	ReadOnlyConfigProperty<Actual>,
-	AdaptedConfig<Raw, Actual>, ConfigDelegateApi<Raw, Actual> {
+	private val validator: (Raw) -> Boolean
+) : ConfigProperty<Actual>, AdaptedConfig<Raw, Actual>, ConfigDelegateApi<Raw, Actual> {
 
 	constructor(
 		typeResolver: SourceTypeResolver<Raw>,
 		validator: (Raw) -> Boolean,
 		getterAdapter: (Raw) -> Actual?,
 		setterAdapter: (Actual) -> Raw?
-	) :
-			this(typeResolver, validator) {
+	) : this(typeResolver, validator) {
 		adapt {
 			get(getterAdapter)
 			set(setterAdapter)
@@ -76,33 +34,23 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 		adapt { get(getterAdapter) }
 	}
 
-	// Base
 	override lateinit var key: String
 	override lateinit var sourceDefinition: SourceDefinition<out Any>
 
+	private lateinit var defaultProvider: (() -> Actual)
+
 	override var cached: Boolean = false
 
-	// Disposables - nullified after first cached get
-	private var validator: ((Raw) -> Boolean)? = validator
 	private var processor: ((Actual) -> Actual)? = null
 	private var adapter: AdapterBuilder<Raw, Actual>? = null
-	private var defaultProvider: (() -> Actual)? = null
-	private var constraints: MutableList<ConstraintBuilder<Raw, Actual?>>? = mutableListOf()
 
-	// Cache
+	private val constraints: MutableList<ConstraintBuilder<Raw, Actual?>> = mutableListOf()
+
 	private var value: Actual? = null
-	private var valueSet: Boolean = false
-	private var cacheSet: Boolean = false
-
-	private val getterAdapter
-		get() = adapter!!.getter!!
-
-	private val setterAdapter
-		get() = adapter!!.setter!!
+	private var cacheSet: Boolean = false // To support null cache values
 
 	override var default: Actual
-		@Deprecated("", level = DeprecationLevel.ERROR)
-		get() = resolveDefault()
+		get() = defaultProvider()
 		set(value) {
 			default { value }
 		}
@@ -123,17 +71,16 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 		}
 
 	override fun default(
-		cache: Boolean,
 		provider: () -> Actual
 	) {
-		defaultProvider = if (cache) provider.toCached() else provider
+		defaultProvider = provider
 	}
 
 	override fun constraint(
 		name: String?,
 		block: Constraint<Raw, Actual?>.() -> Unit
 	) {
-		constraints!!.add(ConstraintBuilder(name, { getterAdapter }, block))
+		constraints.add(ConstraintBuilder(name, { getterAdapter }, block))
 	}
 
 	override fun adapt(block: Adapter<Raw, Actual>.() -> Unit) {
@@ -150,11 +97,9 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 		thisRef: FeatureRemoteConfig,
 		property: KProperty<*>
 	): Actual {
-		// Prepare
 		val key = resolveKey(property)
 		val source = resolveSource(thisRef)
 
-		// Check cache
 		if (cacheSet) {
 			Kronos.logger?.v(
 				"${source::class.simpleName}: Found cached value - using value \"$key\"=$value"
@@ -166,88 +111,51 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 
 		assertRequiredGetterValues(property)
 
-		// Resolve value
 		val value = typeResolver.configSourceResolver.sourceGetter(source, key)
 		if (value == null) {
-			return cacheAndReturn(
-				property, key, source, resolveDefault(), "default",
-				"Remote value not found"
-			)
+			return defaultProvider().also {
+				Kronos.logger?.v("${source::class.simpleName}: Remote value not found - using default value \"$key\"=$it")
+			}
 		}
 
-		// Internal validation
-		if (!validator!!(value)) {
-			return cacheAndReturn(
-				property, key, source, resolveDefault(), "default",
-				"Internal validation failed"
-			)
+		if (!validator(value)) {
+			return defaultProvider().also {
+				Kronos.logger?.v("${source::class.simpleName}: Remote value validation failed - using default value \"$key\"=$it")
+			}
 		}
 
-		// Constraint validation
-		constraints!!.forEach { constraint ->
+		constraints.forEach { constraint ->
 			val valid = constraint.verify(value)
 			if (!valid) {
 				val msg = "Constraint ${constraint.name} validation failed"
 				val fallbackValue = constraint.fallbackProvider?.invoke(value)
-				return if (fallbackValue != null) {
-					cacheAndReturn(property, key, source, fallbackValue, "fallback", msg)
-				} else {
-					cacheAndReturn(property, key, source, resolveDefault(), "default", msg)
+				return fallbackValue?.also {
+					Kronos.logger?.v("${source::class.simpleName}: $msg - using fallback value \"$key\"=$it")
+				} ?: defaultProvider().also {
+					Kronos.logger?.v("${source::class.simpleName}: $msg - using default value \"$key\"=$it")
 				}
 			}
 		}
 
-		val adaptedValue = process(value)
+		val adaptedValue = getterAdapter(value)?.let { processor?.invoke(it) ?: it }
 		if (adaptedValue == null) {
-			return cacheAndReturn(
-				property, key, source, resolveDefault(), "default",
-				"Failed to adapt remote value $value"
-			)
+			return defaultProvider().also {
+				Kronos.logger?.v("${source::class.simpleName}: Failed to adapt remote value - using default value \"$key\"=$it")
+			}
 		}
 
-		return cacheAndReturn(
-			property, key, source, adaptedValue, "remote",
-			"Remote value configured"
-		)
+		Kronos.logger?.v("${source::class.simpleName}: Remote value configured - using remote value \"$key\"=$value")
+
+		return adaptedValue.also {
+			if (cached) {
+				setCache(adaptedValue)
+			}
+		}
 	}
 
 	private fun assertRequiredGetterValues(property: KProperty<*>) {
 		checkNotNull(property, defaultProvider, "get", "default value")
 		checkNotNull(property, adapter?.getter, "get", "adapter")
-	}
-
-	private fun process(
-		value: Raw
-	): Actual? {
-		var adaptedValue = getterAdapter(value)
-		if (adaptedValue == null) {
-			return null
-		}
-
-		if (processor != null) {
-			adaptedValue = processor!!(adaptedValue)
-		}
-
-		return adaptedValue
-	}
-
-	private fun resolveDefault() = defaultProvider!!()
-
-	private fun cacheAndReturn(
-		property: KProperty<*>,
-		key: String,
-		source: ConfigSource,
-		value: Actual,
-		type: String,
-		msg: String
-	): Actual {
-		Kronos.logger?.v("${source::class.simpleName}: $msg - using $type value \"$key\"=$value")
-
-		if (cached) {
-			setCache(property, value)
-		}
-
-		return value
 	}
 
 	override fun setValue(
@@ -263,11 +171,6 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 		Kronos.logger?.v("${source::class.simpleName}: Setting value \"$key\"=$value")
 
 		typeResolver.configSourceResolver.sourceSetter(source, key, setterAdapter(value))
-
-		if (cached) {
-			setCache(property, value)
-			valueSet = true
-		}
 	}
 
 	override fun getKey(property: KProperty<*>) = resolveKey(property)
@@ -277,22 +180,15 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 	}
 
 	private fun setCache(
-		property: KProperty<*>,
 		value: Actual
 	) {
 		this.value = value
 		this.cacheSet = true
-		cleanup(property)
 	}
 
-	// Nullify no longer used properties to save memory
-	private fun cleanup(property: KProperty<*>) {
-		mutableCleanup()
-
-		// Adapter
-		if (property !is KMutableProperty<*>) {
-			readOnlyCleanup()
-		}
+	override fun clearCache() {
+		value = null
+		cacheSet = false
 	}
 
 	private fun resolveKey(property: KProperty<*>) =
@@ -301,17 +197,6 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 	private fun resolveSource(thisRef: FeatureRemoteConfig): ConfigSource {
 		val sourceId = if (::sourceDefinition.isInitialized) sourceDefinition else thisRef.sourceDefinition
 		return Kronos.configSourceRepository.getSource(sourceId)
-	}
-
-	private fun mutableCleanup() {
-		processor = null
-		validator = null
-		defaultProvider = null
-		constraints = null
-	}
-
-	private fun readOnlyCleanup() {
-		adapter = null
 	}
 
 	private fun checkNotNull(
@@ -329,6 +214,12 @@ private class ConfigDelegate<Raw, Actual> internal constructor(
 		thisRef: FeatureRemoteConfig,
 		property: KProperty<*>
 	) = typeResolver.configSourceResolver.sourceGetter(resolveSource(thisRef), resolveKey(property))
+
+	private val getterAdapter
+		get() = adapter!!.getter!!
+
+	private val setterAdapter
+		get() = adapter!!.setter!!
 }
 
 private fun <T, S> ConstraintBuilder<T, S>.verify(value: T): Boolean {
@@ -369,4 +260,6 @@ public interface ConfigDelegateApi<Raw, Actual> {
 		thisRef: FeatureRemoteConfig,
 		property: KProperty<*>
 	): Raw?
+
+	fun clearCache()
 }

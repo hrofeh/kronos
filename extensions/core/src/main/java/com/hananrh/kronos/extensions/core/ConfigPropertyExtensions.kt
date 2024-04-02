@@ -2,7 +2,6 @@ package com.hananrh.kronos.extensions.core
 
 import com.hananrh.kronos.config.ConfigDelegateApi
 import com.hananrh.kronos.config.FeatureRemoteConfig
-import java.lang.IllegalArgumentException
 import kotlin.reflect.KProperty1
 import kotlin.reflect.jvm.isAccessible
 
@@ -10,6 +9,8 @@ interface ConfigPropertyApi<Raw, Actual> {
 	val key: String
 	val defaultValue: Actual
 	val rawValue: Raw?
+
+	fun clearCache()
 }
 
 fun ConfigPropertyApi<*, *>.isRemotelyConfigured(): Boolean = rawValue != null
@@ -28,6 +29,10 @@ private class ConfigPropertyApiImpl<FeatureRemoteConfigType : FeatureRemoteConfi
 
 	override val rawValue: Raw?
 		get() = configDelegate.getRawValue(instance, property)
+
+	override fun clearCache() {
+		configDelegate.clearCache()
+	}
 }
 
 fun <FeatureRemoteConfigType : FeatureRemoteConfig, Actual> KProperty1<FeatureRemoteConfigType, Actual>.asConfigProperty(

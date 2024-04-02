@@ -17,7 +17,6 @@ interface Defaulted<T> {
 
 	@DSLMandatory(group = "default")
 	fun default(
-		cache: Boolean = true,
 		provider: () -> T
 	)
 
@@ -71,4 +70,3 @@ interface AdaptedConfig<Raw, Actual> :
 	Adaptable<Raw, Actual>
 
 interface ConfigProperty<T> : ReadWriteProperty<FeatureRemoteConfig, T>
-interface ReadOnlyConfigProperty<T> : ReadOnlyProperty<FeatureRemoteConfig, T>

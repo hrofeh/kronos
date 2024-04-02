@@ -19,7 +19,6 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import java.util.Random
 import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
 
 object DefaultProviderTest : Spek(kronosTest {
 
@@ -30,11 +29,6 @@ object DefaultProviderTest : Spek(kronosTest {
 
 		val someIntWithCache by intConfig {
 			default { Random().nextInt() }
-		}
-
-		val someIntWithoutCache by intConfig {
-			default(cache = false) { Random().nextInt() }
-			cached = false
 		}
 
 		val someLong by longConfig {
@@ -109,17 +103,6 @@ object DefaultProviderTest : Spek(kronosTest {
 
 		it("Should return default - typedConfig") {
 			assertEquals(Label("default"), config.someTyped)
-		}
-	}
-
-	describe("Cache flag should control number of calls to default provider") {
-
-		it("Config with cache - default provider should only be called once") {
-			assertEquals(config.someIntWithCache, config.someIntWithCache)
-		}
-
-		it("Config without cache - default provider should be called every time field getter called") {
-			assertNotEquals(config.someIntWithoutCache, config.someIntWithoutCache)
 		}
 	}
 })

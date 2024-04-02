@@ -1,6 +1,5 @@
 package com.hananrh.kronos.config.constraint
 
-import com.hananrh.kronos.utils.toCached
 import com.ironsource.aura.dslint.annotations.DSLMandatory
 import com.ironsource.aura.dslint.annotations.DSLint
 
@@ -22,7 +21,6 @@ interface Constraint<Test, Fallback> {
 	fun fallbackToPrimitive(fallbackProvider: (Test) -> Test)
 
 	fun fallbackTo(
-		cache: Boolean = true,
 		fallbackProvider: (Test) -> Fallback
 	)
 }
@@ -71,9 +69,8 @@ internal class ConstraintBuilder<Test, Fallback> private constructor(
 		}
 
 	override fun fallbackTo(
-		cache: Boolean,
 		fallbackProvider: (Test) -> Fallback
 	) {
-		this.fallbackProvider = if (cache) fallbackProvider.toCached() else fallbackProvider
+		this.fallbackProvider = fallbackProvider
 	}
 }
