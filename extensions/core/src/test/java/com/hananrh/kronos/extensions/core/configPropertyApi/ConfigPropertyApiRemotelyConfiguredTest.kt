@@ -5,12 +5,12 @@ import com.hananrh.kronos.config.type.intConfig
 import com.hananrh.kronos.extensions.core.asConfigProperty
 import com.hananrh.kronos.extensions.core.common.mapConfig
 import com.hananrh.kronos.extensions.core.common.withRemoteMap
-import com.hananrh.kronos.extensions.core.isConfigured
+import com.hananrh.kronos.extensions.core.isRemotelyConfigured
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-object ConfigPropertyApiIsConfiguredTest : Spek({
+object ConfigPropertyApiRemotelyConfiguredTest : Spek({
 
 	class Config : FeatureRemoteConfig by mapConfig() {
 		val someInt by intConfig {
@@ -25,7 +25,7 @@ object ConfigPropertyApiIsConfiguredTest : Spek({
 		it("Should return true") {
 			withRemoteMap("someInt" to 1)
 
-			assertEquals(true, Config::someInt.asConfigProperty(config).isConfigured())
+			assertEquals(true, Config::someInt.asConfigProperty(config).isRemotelyConfigured())
 		}
 	}
 })

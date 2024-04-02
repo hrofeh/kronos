@@ -54,44 +54,44 @@ object ConfigPropertyApiGetDefaultValueTest : Spek(kronosTest {
 		val config = Config()
 
 		it("Should return default - intConfig") {
-			assertEquals(0, Config::someInt.asConfigProperty(config).getDefaultValue())
+			assertEquals(0, Config::someInt.asConfigProperty(config).defaultValue)
 		}
 
 		it("Should return default - longConfig") {
-			assertEquals(0, Config::someLong.asConfigProperty(config).getDefaultValue())
+			assertEquals(0, Config::someLong.asConfigProperty(config).defaultValue)
 		}
 
 		it("Should return default - floatConfig") {
-			assertEquals(0f, Config::someFloat.asConfigProperty(config).getDefaultValue())
+			assertEquals(0f, Config::someFloat.asConfigProperty(config).defaultValue)
 		}
 
 		it("Should return default - stringConfig") {
-			assertEquals("", Config::someString.asConfigProperty(config).getDefaultValue())
+			assertEquals("", Config::someString.asConfigProperty(config).defaultValue)
 		}
 
 		it("Should return default - stringSetConfig") {
 			assertEquals(
 				setOf(""),
-				Config::someStringSet.asConfigProperty(config).getDefaultValue()
+				Config::someStringSet.asConfigProperty(config).defaultValue
 			)
 		}
 
 		it("Should return default - nullableStringConfig") {
 			assertEquals(
 				null,
-				Config::someNullableString.asConfigProperty(config).getDefaultValue()
+				Config::someNullableString.asConfigProperty(config).defaultValue
 			)
 		}
 
 		it("Should return default - booleanConfig") {
-			assertEquals(false, Config::someBoolean.asConfigProperty(config).getDefaultValue())
+			assertEquals(false, Config::someBoolean.asConfigProperty(config).defaultValue)
 		}
 
 		it("Should return default - colorConfig") {
 			assertEquals(
 				ColorInt(
 					Color.WHITE
-				), Config::someColor.asConfigProperty(config).getDefaultValue()
+				), Config::someColor.asConfigProperty(config).defaultValue
 			)
 		}
 	}

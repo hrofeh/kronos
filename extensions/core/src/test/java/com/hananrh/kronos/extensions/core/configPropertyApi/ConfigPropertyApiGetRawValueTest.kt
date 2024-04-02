@@ -54,27 +54,27 @@ object ConfigPropertyApiGetRawValueTest : Spek(kronosTest {
 		}
 
 		it("Should return raw configured value - intConfig") {
-			assertEquals(1, Config::someInt.asConfigProperty(config).getRawValue())
+			assertEquals(1, Config::someInt.asConfigProperty(config).rawValue)
 		}
 
 		it("Should return raw configured value - longConfig") {
-			assertEquals(1L, Config::someLong.asConfigProperty(config).getRawValue())
+			assertEquals(1L, Config::someLong.asConfigProperty(config).rawValue)
 		}
 
 		it("Should return raw configured value - floatConfig") {
-			assertEquals(1f, Config::someFloat.asConfigProperty(config).getRawValue())
+			assertEquals(1f, Config::someFloat.asConfigProperty(config).rawValue)
 		}
 
 		it("Should return raw configured value - stringConfig") {
-			assertEquals("remote", Config::someString.asConfigProperty(config).getRawValue())
+			assertEquals("remote", Config::someString.asConfigProperty(config).rawValue)
 		}
 
 		it("Should return raw configured value - booleanConfig") {
-			assertEquals(true, Config::someBoolean.asConfigProperty(config).getRawValue())
+			assertEquals(true, Config::someBoolean.asConfigProperty(config).rawValue)
 		}
 
 		it("cShould return raw configured value - colorConfig") {
-			assertEquals("#000000", Config::someColor.asConfigProperty(config).getRawValue())
+			assertEquals("#000000", Config::someColor.asConfigProperty(config).rawValue)
 		}
 	}
 })

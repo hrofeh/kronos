@@ -2,16 +2,15 @@ package com.hananrh.kronos.extensions.core
 
 import com.hananrh.kronos.config.ConfigDelegateApi
 import com.hananrh.kronos.config.FeatureRemoteConfig
-import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty1
 import kotlin.reflect.jvm.isAccessible
 
 interface ConfigPropertyApi<Raw, Actual> {
-	fun getDefaultValue(): Actual
-	fun getRawValue(): Raw?
+	val defaultValue: Actual
+	val rawValue: Raw?
 }
 
-fun ConfigPropertyApi<*, *>.isConfigured(): Boolean = getRawValue() != null
+fun ConfigPropertyApi<*, *>.isRemotelyConfigured(): Boolean = rawValue != null
 
 private class ConfigPropertyApiImpl<FeatureRemoteConfigType : FeatureRemoteConfig, Raw, Actual>(
 	private val instance: FeatureRemoteConfigType,
@@ -19,9 +18,11 @@ private class ConfigPropertyApiImpl<FeatureRemoteConfigType : FeatureRemoteConfi
 	private val configDelegate: ConfigDelegateApi<Raw, Actual>
 ) : ConfigPropertyApi<Raw, Actual> {
 
-	override fun getDefaultValue() = configDelegate.default
+	override val defaultValue: Actual
+		get() = configDelegate.default
 
-	override fun getRawValue() = configDelegate.getRawValue(instance, property)
+	override val rawValue: Raw?
+		get() = configDelegate.getRawValue(instance, property)
 }
 
 fun <FeatureRemoteConfigType : FeatureRemoteConfig, Actual> KProperty1<FeatureRemoteConfigType, Actual>.asConfigProperty(
