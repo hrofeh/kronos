@@ -6,6 +6,8 @@ pluginManagement {
     }
 }
 
+includeBuild("build-logic")
+
 include ':kronos'
 
 include 'extensions:property-api'
