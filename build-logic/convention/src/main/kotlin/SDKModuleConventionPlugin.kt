@@ -1,9 +1,10 @@
 import com.android.build.api.dsl.LibraryExtension
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.jetbrains.kotlin.gradle.model.KotlinAndroidExtension
 
 class SDKModuleConventionPlugin : Plugin<Project> {
 
@@ -13,7 +14,7 @@ class SDKModuleConventionPlugin : Plugin<Project> {
 
 		pluginManager.apply {
 			apply("com.android.library")
-			apply ("kotlin-android")
+			apply("kotlin-android")
 			apply("de.mannodermaus.android-junit5")
 		}
 
@@ -26,7 +27,12 @@ class SDKModuleConventionPlugin : Plugin<Project> {
 				consumerProguardFiles("proguard-consumer-rules.pro")
 			}
 
-			namespace = "com.hananrh.kronos.$parentName.${moduleName.replace("-", "_")}"
+			compileOptions {
+				sourceCompatibility = JavaVersion.VERSION_1_8
+				targetCompatibility = JavaVersion.VERSION_1_8
+			}
+
+			namespace = if (moduleName == "kronos") "com.hananrh.kronos" else "com.hananrh.kronos.$parentName.${moduleName.replace("-", "_")}"
 
 			buildTypes {
 				getByName("release") {
@@ -37,7 +43,9 @@ class SDKModuleConventionPlugin : Plugin<Project> {
 		}
 
 		dependencies {
-			add("implementation", project(":kronos"))
+			if (moduleName != "kronos") {
+				add("implementation", project(":kronos"))
+			}
 			add("implementation", "com.ironsource.aura.dslint:dslint-annotations:1.0.3")
 
 			add("testImplementation", "io.mockk:mockk:1.12.2")

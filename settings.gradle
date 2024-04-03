@@ -1,8 +1,18 @@
 pluginManagement {
     repositories {
+        google()
         gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
         google()
         mavenCentral()
+        jcenter()
+
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -10,8 +20,8 @@ includeBuild("build-logic")
 
 include ':kronos'
 
-include 'extensions:property-api'
-include 'extensions:json'
-include 'extensions:json-kotlinx'
+include 'extension:property-api'
+include 'extension:json'
+include 'extension:json-kotlinx'
 
 include 'source:firebase'
