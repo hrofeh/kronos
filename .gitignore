@@ -9,3 +9,4 @@
 kronos-sources/*/build/
 local/
 /RELEASING.md
+build-logic/convention/build

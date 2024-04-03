@@ -38,7 +38,6 @@ class SDKModuleConventionPlugin : Plugin<Project> {
 
 		dependencies {
 			add("implementation", project(":kronos"))
-			add("implementation", "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20")
 			add("implementation", "com.ironsource.aura.dslint:dslint-annotations:1.0.3")
 
 			add("testImplementation", "io.mockk:mockk:1.12.2")
