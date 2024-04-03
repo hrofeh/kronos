@@ -2,7 +2,6 @@ package com.hananrh.kronos
 
 import android.annotation.SuppressLint
 import android.content.Context
-import com.hananrh.kronos.config.type.util.JsonConverter
 import com.hananrh.kronos.logging.AndroidLogger
 import com.hananrh.kronos.logging.Logger
 import com.hananrh.kronos.source.ConfigSource
@@ -24,15 +23,6 @@ object Kronos {
 		private set
 
 	var logger: Logger? = null
-		private set
-
-	var jsonConverter: JsonConverter? = null
-		get() {
-			checkNotNull(
-				field
-			) { "No json converter available, a converter needs to be supplied in Kronos.init()" }
-			return field
-		}
 		private set
 
 	/**
@@ -61,13 +51,11 @@ object Kronos {
 			logger = options.loggingOptions.logger
 		}
 
-		if (options.hasJsonConverter()) {
-			jsonConverter = options.jsonConverter
-		}
-
 		configSourceRepository = options.configSourceRepository
 	}
 }
+
+object ExtensionsOptions
 
 /**
  * Configuration class used to initialize the SDK.
@@ -77,13 +65,10 @@ object Kronos {
 @DSLint
 interface Options {
 
+	fun extensions(block: ExtensionsOptions.() -> Unit)
+
 	@set:DSLMandatory
 	var context: Context
-
-	/**
-	 * Json converter to be used with jsonConfig
-	 */
-	var jsonConverter: JsonConverter
 
 	/**
 	 * Define SDK logging options
@@ -109,19 +94,18 @@ interface Options {
 private class OptionsBuilder : Options {
 
 	companion object {
-
 		operator fun invoke(block: Options.() -> Unit) = OptionsBuilder().apply(
 			block
 		)
 	}
 
+	override fun extensions(block: ExtensionsOptions.() -> Unit) {
+		ExtensionsOptions.apply(block)
+	}
+
 	override lateinit var context: Context
 
-	override lateinit var jsonConverter: JsonConverter
-
 	internal val configSourceRepository = ConfigSourceRepository()
-
-	internal fun hasJsonConverter() = ::jsonConverter.isInitialized
 
 	internal var loggingOptions: LoggingOptions = LoggingOptionsBuilder {}
 

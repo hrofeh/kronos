@@ -1,15 +1,11 @@
-plugins {
-//    id 'jacoco'
-}
 apply plugin: 'com.android.library'
-apply from: '../versions.gradle'
+apply from: '../../versions.gradle'
 apply plugin: 'kotlin-android'
-apply plugin: "de.mannodermaus.android-junit5"
 
 android {
     compileSdk COMPILE_SDK_VERSION
 
-    namespace "com.hananrh.kronos"
+    namespace "com.hananrh.kronos.source.firebase"
 
     defaultConfig {
         minSdkVersion MIN_SDK_VERSION
@@ -36,18 +32,7 @@ android {
 apply from: rootProject.file('gradle/mvn_push.gradle')
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-
-    // Kotlin
+    implementation project(':kronos')
+    implementation 'com.google.firebase:firebase-config:19.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
-    implementation "com.ironsource.aura.dslint:dslint-annotations:$dslint"
-    lintPublish "com.ironsource.aura.dslint:dslint-checks:$dslint"
-
-    // Test
-    testImplementation "io.mockk:mockk:$mockk_version"
-    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
-    testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spek_version"
-    testImplementation "org.spekframework.spek2:spek-runner-junit5:$spek_version"
-    testImplementation project(':extensions:json')
 }

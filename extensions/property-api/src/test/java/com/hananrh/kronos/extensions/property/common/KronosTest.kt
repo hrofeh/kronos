@@ -1,4 +1,4 @@
-package com.hananrh.kronos.common
+package com.hananrh.kronos.extensions.property.common
 
 import com.hananrh.kronos.Kronos
 import com.hananrh.kronos.config.FeatureRemoteConfig
@@ -7,11 +7,9 @@ import org.spekframework.spek2.dsl.Root
 
 fun kronosTest(block: Root.() -> Unit): Root.() -> Unit {
 	return {
-
 		beforeGroup {
 			Kronos.init {
 				context = mockContext()
-
 				logging {
 					logger = ConsoleLogger()
 				}

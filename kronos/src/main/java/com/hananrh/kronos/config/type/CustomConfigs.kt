@@ -5,46 +5,19 @@ package com.hananrh.kronos.config.type
 import android.content.res.Resources
 import android.graphics.Color
 import android.webkit.URLUtil
+import com.hananrh.kronos.Kronos
 import com.hananrh.kronos.config.Config
 import com.hananrh.kronos.config.ConfigPropertyFactory
 import com.hananrh.kronos.config.FeatureRemoteConfig
 import com.hananrh.kronos.config.ResourcesResolver
 import com.hananrh.kronos.config.SimpleConfig
 import com.hananrh.kronos.config.SourceTypeResolver
-import com.hananrh.kronos.config.type.util.ColorInt
+import com.hananrh.kronos.config.utils.ColorInt
 import com.hananrh.kronos.utils.getColorHex
-import kotlin.reflect.typeOf
 
-fun FeatureRemoteConfig.urlConfig(block: SimpleConfig<String>.() -> Unit) =
-	ConfigPropertyFactory.fromPrimitive(
-		SourceTypeResolver.string(),
-		validator = { URLUtil.isValidUrl(it) },
-		block = block
-	)
-
-fun FeatureRemoteConfig.textConfig(block: SimpleConfig<String>.() -> Unit) = stringConfig(block)
-
-inline fun <reified T> FeatureRemoteConfig.jsonConfig(noinline block: Config<String, T>.() -> Unit) = ConfigPropertyFactory.from(
+fun FeatureRemoteConfig.urlConfig(block: SimpleConfig<String>.() -> Unit) = ConfigPropertyFactory.fromPrimitive(
 	SourceTypeResolver.string(),
-	validator = { it.isNotEmpty() },
-	getterAdapter = {
-		try {
-			com.hananrh.kronos.Kronos.jsonConverter!!.fromJson<T>(it, typeOf<T>())
-		} catch (e: Exception) {
-			com.hananrh.kronos.Kronos.logger?.e("Failed to parse json: $it", e)
-			null
-		}
-	},
-	setterAdapter = { value ->
-		value?.let {
-			try {
-				com.hananrh.kronos.Kronos.jsonConverter!!.toJson(it, typeOf<T>())
-			} catch (e: Exception) {
-				com.hananrh.kronos.Kronos.logger?.e("Failed to convert to json", e)
-				null
-			}
-		}
-	},
+	validator = { URLUtil.isValidUrl(it) },
 	block = block
 )
 
@@ -59,7 +32,7 @@ fun FeatureRemoteConfig.colorConfig(block: Config<String, ColorInt>.() -> Unit) 
 				Color.parseColor(it)
 			)
 		} catch (e: Exception) {
-			com.hananrh.kronos.Kronos.logger?.e("Failed to parse color hex: $it", e)
+			Kronos.logger?.e("Failed to parse color hex: $it", e)
 			null
 		}
 	},

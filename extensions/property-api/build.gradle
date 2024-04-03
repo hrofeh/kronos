@@ -6,7 +6,7 @@ apply plugin: "de.mannodermaus.android-junit5"
 android {
     compileSdk COMPILE_SDK_VERSION
 
-    namespace "com.hananrh.kronos.extensions.core"
+    namespace "com.hananrh.kronos.extensions.property"
 
     defaultConfig {
         minSdkVersion MIN_SDK_VERSION
@@ -42,4 +42,5 @@ dependencies {
     testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spek_version"
     testImplementation "org.spekframework.spek2:spek-runner-junit5:$spek_version"
     testImplementation project(':kronos')
+    testImplementation project(':extensions:json')
 }

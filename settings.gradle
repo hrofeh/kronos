@@ -7,6 +7,9 @@ pluginManagement {
 }
 
 include ':kronos'
-include 'kronos-converters:kotlinx-serialization'
-include 'kronos-sources:firebase'
+
 include 'extensions:property-api'
+include 'extensions:json'
+include 'extensions:json-kotlinx'
+
+include 'source:firebase'

@@ -14,7 +14,7 @@ import com.hananrh.kronos.config.type.nullableStringConfig
 import com.hananrh.kronos.config.type.stringConfig
 import com.hananrh.kronos.config.type.stringSetConfig
 import com.hananrh.kronos.config.type.typedConfig
-import com.hananrh.kronos.config.type.util.ColorInt
+import com.hananrh.kronos.config.utils.ColorInt
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import java.util.Random

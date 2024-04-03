@@ -1,10 +1,6 @@
-package com.hananrh.kronos.defaultValue
+package com.hananrh.kronos.extensions.property.configPropertyApi
 
 import android.graphics.Color
-import com.hananrh.kronos.common.Label
-import com.hananrh.kronos.common.kronosTest
-import com.hananrh.kronos.common.mapConfig
-import com.hananrh.kronos.common.withRemoteMap
 import com.hananrh.kronos.config.FeatureRemoteConfig
 import com.hananrh.kronos.config.type.booleanConfig
 import com.hananrh.kronos.config.type.colorConfig
@@ -14,15 +10,18 @@ import com.hananrh.kronos.config.type.longConfig
 import com.hananrh.kronos.config.type.nullableStringConfig
 import com.hananrh.kronos.config.type.stringConfig
 import com.hananrh.kronos.config.type.stringSetConfig
-import com.hananrh.kronos.config.type.typedConfig
 import com.hananrh.kronos.config.utils.ColorInt
+import com.hananrh.kronos.extensions.property.common.kronosTest
+import com.hananrh.kronos.extensions.property.common.mapConfig
+import com.hananrh.kronos.extensions.property.getAdaptedConfigProperty
+import com.hananrh.kronos.extensions.property.getConfigProperty
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-object DefaultValueTest : Spek(kronosTest {
+object ConfigPropertyApiGetDefaultValueTest : Spek(kronosTest {
 
-	describe("Fallback to default when no remote value configured") {
+	describe("Delegate getDefaultValue should return defined default") {
 
 		class Config : FeatureRemoteConfig by mapConfig() {
 			val someInt by intConfig {
@@ -51,57 +50,50 @@ object DefaultValueTest : Spek(kronosTest {
 					Color.WHITE
 				)
 			}
-			val someTyped by typedConfig<Label> {
-				default = Label("default")
-			}
 		}
 
 		val config = Config()
 
 		it("Should return default - intConfig") {
-			assertEquals(0, config.someInt)
+			assertEquals(0, config.getConfigProperty(Config::someInt).defaultValue)
 		}
 
 		it("Should return default - longConfig") {
-			assertEquals(0, config.someLong)
+			assertEquals(0, config.getConfigProperty(Config::someLong).defaultValue)
 		}
 
 		it("Should return default - floatConfig") {
-			assertEquals(0f, config.someFloat)
+			assertEquals(0f, config.getConfigProperty(Config::someFloat).defaultValue)
 		}
 
 		it("Should return default - stringConfig") {
-			assertEquals("", config.someString)
+			assertEquals("", config.getConfigProperty(Config::someString).defaultValue)
 		}
 
 		it("Should return default - stringSetConfig") {
-			assertEquals(setOf(""), config.someStringSet)
+			assertEquals(
+				setOf(""),
+				config.getConfigProperty(Config::someStringSet).defaultValue
+			)
 		}
 
 		it("Should return default - nullableStringConfig") {
-			assertEquals(null, config.someNullableString)
+			assertEquals(
+				null,
+				config.getConfigProperty(Config::someNullableString).defaultValue
+			)
 		}
 
 		it("Should return default - booleanConfig") {
-			assertEquals(false, config.someBoolean)
+			assertEquals(false, config.getConfigProperty(Config::someBoolean).defaultValue)
 		}
 
 		it("Should return default - colorConfig") {
 			assertEquals(
 				ColorInt(
 					Color.WHITE
-				), config.someColor
+				), config.getAdaptedConfigProperty<Config, String, ColorInt>(Config::someColor).defaultValue
 			)
-		}
-
-		it("Should return default - typedConfig") {
-			assertEquals(Label("default"), config.someTyped)
-		}
-
-		it("Should return default - typedConfig with invalid type configured") {
-			withRemoteMap("someTyped" to "Wrong")
-
-			assertEquals(Label("default"), config.someTyped)
 		}
 	}
 })
