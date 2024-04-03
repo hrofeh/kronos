@@ -4,6 +4,7 @@ kotlin = "1.8.20"
 firebase = "32.8.0"
 
 [libraries]
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
 
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
