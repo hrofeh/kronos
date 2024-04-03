@@ -7,7 +7,6 @@ apply(from = "../../versions.gradle")
 apply(from = rootProject.file("gradle/mvn_push.gradle"))
 
 dependencies {
-    implementation(libs.kotlin.reflect)
-
-    testImplementation(project(":extensions:json"))
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.config)
 }
