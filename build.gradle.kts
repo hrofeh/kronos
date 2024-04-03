@@ -6,6 +6,7 @@ plugins {
 	alias(libs.plugins.junit5) apply false
 	alias(libs.plugins.mvnPublish) apply false
 	alias(libs.plugins.kotlin.android) apply false
+	alias(libs.plugins.androidApplication) apply false
 }
 
 allprojects {

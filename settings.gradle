@@ -25,3 +25,4 @@ include 'extension:json'
 include 'extension:json-kotlinx'
 
 include 'source:firebase'
+include ':myapplication'

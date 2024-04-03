@@ -3,6 +3,14 @@ agp = "8.2.2"
 kotlin = "1.8.20"
 firebase = "32.8.0"
 dslint = "1.0.3"
+coreKtx = "1.12.0"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+espressoCore = "3.5.1"
+lifecycleRuntimeKtx = "2.7.0"
+activityCompose = "1.8.2"
+composeBom = "2023.08.00"
+kronos = "1.3.0_alpha1"
 
 [libraries]
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
@@ -16,8 +24,27 @@ dslint-checks = { module = "com.ironsource.aura.dslint:dslint-checks", version.r
 
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+ui = { group = "androidx.compose.ui", name = "ui" }
+ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+material3 = { group = "androidx.compose.material3", name = "material3" }
+
+kronos-core = { module = "com.github.hananrh.kronos:kronos", version.ref = "kronos" }
+kronos-json = { module = "com.github.hananrh.kronos:kronos-extension-json", version.ref = "kronos" }
+kronos-json-kotlinx = { module = "com.github.hananrh.kronos:kronos-extension-json-kotlinx", version.ref = "kronos" }
 
 [bundles]
+kronos = ["kronos-core", "kronos-json", "kronos-json-kotlinx"]
 
 [plugins]
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -25,3 +52,4 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 junit5 = { id = "de.mannodermaus.android-junit5", version = "1.10.0.0" }
 mvnPublish = { id = "com.github.dcendents.android-maven", version = "2.1" }
+androidApplication = { id = "com.android.application", version.ref = "agp" }
