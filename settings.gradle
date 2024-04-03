@@ -10,13 +10,14 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        //noinspection JcenterRepositoryObsolete (needed for DSLint lib)
         jcenter()
-
-        maven { url 'https://jitpack.io' }
     }
 }
 
 includeBuild("build-logic")
+
+include ':sample'
 
 include ':kronos'
 
@@ -25,4 +26,3 @@ include 'extension:json'
 include 'extension:json-kotlinx'
 
 include 'source:firebase'
-include ':sample'
