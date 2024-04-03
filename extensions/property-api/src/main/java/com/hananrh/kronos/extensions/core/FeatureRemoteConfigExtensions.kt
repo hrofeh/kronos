@@ -6,22 +6,22 @@ import kotlin.reflect.full.memberProperties
 
 val FeatureRemoteConfig.all: Map<String, Any?>
 	get() = mapOf(*javaClass.kotlin.memberProperties.mapNotNull { prop ->
-		prop.asConfigPropertySafe(this)?.let { configProp ->
+		getConfigPropertySafe(prop)?.let { configProp ->
 			Pair(configProp.key, prop.get(this@all))
 		}
 	}.toTypedArray())
 
 fun FeatureRemoteConfig.clearCache() {
 	javaClass.kotlin.memberProperties.mapNotNull {
-		it.asConfigPropertySafe(this@clearCache)
+		getConfigPropertySafe(it)
 	}.forEach {
 		it.clearCache()
 	}
 }
 
-private fun KProperty1<FeatureRemoteConfig, *>.asConfigPropertySafe(instance: FeatureRemoteConfig) =
+private fun <FR : FeatureRemoteConfig> FR.getConfigPropertySafe(property: KProperty1<FR, *>) =
 	try {
-		asConfigProperty(instance)
+		getConfigProperty(property)
 	} catch (e: IllegalArgumentException) {
 		null
 	}

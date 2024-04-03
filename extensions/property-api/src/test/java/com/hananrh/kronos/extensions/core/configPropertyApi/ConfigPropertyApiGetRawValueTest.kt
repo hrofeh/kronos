@@ -2,12 +2,18 @@ package com.hananrh.kronos.extensions.core.configPropertyApi
 
 import android.graphics.Color
 import com.hananrh.kronos.config.FeatureRemoteConfig
-import com.hananrh.kronos.config.type.*
+import com.hananrh.kronos.config.type.booleanConfig
+import com.hananrh.kronos.config.type.colorConfig
+import com.hananrh.kronos.config.type.floatConfig
+import com.hananrh.kronos.config.type.intConfig
+import com.hananrh.kronos.config.type.longConfig
+import com.hananrh.kronos.config.type.stringConfig
 import com.hananrh.kronos.config.type.util.ColorInt
-import com.hananrh.kronos.extensions.core.asConfigProperty
 import com.hananrh.kronos.extensions.core.common.kronosTest
 import com.hananrh.kronos.extensions.core.common.mapConfig
 import com.hananrh.kronos.extensions.core.common.withRemoteMap
+import com.hananrh.kronos.extensions.core.getAdaptedConfigProperty
+import com.hananrh.kronos.extensions.core.getConfigProperty
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
@@ -54,23 +60,23 @@ object ConfigPropertyApiGetRawValueTest : Spek(kronosTest {
 		}
 
 		it("Should return raw configured value - intConfig") {
-			assertEquals(1, Config::someInt.asConfigProperty(config).rawValue)
+			assertEquals(1, config.getConfigProperty(Config::someInt).configuredValue)
 		}
 
 		it("Should return raw configured value - longConfig") {
-			assertEquals(1L, Config::someLong.asConfigProperty(config).rawValue)
+			assertEquals(1L, config.getConfigProperty(Config::someLong).configuredValue)
 		}
 
 		it("Should return raw configured value - floatConfig") {
-			assertEquals(1f, Config::someFloat.asConfigProperty(config).rawValue)
+			assertEquals(1f, config.getConfigProperty(Config::someFloat).configuredValue)
 		}
 
 		it("Should return raw configured value - stringConfig") {
-			assertEquals("remote", Config::someString.asConfigProperty(config).rawValue)
+			assertEquals("remote", config.getConfigProperty(Config::someString).configuredValue)
 		}
 
-		it("Should return raw configured value - booleanConfig") {
-			assertEquals(true, Config::someBoolean.asConfigProperty(config).rawValue)
+		it("Should return raw configured value - colorConfig") {
+			assertEquals("#000000", config.getAdaptedConfigProperty<Config, String, ColorInt>(Config::someColor).configuredValue)
 		}
 	}
 })

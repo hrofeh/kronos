@@ -7,6 +7,7 @@ import com.hananrh.kronos.config.constraint.Constraint
 import com.hananrh.kronos.config.constraint.ConstraintBuilder
 import com.hananrh.kronos.source.ConfigSource
 import com.hananrh.kronos.source.SourceDefinition
+import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 internal class ConfigDelegate<Raw, Actual> internal constructor(
@@ -251,7 +252,7 @@ private class AdapterBuilder<Raw, Actual> : Adapter<Raw, Actual> {
 	}
 }
 
-public interface ConfigDelegateApi<Raw, Actual> {
+public interface ConfigDelegateApi<Raw, Actual> : ReadOnlyProperty<FeatureRemoteConfig, Actual> {
 	val default: Actual
 
 	fun getKey(property: KProperty<*>): String

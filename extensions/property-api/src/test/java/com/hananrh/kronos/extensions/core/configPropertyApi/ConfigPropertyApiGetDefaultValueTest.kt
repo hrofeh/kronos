@@ -11,9 +11,10 @@ import com.hananrh.kronos.config.type.nullableStringConfig
 import com.hananrh.kronos.config.type.stringConfig
 import com.hananrh.kronos.config.type.stringSetConfig
 import com.hananrh.kronos.config.type.util.ColorInt
-import com.hananrh.kronos.extensions.core.asConfigProperty
 import com.hananrh.kronos.extensions.core.common.kronosTest
 import com.hananrh.kronos.extensions.core.common.mapConfig
+import com.hananrh.kronos.extensions.core.getAdaptedConfigProperty
+import com.hananrh.kronos.extensions.core.getConfigProperty
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
@@ -54,37 +55,45 @@ object ConfigPropertyApiGetDefaultValueTest : Spek(kronosTest {
 		val config = Config()
 
 		it("Should return default - intConfig") {
-			assertEquals(0, Config::someInt.asConfigProperty(config).defaultValue)
+			assertEquals(0, config.getConfigProperty(Config::someInt).defaultValue)
 		}
 
 		it("Should return default - longConfig") {
-			assertEquals(0, Config::someLong.asConfigProperty(config).defaultValue)
+			assertEquals(0, config.getConfigProperty(Config::someLong).defaultValue)
 		}
 
 		it("Should return default - floatConfig") {
-			assertEquals(0f, Config::someFloat.asConfigProperty(config).defaultValue)
+			assertEquals(0f, config.getConfigProperty(Config::someFloat).defaultValue)
 		}
 
 		it("Should return default - stringConfig") {
-			assertEquals("", Config::someString.asConfigProperty(config).defaultValue)
+			assertEquals("", config.getConfigProperty(Config::someString).defaultValue)
 		}
 
 		it("Should return default - stringSetConfig") {
 			assertEquals(
 				setOf(""),
-				Config::someStringSet.asConfigProperty(config).defaultValue
+				config.getConfigProperty(Config::someStringSet).defaultValue
 			)
 		}
 
 		it("Should return default - nullableStringConfig") {
 			assertEquals(
 				null,
-				Config::someNullableString.asConfigProperty(config).defaultValue
+				config.getConfigProperty(Config::someNullableString).defaultValue
 			)
 		}
 
 		it("Should return default - booleanConfig") {
-			assertEquals(false, Config::someBoolean.asConfigProperty(config).defaultValue)
+			assertEquals(false, config.getConfigProperty(Config::someBoolean).defaultValue)
+		}
+
+		it("Should return default - colorConfig") {
+			assertEquals(
+				ColorInt(
+					Color.WHITE
+				), config.getAdaptedConfigProperty<Config, String, ColorInt>(Config::someColor).defaultValue
+			)
 		}
 	}
 })
