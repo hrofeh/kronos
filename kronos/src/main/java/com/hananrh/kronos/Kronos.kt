@@ -1,13 +1,11 @@
 package com.hananrh.kronos
 
 import android.annotation.SuppressLint
-import android.content.Context
 import com.hananrh.kronos.logging.AndroidLogger
 import com.hananrh.kronos.logging.Logger
 import com.hananrh.kronos.source.ConfigSource
 import com.hananrh.kronos.source.ConfigSourceRepository
 import com.hananrh.kronos.source.SourceDefinition
-import com.ironsource.aura.dslint.annotations.DSLMandatory
 import com.ironsource.aura.dslint.annotations.DSLint
 import kotlin.reflect.KClass
 
@@ -16,11 +14,6 @@ import kotlin.reflect.KClass
  */
 @SuppressLint("StaticFieldLeak")
 object Kronos {
-
-	private var initialized = Kronos::context.isInitialized
-
-	lateinit var context: Context
-		private set
 
 	var logger: Logger? = null
 		private set
@@ -39,13 +32,7 @@ object Kronos {
 	 * Initializes the SDK with configuration
 	 */
 	fun init(block: Options.() -> Unit) {
-		if (initialized) {
-			return
-		}
-
 		val options = OptionsBuilder(block)
-
-		context = options.context.applicationContext
 
 		if (options.loggingOptions.enabled) {
 			logger = options.loggingOptions.logger
@@ -64,11 +51,6 @@ object ExtensionsOptions
  */
 @DSLint
 interface Options {
-
-	fun extensions(block: ExtensionsOptions.() -> Unit)
-
-	@set:DSLMandatory
-	var context: Context
 
 	/**
 	 * Define SDK logging options
@@ -89,6 +71,11 @@ interface Options {
 		sourceClass: KClass<S>,
 		configSourceFactory: ConfigSourceRepository.ConfigSourceFactory<S, T>
 	)
+
+	/**
+	 * Configure Kronos extensions
+	 */
+	fun extensions(block: ExtensionsOptions.() -> Unit)
 }
 
 private class OptionsBuilder : Options {
@@ -103,11 +90,9 @@ private class OptionsBuilder : Options {
 		ExtensionsOptions.apply(block)
 	}
 
-	override lateinit var context: Context
+	val configSourceRepository = ConfigSourceRepository()
 
-	internal val configSourceRepository = ConfigSourceRepository()
-
-	internal var loggingOptions: LoggingOptions = LoggingOptionsBuilder {}
+	var loggingOptions: LoggingOptions = LoggingOptionsBuilder {}
 
 	override fun logging(block: LoggingOptions.() -> Unit) {
 		loggingOptions = LoggingOptionsBuilder(block)

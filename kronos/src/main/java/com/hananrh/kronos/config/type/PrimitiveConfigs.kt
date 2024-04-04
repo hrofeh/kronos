@@ -5,55 +5,55 @@ package com.hananrh.kronos.config.type
 import com.hananrh.kronos.config.AdaptedConfig
 import com.hananrh.kronos.config.Config
 import com.hananrh.kronos.config.ConfigPropertyFactory
+import com.hananrh.kronos.config.ConfigSourceResolver
 import com.hananrh.kronos.config.FeatureRemoteConfig
 import com.hananrh.kronos.config.SimpleConfig
-import com.hananrh.kronos.config.SourceTypeResolver
 
 fun <T> FeatureRemoteConfig.adaptedIntConfig(block: AdaptedConfig<Int, T>.() -> Unit) =
-	ConfigPropertyFactory.from(SourceTypeResolver.int(), block = block)
+	ConfigPropertyFactory.from(ConfigSourceResolver.Int, block = block)
 
 fun <T> FeatureRemoteConfig.adaptedLongConfig(block: AdaptedConfig<Long, T>.() -> Unit) =
-	ConfigPropertyFactory.from(SourceTypeResolver.long(), block = block)
+	ConfigPropertyFactory.from(ConfigSourceResolver.Long, block = block)
 
 fun <T> FeatureRemoteConfig.adaptedFloatConfig(block: AdaptedConfig<Float, T>.() -> Unit) =
-	ConfigPropertyFactory.from(SourceTypeResolver.float(), block = block)
+	ConfigPropertyFactory.from(ConfigSourceResolver.Float, block = block)
 
 fun <T> FeatureRemoteConfig.adaptedStringConfig(block: AdaptedConfig<String, T>.() -> Unit) =
-	ConfigPropertyFactory.from(SourceTypeResolver.string(), block = block)
+	ConfigPropertyFactory.from(ConfigSourceResolver.String, block = block)
 
 fun <T> FeatureRemoteConfig.adaptedStringSetConfig(block: AdaptedConfig<Set<String>, T>.() -> Unit) =
-	ConfigPropertyFactory.from(SourceTypeResolver.stringSet(), block = block)
+	ConfigPropertyFactory.from(ConfigSourceResolver.StringSet, block = block)
 
 fun <T> FeatureRemoteConfig.adaptedBooleanConfig(block: AdaptedConfig<Boolean, T>.() -> Unit) =
-	ConfigPropertyFactory.from(SourceTypeResolver.boolean(), block = block)
+	ConfigPropertyFactory.from(ConfigSourceResolver.Boolean, block = block)
 
 fun FeatureRemoteConfig.nullableStringConfig(block: Config<String, String?>.() -> Unit) =
-	ConfigPropertyFactory.fromNullablePrimitive(SourceTypeResolver.string(), block = block)
+	ConfigPropertyFactory.fromNullablePrimitive(ConfigSourceResolver.String, block = block)
 
 fun FeatureRemoteConfig.nullableStringSetConfig(block: Config<Set<String>, Set<String>?>.() -> Unit) =
-	ConfigPropertyFactory.fromNullablePrimitive(SourceTypeResolver.stringSet(), block = block)
+	ConfigPropertyFactory.fromNullablePrimitive(ConfigSourceResolver.StringSet, block = block)
 
 fun FeatureRemoteConfig.intConfig(block: SimpleConfig<Int>.() -> Unit) =
-	ConfigPropertyFactory.fromPrimitive(SourceTypeResolver.int(), block = block)
+	ConfigPropertyFactory.fromPrimitive(ConfigSourceResolver.Int, block = block)
 
 fun FeatureRemoteConfig.longConfig(block: SimpleConfig<Long>.() -> Unit) =
-	ConfigPropertyFactory.fromPrimitive(SourceTypeResolver.long(), block = block)
+	ConfigPropertyFactory.fromPrimitive(ConfigSourceResolver.Long, block = block)
 
 fun FeatureRemoteConfig.floatConfig(block: SimpleConfig<Float>.() -> Unit) =
-	ConfigPropertyFactory.fromPrimitive(SourceTypeResolver.float(), block = block)
+	ConfigPropertyFactory.fromPrimitive(ConfigSourceResolver.Float, block = block)
 
 fun FeatureRemoteConfig.stringConfig(block: SimpleConfig<String>.() -> Unit) =
-	ConfigPropertyFactory.fromPrimitive(SourceTypeResolver.string(), block = block)
+	ConfigPropertyFactory.fromPrimitive(ConfigSourceResolver.String, block = block)
 
 fun FeatureRemoteConfig.stringSetConfig(block: SimpleConfig<Set<String>>.() -> Unit) =
-	ConfigPropertyFactory.fromPrimitive(SourceTypeResolver.stringSet(), block = block)
+	ConfigPropertyFactory.fromPrimitive(ConfigSourceResolver.StringSet, block = block)
 
 fun FeatureRemoteConfig.booleanConfig(block: SimpleConfig<Boolean>.() -> Unit) =
-	ConfigPropertyFactory.fromPrimitive(SourceTypeResolver.boolean(), block = block)
+	ConfigPropertyFactory.fromPrimitive(ConfigSourceResolver.Boolean, block = block)
 
 inline fun <reified T> FeatureRemoteConfig.typedConfig(noinline block: AdaptedConfig<Any, T>.() -> Unit) =
 	ConfigPropertyFactory.from(
-		SourceTypeResolver.any(),
+		ConfigSourceResolver.Any,
 		getterAdapter = { it as? T },
 		setterAdapter = { it },
 		block = block

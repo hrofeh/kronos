@@ -11,28 +11,20 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 internal class ConfigDelegate<Raw, Actual> internal constructor(
-	private val typeResolver: SourceTypeResolver<Raw>,
+	private val sourceResolver: ConfigSourceResolver<Raw>,
 	private val validator: (Raw) -> Boolean
 ) : ConfigProperty<Actual>, AdaptedConfig<Raw, Actual>, ConfigDelegateApi<Raw, Actual> {
 
 	constructor(
-		typeResolver: SourceTypeResolver<Raw>,
+		sourceResolver: ConfigSourceResolver<Raw>,
 		validator: (Raw) -> Boolean,
 		getterAdapter: (Raw) -> Actual?,
 		setterAdapter: (Actual) -> Raw?
-	) : this(typeResolver, validator) {
+	) : this(sourceResolver, validator) {
 		adapt {
 			get(getterAdapter)
 			set(setterAdapter)
 		}
-	}
-
-	constructor(
-		typeResolver: SourceTypeResolver<Raw>,
-		validator: (Raw) -> Boolean,
-		getterAdapter: (Raw) -> Actual?
-	) : this(typeResolver, validator) {
-		adapt { get(getterAdapter) }
 	}
 
 	override lateinit var key: String
@@ -56,24 +48,13 @@ internal class ConfigDelegate<Raw, Actual> internal constructor(
 			default { value }
 		}
 
-	override var defaultRes: Int
-		@Deprecated("", level = DeprecationLevel.ERROR)
-		get() = throw UnsupportedOperationException()
-		set(value) {
-			default {
-				val adapted = getterAdapter(
-					typeResolver.resourcesResolver.resourcesGetter(
-						Kronos.context.resources,
-						value
-					)
-				)
-				adapted ?: throw RuntimeException("Failed to adapt default resource value to type")
-			}
+	override fun primitiveDefault(provider: () -> Raw) {
+		default {
+			getterAdapter(provider()) ?: throw IllegalArgumentException("Failed to adapt primitive default")
 		}
+	}
 
-	override fun default(
-		provider: () -> Actual
-	) {
+	override fun default(provider: () -> Actual) {
 		defaultProvider = provider
 	}
 
@@ -112,7 +93,7 @@ internal class ConfigDelegate<Raw, Actual> internal constructor(
 
 		assertRequiredGetterValues(property)
 
-		val value = typeResolver.configSourceResolver.sourceGetter(source, key)
+		val value = sourceResolver.sourceGetter(source, key)
 		if (value == null) {
 			return defaultProvider().also {
 				Kronos.logger?.v("${source::class.simpleName}: Remote value not found - using default value \"$key\"=$it")
@@ -171,7 +152,7 @@ internal class ConfigDelegate<Raw, Actual> internal constructor(
 
 		Kronos.logger?.v("${source::class.simpleName}: Setting value \"$key\"=$value")
 
-		typeResolver.configSourceResolver.sourceSetter(source, key, setterAdapter(value))
+		sourceResolver.sourceSetter(source, key, setterAdapter(value))
 	}
 
 	override fun getKey(property: KProperty<*>) = resolveKey(property)
@@ -214,7 +195,7 @@ internal class ConfigDelegate<Raw, Actual> internal constructor(
 	override fun getRawValue(
 		thisRef: FeatureRemoteConfig,
 		property: KProperty<*>
-	) = typeResolver.configSourceResolver.sourceGetter(resolveSource(thisRef), resolveKey(property))
+	) = sourceResolver.sourceGetter(resolveSource(thisRef), resolveKey(property))
 
 	private val getterAdapter
 		get() = adapter!!.getter!!

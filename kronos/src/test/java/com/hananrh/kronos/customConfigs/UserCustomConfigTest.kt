@@ -5,8 +5,8 @@ import com.hananrh.kronos.common.mapConfig
 import com.hananrh.kronos.common.withRemoteMap
 import com.hananrh.kronos.config.Config
 import com.hananrh.kronos.config.ConfigPropertyFactory
+import com.hananrh.kronos.config.ConfigSourceResolver
 import com.hananrh.kronos.config.FeatureRemoteConfig
-import com.hananrh.kronos.config.SourceTypeResolver
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
@@ -16,7 +16,7 @@ data class Label(val value: String)
 @Suppress("UnusedReceiverParameter")
 fun FeatureRemoteConfig.labelConfig(block: Config<String, Label>.() -> Unit) =
 	ConfigPropertyFactory.from(
-		SourceTypeResolver.string(),
+		ConfigSourceResolver.String,
 		validator = { it.isNotEmpty() },
 		getterAdapter = { Label(it) },
 		setterAdapter = { it.value },

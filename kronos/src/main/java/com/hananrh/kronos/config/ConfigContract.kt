@@ -4,24 +4,25 @@ import com.hananrh.kronos.config.constraint.Constraint
 import com.hananrh.kronos.source.SourceDefinition
 import com.ironsource.aura.dslint.annotations.DSLMandatory
 import com.ironsource.aura.dslint.annotations.DSLint
-import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 
 typealias SimpleConfig<T> = Config<T, T>
 
 @DSLint
-interface Defaulted<T> {
+interface Defaulted<Raw, Actual> {
 
 	@set:DSLMandatory(group = "default")
-	var default: T
+	var default: Actual
 
 	@DSLMandatory(group = "default")
 	fun default(
-		provider: () -> T
+		provider: () -> Actual
 	)
 
-	@set:DSLMandatory(group = "default")
-	var defaultRes: Int
+	@DSLMandatory(group = "default")
+	fun primitiveDefault(
+		provider: () -> Raw
+	)
 }
 
 interface Constrained<Test, Fallback> {
@@ -55,7 +56,7 @@ interface Adapter<Raw, Actual> {
 
 @DSLint
 interface Config<Raw, Actual> :
-	Defaulted<Actual>,
+	Defaulted<Raw, Actual>,
 	Constrained<Raw, Actual>,
 	Processable<Actual> {
 

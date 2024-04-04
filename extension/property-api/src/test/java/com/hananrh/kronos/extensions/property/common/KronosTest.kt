@@ -9,7 +9,6 @@ fun kronosTest(block: Root.() -> Unit): Root.() -> Unit {
 	return {
 		beforeGroup {
 			Kronos.init {
-				context = mockContext()
 				logging {
 					logger = ConsoleLogger()
 				}

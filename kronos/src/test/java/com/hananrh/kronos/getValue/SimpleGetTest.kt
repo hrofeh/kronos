@@ -1,6 +1,5 @@
 package com.hananrh.kronos.getValue
 
-import android.webkit.URLUtil
 import com.hananrh.kronos.common.Label
 import com.hananrh.kronos.common.kronosTest
 import com.hananrh.kronos.common.mapConfig
@@ -14,9 +13,6 @@ import com.hananrh.kronos.config.type.longConfig
 import com.hananrh.kronos.config.type.stringConfig
 import com.hananrh.kronos.config.type.stringSetConfig
 import com.hananrh.kronos.config.type.typedConfig
-import com.hananrh.kronos.config.type.urlConfig
-import io.mockk.every
-import io.mockk.mockkStatic
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
@@ -40,7 +36,6 @@ object SimpleGetTest : Spek(kronosTest {
 					set { it.value }
 				}
 			}
-			val someUrl by urlConfig { default = "" }
 		}
 
 		val config = Config()
@@ -89,12 +84,6 @@ object SimpleGetTest : Spek(kronosTest {
 
 		it("Should return remote value - typedStringConfig with adapter") {
 			assertEquals(Label("remote"), config.someLabel)
-		}
-
-		it("Should return remote value - urlConfig") {
-			mockkStatic(URLUtil::class)
-			every { URLUtil.isValidUrl(any()) } returns true
-			assertEquals("www.google.com", config.someUrl)
 		}
 	}
 })

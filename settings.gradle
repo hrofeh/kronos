@@ -24,5 +24,6 @@ include ':kronos'
 include 'extension:property-api'
 include 'extension:json'
 include 'extension:json-kotlinx'
+include 'extension:resources'
 
 include 'source:firebase'

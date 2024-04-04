@@ -1,12 +1,10 @@
 package com.hananrh.kronos.defaultValue
 
-import android.graphics.Color
 import com.hananrh.kronos.common.Label
 import com.hananrh.kronos.common.kronosTest
 import com.hananrh.kronos.common.mapConfig
 import com.hananrh.kronos.config.FeatureRemoteConfig
 import com.hananrh.kronos.config.type.booleanConfig
-import com.hananrh.kronos.config.type.colorConfig
 import com.hananrh.kronos.config.type.floatConfig
 import com.hananrh.kronos.config.type.intConfig
 import com.hananrh.kronos.config.type.longConfig
@@ -14,7 +12,6 @@ import com.hananrh.kronos.config.type.nullableStringConfig
 import com.hananrh.kronos.config.type.stringConfig
 import com.hananrh.kronos.config.type.stringSetConfig
 import com.hananrh.kronos.config.type.typedConfig
-import com.hananrh.kronos.config.utils.ColorInt
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import java.util.Random
@@ -48,13 +45,6 @@ object DefaultProviderTest : Spek(kronosTest {
 		}
 		val someBoolean by booleanConfig {
 			default { false }
-		}
-		val someColor by colorConfig {
-			default {
-				ColorInt(
-					Color.WHITE
-				)
-			}
 		}
 		val someTyped by typedConfig<Label> {
 			default { Label("default") }
@@ -91,14 +81,6 @@ object DefaultProviderTest : Spek(kronosTest {
 
 		it("Should return default - booleanConfig") {
 			assertEquals(false, config.someBoolean)
-		}
-
-		it("Should return default - colorConfig") {
-			assertEquals(
-				ColorInt(
-					Color.WHITE
-				), config.someColor
-			)
 		}
 
 		it("Should return default - typedConfig") {

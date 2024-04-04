@@ -1,16 +1,14 @@
 package com.hananrh.kronos.extensions.property.configPropertyApi
 
-import android.graphics.Color
 import com.hananrh.kronos.config.FeatureRemoteConfig
+import com.hananrh.kronos.config.type.adaptedIntConfig
 import com.hananrh.kronos.config.type.booleanConfig
-import com.hananrh.kronos.config.type.colorConfig
 import com.hananrh.kronos.config.type.floatConfig
 import com.hananrh.kronos.config.type.intConfig
 import com.hananrh.kronos.config.type.longConfig
 import com.hananrh.kronos.config.type.nullableStringConfig
 import com.hananrh.kronos.config.type.stringConfig
 import com.hananrh.kronos.config.type.stringSetConfig
-import com.hananrh.kronos.config.utils.ColorInt
 import com.hananrh.kronos.extensions.property.common.kronosTest
 import com.hananrh.kronos.extensions.property.common.mapConfig
 import com.hananrh.kronos.extensions.property.getAdaptedConfigProperty
@@ -45,10 +43,8 @@ object ConfigPropertyApiGetDefaultValueTest : Spek(kronosTest {
 			val someBoolean by booleanConfig {
 				default = false
 			}
-			val someColor by colorConfig {
-				default = ColorInt(
-					Color.WHITE
-				)
+			val someAdaptedInt by adaptedIntConfig<String> {
+				default = ""
 			}
 		}
 
@@ -88,11 +84,9 @@ object ConfigPropertyApiGetDefaultValueTest : Spek(kronosTest {
 			assertEquals(false, config.getConfigProperty(Config::someBoolean).defaultValue)
 		}
 
-		it("Should return default - colorConfig") {
+		it("Should return default - adapted config") {
 			assertEquals(
-				ColorInt(
-					Color.WHITE
-				), config.getAdaptedConfigProperty<Config, String, ColorInt>(Config::someColor).defaultValue
+				"", config.getAdaptedConfigProperty<Config, Int, String>(Config::someAdaptedInt).defaultValue
 			)
 		}
 	}

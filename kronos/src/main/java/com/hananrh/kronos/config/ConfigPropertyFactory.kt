@@ -3,28 +3,28 @@ package com.hananrh.kronos.config
 object ConfigPropertyFactory {
 
 	internal fun <Raw, Actual> from(
-		sourceTypeResolver: SourceTypeResolver<Raw>,
+		configSourceResolver: ConfigSourceResolver<Raw>,
 		validator: (Raw) -> Boolean = { true },
 		block: AdaptedConfig<Raw, Actual>.() -> Unit
-	): ConfigProperty<Actual> = ConfigDelegate<Raw, Actual>(sourceTypeResolver, validator).apply(block)
+	): ConfigProperty<Actual> = ConfigDelegate<Raw, Actual>(configSourceResolver, validator).apply(block)
 
 	fun <T> fromPrimitive(
-		sourceTypeResolver: SourceTypeResolver<T>,
+		configSourceResolver: ConfigSourceResolver<T>,
 		validator: (T) -> Boolean = { true },
 		block: AdaptedConfig<T, T>.() -> Unit
-	): ConfigProperty<T> = ConfigDelegate(sourceTypeResolver, validator, { it }, { it }).apply(block)
+	): ConfigProperty<T> = ConfigDelegate(configSourceResolver, validator, { it }, { it }).apply(block)
 
 	fun <T> fromNullablePrimitive(
-		sourceTypeResolver: SourceTypeResolver<T>,
+		configSourceResolver: ConfigSourceResolver<T>,
 		validator: (T) -> Boolean = { true },
 		block: AdaptedConfig<T, T?>.() -> Unit
-	): ConfigProperty<T?> = ConfigDelegate<T, T?>(sourceTypeResolver, validator, { it }, { it }).apply(block)
+	): ConfigProperty<T?> = ConfigDelegate<T, T?>(configSourceResolver, validator, { it }, { it }).apply(block)
 
 	fun <Raw, Actual> from(
-		sourceTypeResolver: SourceTypeResolver<Raw>,
+		configSourceResolver: ConfigSourceResolver<Raw>,
 		validator: (Raw) -> Boolean = { true },
 		getterAdapter: (Raw) -> Actual?,
 		setterAdapter: (Actual) -> Raw?,
 		block: AdaptedConfig<Raw, Actual>.() -> Unit
-	): ConfigProperty<Actual> = ConfigDelegate(sourceTypeResolver, validator, getterAdapter, setterAdapter).apply(block)
+	): ConfigProperty<Actual> = ConfigDelegate(configSourceResolver, validator, getterAdapter, setterAdapter).apply(block)
 }

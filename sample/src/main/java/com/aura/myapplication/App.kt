@@ -4,7 +4,8 @@ import android.app.Application
 import com.aura.myapplication.config.source.MapConfigSource
 import com.hananrh.kronos.Kronos
 import com.hananrh.kronos.extensions.json.json
-import com.hananrh.kronos.extensions.json.kotlinx.KotlinxSerializer
+import com.hananrh.kronos.extensions.resources.kotlinx.KotlinxSerializer
+import com.hananrh.kronos.extensions.resources.resources
 import com.hananrh.kronos.logging.AndroidLogger
 
 internal class App : Application() {
@@ -13,8 +14,6 @@ internal class App : Application() {
 		super.onCreate()
 
 		Kronos.init {
-			context = applicationContext
-
 			logging {
 				enabled = true
 				logger = AndroidLogger()
@@ -29,6 +28,10 @@ internal class App : Application() {
 			extensions {
 				json {
 					serializer = KotlinxSerializer()
+				}
+
+				resources {
+					resources = applicationContext.resources
 				}
 			}
 		}

@@ -3,7 +3,6 @@ package com.hananrh.kronos.configSourceFactory
 import com.hananrh.kronos.Kronos
 import com.hananrh.kronos.common.ConsoleLogger
 import com.hananrh.kronos.common.MapSource
-import com.hananrh.kronos.common.mockContext
 import com.hananrh.kronos.config.FeatureRemoteConfig
 import com.hananrh.kronos.config.type.intConfig
 import com.hananrh.kronos.source.identifiableTypedSource
@@ -15,7 +14,6 @@ object ConfigSourceFactoryTest : Spek({
 
 	beforeGroup {
 		Kronos.init {
-			context = mockContext()
 			logging {
 				logger = ConsoleLogger()
 			}

@@ -5,15 +5,15 @@ package com.hananrh.kronos.extensions.json
 import com.hananrh.kronos.Kronos
 import com.hananrh.kronos.config.Config
 import com.hananrh.kronos.config.ConfigPropertyFactory
+import com.hananrh.kronos.config.ConfigSourceResolver
 import com.hananrh.kronos.config.FeatureRemoteConfig
-import com.hananrh.kronos.config.SourceTypeResolver
 import kotlin.reflect.typeOf
 
 val kronosJsonSerializer
 	get() = JsonExtension.serializer
 
 inline fun <reified T> FeatureRemoteConfig.jsonConfig(noinline block: Config<String, T>.() -> Unit) = ConfigPropertyFactory.from(
-	SourceTypeResolver.string(),
+	ConfigSourceResolver.String,
 	validator = { it.isNotEmpty() },
 	getterAdapter = {
 		try {

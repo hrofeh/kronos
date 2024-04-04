@@ -1,7 +1,6 @@
 package com.hananrh.kronos.extensions.json
 
 import com.hananrh.kronos.ExtensionsOptions
-import com.hananrh.kronos.extensions.json.util.JsonSerializer
 import com.ironsource.aura.dslint.annotations.DSLMandatory
 import com.ironsource.aura.dslint.annotations.DSLint
 
@@ -29,5 +28,5 @@ interface JsonExtensionOptions {
 internal object JsonExtension : JsonExtensionOptions {
 	override lateinit var serializer: JsonSerializer
 
-	fun isSerializerInitialized() = ::serializer.isInitialized
+	fun isSerializerInitialized() = JsonExtension::serializer.isInitialized
 }
