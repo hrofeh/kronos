@@ -5,7 +5,9 @@ plugins {
 
 dependencies {
 	implementation(libs.dslint.annotations)
-	lintPublish(libs.dslint.checks)
+
+	// Temp disabled until DSLint version that supports multi-module libraries
+//	lintPublish(libs.dslint.checks)
 
 	testImplementation(project(":extension:resources"))
 }
