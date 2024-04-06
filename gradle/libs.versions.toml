@@ -1,8 +1,8 @@
 [versions]
-agp = "8.2.2"
-kotlin = "1.8.20"
+agp = "8.3.1"
+kotlin = "1.8.22"
 firebase = "32.8.0"
-dslint = "1.0.3"
+dslint = "1.1.0"
 coreKtx = "1.12.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
@@ -18,8 +18,8 @@ kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 firebase-config = { module = "com.google.firebase:firebase-config" }
 
-dslint-annotations = { module = "com.ironsource.aura.dslint:dslint-annotations", version.ref = "dslint" }
-dslint-checks = { module = "com.ironsource.aura.dslint:dslint-checks", version.ref = "dslint" }
+dslint-annotations = { module = "com.github.hananrh.dslint:dslint-annotations", version.ref = "dslint" }
+dslint-checks = { module = "com.github.hananrh.dslint:dslint-checks", version.ref = "dslint" }
 
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

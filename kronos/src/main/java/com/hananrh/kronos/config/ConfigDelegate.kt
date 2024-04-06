@@ -48,6 +48,12 @@ internal class ConfigDelegate<Raw, Actual> internal constructor(
 			default { value }
 		}
 
+	override var primitiveDefault: Raw
+		get() = throw UnsupportedOperationException("No getter for DSL property")
+		set(value) {
+			primitiveDefault { value }
+		}
+
 	override fun primitiveDefault(provider: () -> Raw) {
 		default {
 			getterAdapter(provider()) ?: throw IllegalArgumentException("Failed to adapt primitive default")

@@ -1,8 +1,8 @@
 package com.hananrh.kronos.extensions.json
 
+import com.hananrh.dslint.annotations.DSLMandatory
+import com.hananrh.dslint.annotations.DSLint
 import com.hananrh.kronos.ExtensionsOptions
-import com.ironsource.aura.dslint.annotations.DSLMandatory
-import com.ironsource.aura.dslint.annotations.DSLint
 
 @Suppress("UnusedReceiverParameter")
 fun ExtensionsOptions.json(block: JsonExtensionOptions.() -> Unit) {

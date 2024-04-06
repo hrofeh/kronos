@@ -13,7 +13,7 @@ class MainScreenConfig : FeatureRemoteConfig {
 	override val sourceDefinition = typedSource<MapConfigSource>()
 
 	val defaultedConfig by stringConfig {
-		defaultRes = R.string.config_default
+		defaultRes(R.string.config_default)
 	}
 
 	val texts by jsonConfig<Map<String, List<String>>> {

@@ -1,9 +1,9 @@
 package com.hananrh.kronos.config
 
+import com.hananrh.dslint.annotations.DSLMandatory
+import com.hananrh.dslint.annotations.DSLint
 import com.hananrh.kronos.config.constraint.Constraint
 import com.hananrh.kronos.source.SourceDefinition
-import com.ironsource.aura.dslint.annotations.DSLMandatory
-import com.ironsource.aura.dslint.annotations.DSLint
 import kotlin.properties.ReadWriteProperty
 
 typealias SimpleConfig<T> = Config<T, T>
@@ -13,6 +13,9 @@ interface Defaulted<Raw, Actual> {
 
 	@set:DSLMandatory(group = "default")
 	var default: Actual
+
+	@set:DSLMandatory(group = "default")
+	var primitiveDefault: Raw
 
 	@DSLMandatory(group = "default")
 	fun default(

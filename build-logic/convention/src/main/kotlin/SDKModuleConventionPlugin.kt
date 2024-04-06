@@ -46,7 +46,6 @@ class SDKModuleConventionPlugin : Plugin<Project> {
 			if (moduleName != "kronos") {
 				add("implementation", project(":kronos"))
 			}
-			add("implementation", "com.ironsource.aura.dslint:dslint-annotations:1.0.3")
 
 			add("testImplementation", "io.mockk:mockk:1.12.2")
 			add("testImplementation", "org.jetbrains.kotlin:kotlin-test:1.8.20")

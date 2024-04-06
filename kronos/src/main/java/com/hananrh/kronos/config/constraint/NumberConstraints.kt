@@ -1,8 +1,8 @@
 package com.hananrh.kronos.config.constraint
 
+import com.hananrh.dslint.annotations.DSLMandatory
+import com.hananrh.dslint.annotations.DSLint
 import com.hananrh.kronos.config.Config
-import com.ironsource.aura.dslint.annotations.DSLMandatory
-import com.ironsource.aura.dslint.annotations.DSLint
 
 var <T> Config<T, *>.minValue: T
 		where T : Number, T : Comparable<T>

@@ -1,12 +1,12 @@
 package com.hananrh.kronos
 
 import android.annotation.SuppressLint
+import com.hananrh.dslint.annotations.DSLint
 import com.hananrh.kronos.logging.AndroidLogger
 import com.hananrh.kronos.logging.Logger
 import com.hananrh.kronos.source.ConfigSource
 import com.hananrh.kronos.source.ConfigSourceRepository
 import com.hananrh.kronos.source.SourceDefinition
-import com.ironsource.aura.dslint.annotations.DSLint
 import kotlin.reflect.KClass
 
 /**
