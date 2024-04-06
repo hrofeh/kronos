@@ -6,5 +6,5 @@ plugins{
 dependencies{
 	implementation(libs.dslint.annotations)
 
-	testImplementation(project(":extension:json-kotlinx"))
+	testImplementation(project(":extension-json-kotlinx"))
 }

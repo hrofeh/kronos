@@ -12,6 +12,8 @@ class SDKModuleConventionPlugin : Plugin<Project> {
 		val parentName = project.parent?.name ?: ""
 		val moduleName = project.name
 
+		group = "com.hananrh.kronos"
+
 		pluginManager.apply {
 			apply("com.android.library")
 			apply("kotlin-android")

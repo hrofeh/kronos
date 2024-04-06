@@ -6,5 +6,5 @@ plugins {
 dependencies {
     implementation(libs.kotlin.reflect)
 
-    testImplementation(project(":extension:json"))
+    testImplementation(project(":extension-json"))
 }

@@ -4,6 +4,6 @@ plugins {
 }
 
 dependencies {
-	implementation(project(":extension:json"))
+	implementation(project(":extension-json"))
 	api(libs.kotlinx.serialization)
 }

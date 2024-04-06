@@ -48,9 +48,9 @@ android {
 
 dependencies {
 	implementation(project(":kronos"))
-	implementation(project(":extension:json"))
-	implementation(project(":extension:json-kotlinx"))
-	implementation(project(":extension:resources"))
+	implementation(project(":extension-json"))
+	implementation(project(":extension-json-kotlinx"))
+	implementation(project(":extension-resources"))
 
 	implementation(libs.core.ktx)
 	implementation(libs.lifecycle.runtime.ktx)

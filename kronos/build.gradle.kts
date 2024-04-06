@@ -7,5 +7,5 @@ dependencies {
 	implementation(libs.dslint.annotations)
 	lintPublish(libs.dslint.checks)
 
-	testImplementation(project(":extension:resources"))
+	testImplementation(project(":extension-resources"))
 }
