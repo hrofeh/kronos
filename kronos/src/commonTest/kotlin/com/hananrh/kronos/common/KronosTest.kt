@@ -3,22 +3,18 @@ package com.hananrh.kronos.common
 import com.hananrh.kronos.Kronos
 import com.hananrh.kronos.KronosConfig
 import com.hananrh.kronos.source.typedSource
-import org.spekframework.spek2.dsl.Root
+import io.kotest.core.spec.style.FunSpec
 
-fun kronosTest(block: Root.() -> Unit): Root.() -> Unit {
-	return {
-
-		beforeGroup {
-			Kronos.init {
-				logging {
-					logger = ConsoleLogger()
-				}
-			}
-
-			withRemoteMap()
+@Suppress("UnusedReceiverParameter")
+fun FunSpec.initKronos(vararg pairs: Pair<String, Any?>) {
+	Kronos.init {
+		logging {
+			logger = ConsoleKronosLogger()
 		}
 
-		block()
+		configSource {
+			MapSource(map = mutableMapOf(*pairs))
+		}
 	}
 }
 
@@ -28,10 +24,6 @@ class MapConfig : KronosConfig {
 }
 
 fun mapConfig() = MapConfig()
-
-fun withRemoteMap(vararg pairs: Pair<String, Any?>) {
-	Kronos.configSourceRepository.addSource(MapSource(map = mutableMapOf(*pairs)))
-}
 
 fun withRemoteMap2(vararg pairs: Pair<String, Any?>) {
 	Kronos.configSourceRepository.addSource(MapSource2(mutableMapOf(*pairs)))
