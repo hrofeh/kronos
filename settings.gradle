@@ -34,4 +34,4 @@ project(":extension-property-api").projectDir = file("extension/property-api")
 
 include 'source:firebase'
 
-rootProject.name = "kronos"
+rootProject.name = "kronos-lib"
