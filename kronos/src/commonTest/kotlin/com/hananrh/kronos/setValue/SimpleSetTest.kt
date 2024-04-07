@@ -34,51 +34,51 @@ object SimpleSetTest : FunSpec({
 
 	test("Should return set value - intConfig") {
 		config.someInt = 1
-		1 shouldBeEqual config.someInt
+		config.someInt shouldBeEqual 1
 		config.someInt = 2
-		2 shouldBeEqual config.someInt
+		config.someInt shouldBeEqual 2
 	}
 
 	test("Should return set value - longConfig") {
 		config.someLong = 1
-		1L shouldBeEqual config.someLong
+		config.someLong shouldBeEqual 1L
 		config.someLong = 2
-		2L shouldBeEqual config.someLong
+		config.someLong shouldBeEqual 2L
 	}
 
 	test("Should return set value - floatConfig") {
 		config.someFloat = 1f
-		1f shouldBeEqual config.someFloat
+		config.someFloat shouldBeEqual 1f
 		config.someFloat = 2f
-		2f shouldBeEqual config.someFloat
+		config.someFloat shouldBeEqual 2f
 	}
 
 	test("Should return set value - stringConfig") {
 		config.someString = ""
-		"" shouldBeEqual config.someString
+		config.someString shouldBeEqual ""
 		config.someString = "new"
-		"new" shouldBeEqual config.someString
+		config.someString shouldBeEqual "new"
 	}
 
 	test("Should return set value - stringSetConfig") {
 		config.someStringSet = setOf("")
-		setOf("") shouldBeEqual config.someStringSet
+		config.someStringSet shouldBeEqual setOf("")
 		config.someStringSet = setOf("new")
-		(setOf("new") shouldBeEqual config.someStringSet)
+		config.someStringSet shouldBeEqual setOf("new")
 	}
 
 	test("Should return set value - booleanConfig") {
 		config.someBoolean = true
-		true shouldBeEqual config.someBoolean
+		config.someBoolean shouldBeEqual true
 		config.someBoolean = false
-		false shouldBeEqual config.someBoolean
+		config.someBoolean shouldBeEqual false
 	}
 
 	test("Should return set value - anyConfig") {
 		config.someTyped = Label()
-		Label() shouldBeEqual config.someTyped
+		config.someTyped shouldBeEqual Label()
 
 		config.someTyped = Label("new")
-		Label("new") shouldBeEqual config.someTyped
+		config.someTyped shouldBeEqual Label("new")
 	}
 })

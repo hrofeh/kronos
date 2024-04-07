@@ -44,25 +44,25 @@ object GetWithCache : FunSpec({
 	test("Should return original value after map is updated - intConfig") {
 		val value = cacheConfig.someInt
 		recalcMap()
-		value shouldBeEqual cacheConfig.someInt
+		cacheConfig.someInt shouldBeEqual value
 	}
 
 	test("Should return original value after map is updated - longConfig") {
 		val value = cacheConfig.someLong
 		recalcMap()
-		value shouldBeEqual cacheConfig.someLong
+		cacheConfig.someLong shouldBeEqual value
 	}
 
 	test("Should return original value after map is updated - floatConfig") {
 		val value = cacheConfig.someFloat
 		recalcMap()
-		value shouldBeEqual cacheConfig.someFloat
+		cacheConfig.someFloat shouldBeEqual value
 	}
 
 	test("Should return original value after map is updated - stringConfig") {
 		val value = cacheConfig.someString
 		recalcMap()
-		value shouldBeEqual cacheConfig.someString
+		cacheConfig.someString shouldBeEqual value
 	}
 })
 
@@ -97,25 +97,25 @@ object GetWithoutCache : FunSpec({
 	test("Should return updated value after map is updated - intConfig") {
 		val value = nonCacheConfig.someInt
 		recalcMap()
-		value shouldNotBeEqual nonCacheConfig.someInt
+		nonCacheConfig.someInt shouldNotBeEqual value
 	}
 
 	test("Should return updated value after map is updated - longConfig") {
 		val value = nonCacheConfig.someLong
 		recalcMap()
-		value shouldNotBeEqual nonCacheConfig.someLong
+		nonCacheConfig.someLong shouldNotBeEqual value
 	}
 
 	test("Should return updated value after map is updated - floatConfig") {
 		val value = nonCacheConfig.someFloat
 		recalcMap()
-		value shouldNotBeEqual nonCacheConfig.someFloat
+		nonCacheConfig.someFloat shouldNotBeEqual value
 	}
 
 	test("Should return updated value after map is updated - stringConfig") {
 		val value = nonCacheConfig.someString
 		recalcMap()
-		value shouldNotBeEqual nonCacheConfig.someString
+		nonCacheConfig.someString shouldNotBeEqual value
 	}
 })
 

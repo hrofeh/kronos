@@ -26,10 +26,10 @@ object KeyTest : FunSpec({
 	val config = Config()
 
 	test("Should use key by property name when key not set") {
-		1 shouldBeEqual config.someInt
+		config.someInt shouldBeEqual 1
 	}
 
 	test("Should use user provided key when set") {
-		1 shouldBeEqual config.someIntWithKey
+		config.someIntWithKey shouldBeEqual 1
 	}
 })

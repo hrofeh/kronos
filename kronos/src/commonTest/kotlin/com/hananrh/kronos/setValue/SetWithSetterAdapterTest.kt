@@ -28,8 +28,8 @@ object SetWithSetterAdapterTest : FunSpec({
 
 	test("Should return serialized set value") {
 		config.someLabel = Label("test")
-		Label("test") shouldBeEqual config.someLabel
+		config.someLabel shouldBeEqual Label("test")
 		config.someLabel = Label("test2")
-		Label("test2") shouldBeEqual config.someLabel
+		config.someLabel shouldBeEqual Label("test2")
 	}
 })

@@ -62,30 +62,30 @@ object GetWithProcessorTest : FunSpec({
 	val config = Config()
 
 	test("Should return processed remote value - intConfig") {
-		2 shouldBeEqual config.someInt
+		config.someInt shouldBeEqual 2
 	}
 
 	test("Should return processed remote value - longConfig") {
-		2L shouldBeEqual config.someLong
+		2L shouldBeEqual config.someLong shouldBeEqual 2L
 	}
 
 	test("Should return processed remote value - floatConfig") {
-		2f shouldBeEqual config.someFloat
+		2f shouldBeEqual config.someFloat shouldBeEqual 2f
 	}
 
 	test("Should return processed remote value - stringConfig") {
-		"remote1" shouldBeEqual config.someString
+		"remote1" shouldBeEqual config.someString shouldBeEqual "remote1"
 	}
 
 	test("Should return processed remote value - stringSetConfig") {
-		setOf("remote", "remote2") shouldBeEqual config.someStringSet
+		config.someStringSet shouldBeEqual setOf("remote", "remote2")
 	}
 
 	test("Should return processed remote value - booleanConfig") {
-		false shouldBeEqual config.someBoolean
+		config.someBoolean shouldBeEqual false
 	}
 
 	test("Should return processed remote value - typedConfig") {
-		Label("remoteProcessed") shouldBeEqual config.someTyped
+		config.someTyped shouldBeEqual Label("remoteProcessed")
 	}
 })

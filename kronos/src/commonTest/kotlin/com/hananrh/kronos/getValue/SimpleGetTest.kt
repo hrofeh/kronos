@@ -51,34 +51,34 @@ object SimpleGetTest : FunSpec({
 	val config = Config()
 
 	test("Should return remote value - intConfig") {
-		1 shouldBeEqual config.someInt
+		config.someInt shouldBeEqual 1
 	}
 
 	test("Should return remote value - longConfig") {
-		1L shouldBeEqual config.someLong
+		config.someLong shouldBeEqual 1L
 	}
 
 	test("Should return remote value - floatConfig") {
-		1f shouldBeEqual config.someFloat
+		config.someFloat shouldBeEqual 1f
 	}
 
 	test("Should return remote value - stringConfig") {
-		"remote" shouldBeEqual config.someString
+		config.someString shouldBeEqual "remote"
 	}
 
 	test("Should return remote value - stringSetConfig") {
-		setOf("remote") shouldBeEqual config.someStringSet
+		config.someStringSet shouldBeEqual setOf("remote")
 	}
 
 	test("Should return remote value - booleanConfig") {
-		true shouldBeEqual config.someBoolean
+		config.someBoolean shouldBeEqual true
 	}
 
 	test("Should return remote value - typedConfig") {
-		Label() shouldBeEqual config.someTyped
+		config.someTyped shouldBeEqual Label()
 	}
 
 	test("Should return remote value - typedStringConfig with adapter") {
-		Label("remote") shouldBeEqual config.someLabel
+		config.someLabel shouldBeEqual Label("remote")
 	}
 })

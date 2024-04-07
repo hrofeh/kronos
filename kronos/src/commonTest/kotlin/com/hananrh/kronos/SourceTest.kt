@@ -32,12 +32,12 @@ object SourceTest : FunSpec({
 	val config = Config()
 
 	test("Should inherit source from class when no source set for config") {
-		1 shouldBeEqual config.classSourceInt
+		config.classSourceInt shouldBeEqual 1
 	}
 
 	test("Should use source set in config and ignore class source") {
 		withRemoteMap2("someInt" to 2)
 
-		2 shouldBeEqual config.specificSourceInt
+		config.specificSourceInt shouldBeEqual 2
 	}
 })
