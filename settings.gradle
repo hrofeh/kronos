@@ -7,6 +7,12 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
+    versionCatalogs {
+        libs {
+            from(files("gradle/kronos.versions.toml"))
+        }
+    }
+
     repositories {
         google()
         mavenCentral()
@@ -14,6 +20,8 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io' }
     }
 }
+
+rootProject.name = "kronos-lib"
 
 includeBuild("build-logic")
 
@@ -31,7 +39,4 @@ project(":extension-json").projectDir = file("extension/json")
 project(":extension-json-kotlinx").projectDir = file("extension/json-kotlinx")
 project(":extension-property-api").projectDir = file("extension/property-api")
 
-
 include 'source:firebase'
-
-rootProject.name = "kronos-lib"
