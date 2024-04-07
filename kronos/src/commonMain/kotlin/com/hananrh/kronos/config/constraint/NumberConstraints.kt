@@ -42,7 +42,7 @@ private fun <T, S> Config<T, S>.rangeFallback(
 	allowBlock: (T) -> Boolean
 ) where T : Number, T : Comparable<T> {
 	constraint(name) {
-		acceptIf(allowBlock)
+		allowIf(allowBlock)
 		if (rangeConstraint.fallbackPolicy == FallbackPolicy.RANGE) {
 			fallbackToPrimitive = rangeConstraint.value!!
 		}

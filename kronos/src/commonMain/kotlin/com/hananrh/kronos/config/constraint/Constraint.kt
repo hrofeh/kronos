@@ -11,10 +11,10 @@ public interface Constraint<Test, Fallback> {
 //		group = "constraint",
 //		message = "At least one constraint of type 'acceptIf' or 'denyIf' must be defined"
 //	)
-	public fun acceptIf(block: (Test) -> Boolean)
+	public fun allowIf(block: (Test) -> Boolean)
 
 	//	@DSLMandatory(group = "constraint")
-	public fun denyIf(block: (Test) -> Boolean)
+	public fun rejectIf(block: (Test) -> Boolean)
 
 	public fun fallbackToPrimitive(fallbackProvider: (Test) -> Test)
 
@@ -40,11 +40,11 @@ internal class ConstraintBuilder<Test, Fallback> private constructor(
 			ConstraintBuilder(name, adapter).apply(block)
 	}
 
-	override fun acceptIf(block: (Test) -> Boolean) {
+	override fun allowIf(block: (Test) -> Boolean) {
 		verifiers.add(block)
 	}
 
-	override fun denyIf(block: (Test) -> Boolean) {
+	override fun rejectIf(block: (Test) -> Boolean) {
 		verifiers.add { !block(it) }
 	}
 

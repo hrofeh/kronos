@@ -19,6 +19,6 @@ public var <T> Config<T, *>.disallowList: Iterable<T>
 
 private fun <T, S> Config<T, S>.generalConstraint(name: String, allowBlock: (T) -> Boolean) {
 	constraint(name) {
-		acceptIf(allowBlock)
+		allowIf(allowBlock)
 	}
 }

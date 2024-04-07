@@ -1,6 +1,7 @@
 package com.hananrh.kronos.constraint
 
 import com.hananrh.kronos.KronosConfig
+import com.hananrh.kronos.common.initKronos
 import com.hananrh.kronos.common.mapConfig
 import com.hananrh.kronos.common.withRemoteMap
 import com.hananrh.kronos.config.constraint.allowlist
@@ -9,6 +10,10 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.equals.shouldBeEqual
 
 object AllowlistConstraintTest : FunSpec({
+
+	beforeSpec {
+		initKronos()
+	}
 
 	class Config : KronosConfig by mapConfig() {
 		val someInt by intConfig {
