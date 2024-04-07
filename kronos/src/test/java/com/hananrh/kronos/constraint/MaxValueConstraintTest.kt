@@ -3,7 +3,7 @@ package com.hananrh.kronos.constraint
 import com.hananrh.kronos.common.kronosTest
 import com.hananrh.kronos.common.mapConfig
 import com.hananrh.kronos.common.withRemoteMap
-import com.hananrh.kronos.config.FeatureRemoteConfig
+import com.hananrh.kronos.KronosConfig
 import com.hananrh.kronos.config.constraint.FallbackPolicy
 import com.hananrh.kronos.config.constraint.maxValue
 import com.hananrh.kronos.config.type.floatConfig
@@ -15,7 +15,7 @@ import kotlin.test.assertEquals
 
 object MaxValueConstraintTest : Spek(kronosTest {
 
-	class DefaultFallbackConfig : FeatureRemoteConfig by mapConfig() {
+	class DefaultFallbackConfig : KronosConfig by mapConfig() {
 
 		val someInt by intConfig {
 			default = 1
@@ -77,7 +77,7 @@ object MaxValueConstraintTest : Spek(kronosTest {
 	}
 
 	describe("Remote value greater than maxValue with range fallback should fall to it") {
-		class RangeFallbackConfig : FeatureRemoteConfig by mapConfig() {
+		class RangeFallbackConfig : KronosConfig by mapConfig() {
 			val someInt by intConfig {
 				default = 1
 				maxValue {

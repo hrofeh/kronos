@@ -25,18 +25,18 @@ rootProject.name = "kronos-lib"
 
 includeBuild("build-logic")
 
-include ':sample'
+//include ':sample'
 
 include ':kronos'
 
-include ':extension-property-api'
-include ':extension-json'
-include ':extension-json-kotlinx'
-include ':extension-resources'
-
-project(":extension-resources").projectDir = file("extension/resources")
-project(":extension-json").projectDir = file("extension/json")
-project(":extension-json-kotlinx").projectDir = file("extension/json-kotlinx")
-project(":extension-property-api").projectDir = file("extension/property-api")
-
-include 'source:firebase'
+//include ':extension-property-api'
+//include ':extension-json'
+//include ':extension-json-kotlinx'
+//include ':extension-resources'
+//
+//project(":extension-resources").projectDir = file("extension/resources")
+//project(":extension-json").projectDir = file("extension/json")
+//project(":extension-json-kotlinx").projectDir = file("extension/json-kotlinx")
+//project(":extension-property-api").projectDir = file("extension/property-api")
+//
+//include 'source:firebase'

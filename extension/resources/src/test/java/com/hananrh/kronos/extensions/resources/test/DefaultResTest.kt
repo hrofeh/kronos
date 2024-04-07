@@ -12,7 +12,7 @@ import com.hananrh.kronos.config.type.stringConfig
 import com.hananrh.kronos.config.type.stringSetConfig
 import com.hananrh.kronos.extensions.resources.defaultRes
 import com.hananrh.kronos.extensions.resources.resources
-import com.hananrh.kronos.extensions.resources.test.common.ConsoleLogger
+import com.hananrh.kronos.extensions.resources.test.common.ConsoleKronosLogger
 import com.hananrh.kronos.extensions.resources.test.common.mapConfig
 import io.mockk.every
 import io.mockk.mockk
@@ -25,7 +25,7 @@ object DefaultResTest : Spek({
 	beforeGroup {
 		Kronos.init {
 			logging {
-				logger = ConsoleLogger()
+				logger = ConsoleKronosLogger()
 			}
 
 			extensions {

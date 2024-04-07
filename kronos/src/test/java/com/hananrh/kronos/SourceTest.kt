@@ -5,7 +5,6 @@ import com.hananrh.kronos.common.kronosTest
 import com.hananrh.kronos.common.mapConfig
 import com.hananrh.kronos.common.withRemoteMap
 import com.hananrh.kronos.common.withRemoteMap2
-import com.hananrh.kronos.config.FeatureRemoteConfig
 import com.hananrh.kronos.config.type.intConfig
 import com.hananrh.kronos.source.SourceDefinition
 import org.spekframework.spek2.Spek
@@ -16,7 +15,7 @@ object SourceTest : Spek(kronosTest {
 
 	describe("Usage of correct config source") {
 
-		class Config : FeatureRemoteConfig by mapConfig() {
+		class Config : KronosConfig by mapConfig() {
 
 			val classSourceInt by intConfig {
 				key = "someInt"

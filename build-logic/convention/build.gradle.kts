@@ -13,5 +13,9 @@ gradlePlugin {
 			id = "sdk-module"
 			implementationClass = "SDKModuleConventionPlugin"
 		}
+		register("kmp-sdk-module") {
+			id = "kmp-sdk-module"
+			implementationClass = "KmpSDKModuleConventionPlugin"
+		}
 	}
 }

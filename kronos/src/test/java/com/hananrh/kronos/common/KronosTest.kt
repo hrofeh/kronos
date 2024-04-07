@@ -1,7 +1,7 @@
 package com.hananrh.kronos.common
 
 import com.hananrh.kronos.Kronos
-import com.hananrh.kronos.config.FeatureRemoteConfig
+import com.hananrh.kronos.KronosConfig
 import com.hananrh.kronos.source.typedSource
 import org.spekframework.spek2.dsl.Root
 
@@ -22,7 +22,7 @@ fun kronosTest(block: Root.() -> Unit): Root.() -> Unit {
 	}
 }
 
-class MapConfig : FeatureRemoteConfig {
+class MapConfig : KronosConfig {
 
 	override val sourceDefinition = typedSource<MapSource>()
 }

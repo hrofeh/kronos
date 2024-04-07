@@ -1,9 +1,9 @@
 package com.hananrh.kronos.configSourceFactory
 
 import com.hananrh.kronos.Kronos
-import com.hananrh.kronos.common.ConsoleLogger
+import com.hananrh.kronos.common.ConsoleKronosLogger
 import com.hananrh.kronos.common.MapSource
-import com.hananrh.kronos.config.FeatureRemoteConfig
+import com.hananrh.kronos.KronosConfig
 import com.hananrh.kronos.config.type.intConfig
 import com.hananrh.kronos.source.identifiableTypedSource
 import org.spekframework.spek2.Spek
@@ -15,7 +15,7 @@ object ConfigSourceFactoryTest : Spek({
 	beforeGroup {
 		Kronos.init {
 			logging {
-				logger = ConsoleLogger()
+				logger = ConsoleKronosLogger()
 			}
 			configSourceFactory<MapSource, String>(MapSource::class) {
 				MapSource(it, mutableMapOf("prefixSomeInt" to 1))
@@ -25,7 +25,7 @@ object ConfigSourceFactoryTest : Spek({
 
 	describe("Using config source with prefix") {
 
-		class Config : FeatureRemoteConfig {
+		class Config : KronosConfig {
 
 			override val sourceDefinition = identifiableTypedSource<MapSource, String>("prefix")
 

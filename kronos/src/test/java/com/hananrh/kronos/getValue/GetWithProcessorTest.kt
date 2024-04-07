@@ -4,18 +4,24 @@ import com.hananrh.kronos.common.Label
 import com.hananrh.kronos.common.kronosTest
 import com.hananrh.kronos.common.mapConfig
 import com.hananrh.kronos.common.withRemoteMap
-import com.hananrh.kronos.config.FeatureRemoteConfig
+import com.hananrh.kronos.KronosConfig
 import com.hananrh.kronos.config.type.*
+import com.hananrh.kronos.config.type.booleanConfig
+import com.hananrh.kronos.config.type.floatConfig
+import com.hananrh.kronos.config.type.intConfig
+import com.hananrh.kronos.config.type.longConfig
+import com.hananrh.kronos.config.type.stringConfig
+import com.hananrh.kronos.config.type.stringSetConfig
+import com.hananrh.kronos.config.type.typedConfig
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import kotlin.reflect.KClass
 import kotlin.test.assertEquals
 
 object GetWithProcessorTest : Spek(kronosTest {
 
     describe("Config with processor should process remote value") {
 
-        class Config : FeatureRemoteConfig by mapConfig() {
+        class Config : KronosConfig by mapConfig() {
             val someInt by intConfig {
                 default = 1
                 process { it + 1 }

@@ -2,14 +2,14 @@ package com.hananrh.kronos.config.constraint
 
 import com.hananrh.kronos.config.Config
 
-var <T> Config<T, *>.whitelist: Iterable<T>
+public var <T> Config<T, *>.whitelist: Iterable<T>
 	@Deprecated("", level = DeprecationLevel.ERROR)
 	get() = throw UnsupportedOperationException()
 	set(value) {
 		generalConstraint("whitelist") { it in value }
 	}
 
-var <T> Config<T, *>.blacklist: Iterable<T>
+public var <T> Config<T, *>.blacklist: Iterable<T>
 	@Deprecated("", level = DeprecationLevel.ERROR)
 	get() = throw UnsupportedOperationException()
 	set(value) {

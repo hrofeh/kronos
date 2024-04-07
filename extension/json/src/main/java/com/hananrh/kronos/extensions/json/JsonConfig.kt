@@ -12,14 +12,14 @@ import kotlin.reflect.typeOf
 val kronosJsonSerializer
 	get() = JsonExtension.serializer
 
-inline fun <reified T> FeatureRemoteConfig.jsonConfig(noinline block: Config<String, T>.() -> Unit) = ConfigPropertyFactory.from(
-	ConfigSourceResolver.String,
+inline fun <reified T> FeatureRemoteConfig.jsonConfig(noinline block: Config<String, T>.() -> Unit) = com.hananrh.kronos.config.ConfigPropertyFactory.from(
+	com.hananrh.kronos.config.ConfigSourceResolver.String,
 	validator = { it.isNotEmpty() },
 	getterAdapter = {
 		try {
 			kronosJsonSerializer.fromJson<T>(it, typeOf<T>())
 		} catch (e: Exception) {
-			Kronos.logger?.e("Failed to parse json: $it", e)
+			com.hananrh.kronos.Kronos.logger?.e("Failed to parse json: $it", e)
 			null
 		}
 	},
@@ -28,7 +28,7 @@ inline fun <reified T> FeatureRemoteConfig.jsonConfig(noinline block: Config<Str
 			try {
 				kronosJsonSerializer.toJson(it, typeOf<T>())
 			} catch (e: Exception) {
-				Kronos.logger?.e("Failed to convert to json", e)
+				com.hananrh.kronos.Kronos.logger?.e("Failed to convert to json", e)
 				null
 			}
 		}

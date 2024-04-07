@@ -1,6 +1,6 @@
 package com.hananrh.kronos.configSourceFactory
 
-import com.hananrh.kronos.config.FeatureRemoteConfig
+import com.hananrh.kronos.KronosConfig
 import com.hananrh.kronos.config.type.intConfig
 import com.hananrh.kronos.source.scopedSource
 import com.hananrh.kronos.common.MapSource
@@ -13,7 +13,7 @@ object ScopedSourceTest : Spek(kronosTest {
 
 	describe("Using config source with prefix") {
 
-		class Config : FeatureRemoteConfig {
+		class Config : KronosConfig {
 
 			override val sourceDefinition = scopedSource(
 				MapSource(map = mutableMapOf("someInt" to 1))

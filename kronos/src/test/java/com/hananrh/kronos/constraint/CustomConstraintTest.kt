@@ -4,7 +4,7 @@ import com.hananrh.kronos.common.Label
 import com.hananrh.kronos.common.kronosTest
 import com.hananrh.kronos.common.mapConfig
 import com.hananrh.kronos.common.withRemoteMap
-import com.hananrh.kronos.config.FeatureRemoteConfig
+import com.hananrh.kronos.KronosConfig
 import com.hananrh.kronos.config.type.intConfig
 import com.hananrh.kronos.config.type.typedConfig
 import org.spekframework.spek2.Spek
@@ -15,7 +15,7 @@ object CustomConstraintTest : Spek(kronosTest {
 
 	describe("Custom constraint should control acceptable remote values") {
 
-		class Config : FeatureRemoteConfig by mapConfig() {
+		class Config : KronosConfig by mapConfig() {
 			val someEvenOnlyInt by intConfig {
 				default = 2
 				cached = false

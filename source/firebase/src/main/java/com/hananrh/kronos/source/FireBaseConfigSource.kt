@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.hananrh.kronos.Kronos
+import com.hananrh.kronos.source.ConfigSource
 import java.lang.Boolean.parseBoolean
 import java.lang.Float.parseFloat
 import java.lang.Integer.parseInt

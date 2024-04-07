@@ -1,10 +1,8 @@
 package com.hananrh.kronos.config.constraint
 
-import com.hananrh.dslint.annotations.DSLMandatory
-import com.hananrh.dslint.annotations.DSLint
 import com.hananrh.kronos.config.Config
 
-var <T> Config<T, *>.minValue: T
+public var <T> Config<T, *>.minValue: T
 		where T : Number, T : Comparable<T>
 	@Deprecated("", level = DeprecationLevel.ERROR)
 	get() = throw UnsupportedOperationException()
@@ -15,13 +13,13 @@ var <T> Config<T, *>.minValue: T
 		}
 	}
 
-fun <T> Config<T, *>.minValue(block: RangeConstraint<T>.() -> Unit)
+public fun <T> Config<T, *>.minValue(block: RangeConstraint<T>.() -> Unit)
 		where T : Number, T : Comparable<T> {
 	val rangeConstraint = RangeConstraintBuilder(block)
 	rangeFallback("min value", rangeConstraint) { it >= rangeConstraint.value!! }
 }
 
-var <T> Config<T, *>.maxValue: T
+public var <T> Config<T, *>.maxValue: T
 		where T : Number, T : Comparable<T>
 	@Deprecated("", level = DeprecationLevel.ERROR)
 	get() = throw UnsupportedOperationException()
@@ -32,7 +30,7 @@ var <T> Config<T, *>.maxValue: T
 		}
 	}
 
-fun <T> Config<T, *>.maxValue(block: RangeConstraint<T>.() -> Unit)
+public fun <T> Config<T, *>.maxValue(block: RangeConstraint<T>.() -> Unit)
 		where T : Number, T : Comparable<T> {
 	val rangeConstraint = RangeConstraintBuilder(block)
 	rangeFallback("max value", rangeConstraint) { it <= rangeConstraint.value!! }
@@ -42,8 +40,7 @@ private fun <T, S> Config<T, S>.rangeFallback(
 	name: String,
 	rangeConstraint: RangeConstraint<T>,
 	allowBlock: (T) -> Boolean
-)
-		where T : Number, T : Comparable<T> {
+) where T : Number, T : Comparable<T> {
 	constraint(name) {
 		acceptIf(allowBlock)
 		if (rangeConstraint.fallbackPolicy == FallbackPolicy.RANGE) {
@@ -52,22 +49,22 @@ private fun <T, S> Config<T, S>.rangeFallback(
 	}
 }
 
-enum class FallbackPolicy {
+public enum class FallbackPolicy {
 	DEFAULT,
 	RANGE
 }
 
-@DSLint
-interface RangeConstraint<T> {
+//@DSLint
+public interface RangeConstraint<T> {
 
-	@set:DSLMandatory
-	var value: T?
+	//	@set:DSLMandatory
+	public var value: T?
 
-	@set:DSLMandatory
-	var fallbackPolicy: FallbackPolicy
+	//	@set:DSLMandatory
+	public var fallbackPolicy: FallbackPolicy
 }
 
-class RangeConstraintBuilder<T> private constructor() : RangeConstraint<T> {
+internal class RangeConstraintBuilder<T> private constructor() : RangeConstraint<T> {
 
 	override var value: T? = null
 	override lateinit var fallbackPolicy: FallbackPolicy

@@ -1,8 +1,8 @@
-package com.hananrh.kronos.extensions.property.common
+package com.hananrh.kronos.common
 
-import com.hananrh.kronos.logging.Logger
+import com.hananrh.kronos.logging.KronosLogger
 
-class ConsoleLogger : Logger {
+class ConsoleKronosLogger : KronosLogger {
 
 	override fun v(msg: String) {
 		log("v", msg)

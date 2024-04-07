@@ -1,9 +1,6 @@
 package com.hananrh.kronos
 
-import android.annotation.SuppressLint
-import com.hananrh.dslint.annotations.DSLint
-import com.hananrh.kronos.logging.AndroidLogger
-import com.hananrh.kronos.logging.Logger
+import com.hananrh.kronos.logging.KronosLogger
 import com.hananrh.kronos.source.ConfigSource
 import com.hananrh.kronos.source.ConfigSourceRepository
 import com.hananrh.kronos.source.SourceDefinition
@@ -12,10 +9,9 @@ import kotlin.reflect.KClass
 /**
  * Kronos SDK entry point.
  */
-@SuppressLint("StaticFieldLeak")
-object Kronos {
+public object Kronos {
 
-	var logger: Logger? = null
+	internal var logger: KronosLogger? = null
 		private set
 
 	/**
@@ -25,13 +21,13 @@ object Kronos {
 	 * @return config source repository.
 	 * @throws IllegalStateException if SDK is not initialized.
 	 */
-	lateinit var configSourceRepository: ConfigSourceRepository
+	public lateinit var configSourceRepository: ConfigSourceRepository
 		private set
 
 	/**
 	 * Initializes the SDK with configuration
 	 */
-	fun init(block: Options.() -> Unit) {
+	public fun init(block: Options.() -> Unit) {
 		val options = OptionsBuilder(block)
 
 		if (options.loggingOptions.enabled) {
@@ -42,32 +38,32 @@ object Kronos {
 	}
 }
 
-object ExtensionsOptions
+public object ExtensionsOptions
 
 /**
  * Configuration class used to initialize the SDK.
  *
  * @see Kronos.init
  */
-@DSLint
-interface Options {
+//@DSLint
+public interface Options {
 
 	/**
 	 * Define SDK logging options
 	 */
-	fun logging(block: LoggingOptions.() -> Unit)
+	public fun logging(block: LoggingOptions.() -> Unit)
 
 	/**
 	 * Add a config source.
 	 * A config can have only one instance of the same class.
 	 * Use configSourceFactory to support multiple instances for the same source.
 	 */
-	fun configSource(configSource: () -> ConfigSource)
+	public fun configSource(configSource: () -> ConfigSource)
 
 	/**
 	 * Add a config source factory.
 	 */
-	fun <S : ConfigSource, T : Any> configSourceFactory(
+	public fun <S : ConfigSource, T : Any> configSourceFactory(
 		sourceClass: KClass<S>,
 		configSourceFactory: ConfigSourceRepository.ConfigSourceFactory<S, T>
 	)
@@ -75,7 +71,7 @@ interface Options {
 	/**
 	 * Configure Kronos extensions
 	 */
-	fun extensions(block: ExtensionsOptions.() -> Unit)
+	public fun extensions(block: ExtensionsOptions.() -> Unit)
 }
 
 private class OptionsBuilder : Options {
@@ -113,18 +109,18 @@ private class OptionsBuilder : Options {
 	}
 }
 
-interface LoggingOptions {
+public interface LoggingOptions {
 
 	/**
 	 * Set whether SDK logging is enabled (true by default).
 	 */
-	var enabled: Boolean
+	public var enabled: Boolean
 
 	/**
 	 * Set a logger to be used by the SDK.
 	 * If a logger is not supplied [com.hananrh.kronos.logging.AndroidLogger] is used.
 	 */
-	var logger: Logger
+	public var logger: KronosLogger?
 }
 
 private class LoggingOptionsBuilder : LoggingOptions {
@@ -143,7 +139,6 @@ private class LoggingOptionsBuilder : LoggingOptions {
 
 	/**
 	 * Set a logger to be used by the SDK.
-	 * If a logger is not supplied [com.hananrh.kronos.logging.AndroidLogger] is used.
 	 */
-	override var logger: Logger = AndroidLogger()
+	override var logger: KronosLogger? = null
 }

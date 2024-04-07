@@ -3,7 +3,7 @@ package com.hananrh.kronos.defaultValue
 import com.hananrh.kronos.common.Label
 import com.hananrh.kronos.common.kronosTest
 import com.hananrh.kronos.common.mapConfig
-import com.hananrh.kronos.config.FeatureRemoteConfig
+import com.hananrh.kronos.KronosConfig
 import com.hananrh.kronos.config.type.booleanConfig
 import com.hananrh.kronos.config.type.floatConfig
 import com.hananrh.kronos.config.type.intConfig
@@ -19,7 +19,7 @@ import kotlin.test.assertEquals
 
 object DefaultProviderTest : Spek(kronosTest {
 
-	class Config : FeatureRemoteConfig by mapConfig() {
+	class Config : KronosConfig by mapConfig() {
 		val someInt by intConfig {
 			default { 0 }
 		}

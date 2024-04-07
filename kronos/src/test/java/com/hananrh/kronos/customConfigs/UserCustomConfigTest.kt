@@ -4,9 +4,7 @@ import com.hananrh.kronos.common.kronosTest
 import com.hananrh.kronos.common.mapConfig
 import com.hananrh.kronos.common.withRemoteMap
 import com.hananrh.kronos.config.Config
-import com.hananrh.kronos.config.ConfigPropertyFactory
-import com.hananrh.kronos.config.ConfigSourceResolver
-import com.hananrh.kronos.config.FeatureRemoteConfig
+import com.hananrh.kronos.KronosConfig
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
@@ -14,9 +12,9 @@ import kotlin.test.assertEquals
 data class Label(val value: String)
 
 @Suppress("UnusedReceiverParameter")
-fun FeatureRemoteConfig.labelConfig(block: Config<String, Label>.() -> Unit) =
-	ConfigPropertyFactory.from(
-		ConfigSourceResolver.String,
+fun KronosConfig.labelConfig(block: Config<String, Label>.() -> Unit) =
+	com.hananrh.kronos.config.ConfigPropertyFactory.from(
+		com.hananrh.kronos.config.ConfigSourceResolver.String,
 		validator = { it.isNotEmpty() },
 		getterAdapter = { Label(it) },
 		setterAdapter = { it.value },
@@ -25,7 +23,7 @@ fun FeatureRemoteConfig.labelConfig(block: Config<String, Label>.() -> Unit) =
 
 object UserCustomConfigTest : Spek(kronosTest {
 
-	class Config : FeatureRemoteConfig by mapConfig() {
+	class Config : KronosConfig by mapConfig() {
 
 		var someLabel by labelConfig {
 			default = Label("default")

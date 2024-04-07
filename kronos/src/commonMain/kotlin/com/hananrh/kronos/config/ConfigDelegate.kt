@@ -2,6 +2,7 @@
 
 package com.hananrh.kronos.config
 
+import com.hananrh.kronos.KronosConfig
 import com.hananrh.kronos.Kronos
 import com.hananrh.kronos.config.constraint.Constraint
 import com.hananrh.kronos.config.constraint.ConstraintBuilder
@@ -79,10 +80,9 @@ internal class ConfigDelegate<Raw, Actual> internal constructor(
 		this.processor = processor
 	}
 
-	@Suppress("FoldInitializerAndIfToElvis")
-	@Synchronized
+	// TODO - solution for multi-platform synchronized here
 	override fun getValue(
-		thisRef: FeatureRemoteConfig,
+		thisRef: KronosConfig,
 		property: KProperty<*>
 	): Actual {
 		val key = resolveKey(property)
@@ -147,7 +147,7 @@ internal class ConfigDelegate<Raw, Actual> internal constructor(
 	}
 
 	override fun setValue(
-		thisRef: FeatureRemoteConfig,
+		thisRef: KronosConfig,
 		property: KProperty<*>,
 		value: Actual
 	) {
@@ -182,7 +182,7 @@ internal class ConfigDelegate<Raw, Actual> internal constructor(
 	private fun resolveKey(property: KProperty<*>) =
 		if (::key.isInitialized) key else property.name
 
-	private fun resolveSource(thisRef: FeatureRemoteConfig): ConfigSource {
+	private fun resolveSource(thisRef: KronosConfig): ConfigSource {
 		val sourceId = if (::sourceDefinition.isInitialized) sourceDefinition else thisRef.sourceDefinition
 		return Kronos.configSourceRepository.getSource(sourceId)
 	}
@@ -199,7 +199,7 @@ internal class ConfigDelegate<Raw, Actual> internal constructor(
 	}
 
 	override fun getRawValue(
-		thisRef: FeatureRemoteConfig,
+		thisRef: KronosConfig,
 		property: KProperty<*>
 	) = sourceResolver.sourceGetter(resolveSource(thisRef), resolveKey(property))
 
@@ -239,15 +239,15 @@ private class AdapterBuilder<Raw, Actual> : Adapter<Raw, Actual> {
 	}
 }
 
-public interface ConfigDelegateApi<Raw, Actual> : ReadOnlyProperty<FeatureRemoteConfig, Actual> {
-	val default: Actual
+public interface ConfigDelegateApi<Raw, Actual> : ReadOnlyProperty<KronosConfig, Actual> {
+	public val default: Actual
 
-	fun getKey(property: KProperty<*>): String
+	public fun getKey(property: KProperty<*>): String
 
-	fun getRawValue(
-		thisRef: FeatureRemoteConfig,
+	public fun getRawValue(
+		thisRef: KronosConfig,
 		property: KProperty<*>
 	): Raw?
 
-	fun clearCache()
+	public fun clearCache()
 }

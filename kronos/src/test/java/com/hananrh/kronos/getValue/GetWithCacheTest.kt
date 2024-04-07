@@ -4,7 +4,7 @@ import com.hananrh.kronos.common.Label
 import com.hananrh.kronos.common.kronosTest
 import com.hananrh.kronos.common.mapConfig
 import com.hananrh.kronos.common.withRemoteMap
-import com.hananrh.kronos.config.FeatureRemoteConfig
+import com.hananrh.kronos.KronosConfig
 import com.hananrh.kronos.config.type.booleanConfig
 import com.hananrh.kronos.config.type.floatConfig
 import com.hananrh.kronos.config.type.intConfig
@@ -22,7 +22,7 @@ object GetCache : Spek(kronosTest {
 
 	describe("Cached config should calculate value only once") {
 
-		class CacheConfig : FeatureRemoteConfig by mapConfig() {
+		class CacheConfig : KronosConfig by mapConfig() {
 			val someInt by intConfig {
 				default = 1
 				cached = true
@@ -88,7 +88,7 @@ object GetCache : Spek(kronosTest {
 
 	describe("Non cached config should resolve value on every field read") {
 
-		class NoCacheConfig : FeatureRemoteConfig by mapConfig() {
+		class NoCacheConfig : KronosConfig by mapConfig() {
 			val someInt by intConfig {
 				default = 1
 				cached = false

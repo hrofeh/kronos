@@ -3,8 +3,15 @@ package com.hananrh.kronos.setValue
 import com.hananrh.kronos.common.Label
 import com.hananrh.kronos.common.kronosTest
 import com.hananrh.kronos.common.mapConfig
-import com.hananrh.kronos.config.FeatureRemoteConfig
+import com.hananrh.kronos.KronosConfig
 import com.hananrh.kronos.config.type.*
+import com.hananrh.kronos.config.type.booleanConfig
+import com.hananrh.kronos.config.type.floatConfig
+import com.hananrh.kronos.config.type.intConfig
+import com.hananrh.kronos.config.type.longConfig
+import com.hananrh.kronos.config.type.stringConfig
+import com.hananrh.kronos.config.type.stringSetConfig
+import com.hananrh.kronos.config.type.typedConfig
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
@@ -13,7 +20,7 @@ object SimpleSetTest : Spek(kronosTest {
 
 	describe("Simple config field set should return set value") {
 
-		class Config : FeatureRemoteConfig by mapConfig() {
+		class Config : KronosConfig by mapConfig() {
 			var someInt by intConfig { default = 1 }
 			var someLong by longConfig { default = 1 }
 			var someFloat by floatConfig { default = 1f }

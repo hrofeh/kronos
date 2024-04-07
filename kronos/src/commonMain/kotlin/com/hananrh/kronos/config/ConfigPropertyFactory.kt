@@ -1,6 +1,6 @@
 package com.hananrh.kronos.config
 
-object ConfigPropertyFactory {
+public object ConfigPropertyFactory {
 
 	internal fun <Raw, Actual> from(
 		configSourceResolver: ConfigSourceResolver<Raw>,
@@ -8,19 +8,19 @@ object ConfigPropertyFactory {
 		block: AdaptedConfig<Raw, Actual>.() -> Unit
 	): ConfigProperty<Actual> = ConfigDelegate<Raw, Actual>(configSourceResolver, validator).apply(block)
 
-	fun <T> fromPrimitive(
+	public fun <T> fromPrimitive(
 		configSourceResolver: ConfigSourceResolver<T>,
 		validator: (T) -> Boolean = { true },
 		block: AdaptedConfig<T, T>.() -> Unit
 	): ConfigProperty<T> = ConfigDelegate(configSourceResolver, validator, { it }, { it }).apply(block)
 
-	fun <T> fromNullablePrimitive(
+	public fun <T> fromNullablePrimitive(
 		configSourceResolver: ConfigSourceResolver<T>,
 		validator: (T) -> Boolean = { true },
 		block: AdaptedConfig<T, T?>.() -> Unit
 	): ConfigProperty<T?> = ConfigDelegate<T, T?>(configSourceResolver, validator, { it }, { it }).apply(block)
 
-	fun <Raw, Actual> from(
+	public fun <Raw, Actual> from(
 		configSourceResolver: ConfigSourceResolver<Raw>,
 		validator: (Raw) -> Boolean = { true },
 		getterAdapter: (Raw) -> Actual?,

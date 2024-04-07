@@ -1,26 +1,24 @@
 package com.hananrh.kronos.config.constraint
 
-import com.hananrh.dslint.annotations.DSLMandatory
-import com.hananrh.dslint.annotations.DSLint
 
-@DSLint
-interface Constraint<Test, Fallback> {
+//@DSLint
+public interface Constraint<Test, Fallback> {
 
-	var fallbackToPrimitive: Test
-	var fallbackTo: Fallback
+	public var fallbackToPrimitive: Test
+	public var fallbackTo: Fallback
 
-	@DSLMandatory(
-		group = "constraint",
-		message = "At least one constraint of type 'acceptIf' or 'denyIf' must be defined"
-	)
-	fun acceptIf(block: (Test) -> Boolean)
+	//	@DSLMandatory(
+//		group = "constraint",
+//		message = "At least one constraint of type 'acceptIf' or 'denyIf' must be defined"
+//	)
+	public fun acceptIf(block: (Test) -> Boolean)
 
-	@DSLMandatory(group = "constraint")
-	fun denyIf(block: (Test) -> Boolean)
+	//	@DSLMandatory(group = "constraint")
+	public fun denyIf(block: (Test) -> Boolean)
 
-	fun fallbackToPrimitive(fallbackProvider: (Test) -> Test)
+	public fun fallbackToPrimitive(fallbackProvider: (Test) -> Test)
 
-	fun fallbackTo(
+	public fun fallbackTo(
 		fallbackProvider: (Test) -> Fallback
 	)
 }

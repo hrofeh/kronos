@@ -10,7 +10,7 @@ fun kronosTest(block: Root.() -> Unit): Root.() -> Unit {
 		beforeGroup {
 			Kronos.init {
 				logging {
-					logger = ConsoleLogger()
+					logger = ConsoleKronosLogger()
 				}
 			}
 

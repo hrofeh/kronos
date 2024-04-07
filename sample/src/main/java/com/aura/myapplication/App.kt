@@ -6,7 +6,7 @@ import com.hananrh.kronos.Kronos
 import com.hananrh.kronos.extensions.json.json
 import com.hananrh.kronos.extensions.resources.kotlinx.KotlinxSerializer
 import com.hananrh.kronos.extensions.resources.resources
-import com.hananrh.kronos.logging.AndroidLogger
+import com.hananrh.kronos.logging.AndroidKronosLogger
 
 internal class App : Application() {
 
@@ -16,7 +16,7 @@ internal class App : Application() {
 		Kronos.init {
 			logging {
 				enabled = true
-				logger = AndroidLogger()
+				logger = AndroidKronosLogger()
 			}
 
 			configSource {

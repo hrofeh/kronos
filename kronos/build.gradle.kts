@@ -1,11 +1,13 @@
 plugins {
 	id("org.jetbrains.kotlin.plugin.serialization")
-	id("sdk-module")
+	id("kmp-sdk-module")
 }
 
-dependencies {
-	implementation(libs.dslint.annotations)
-	lintPublish(libs.dslint.checks)
+android {
+	dependencies {
+//		implementation(libs.dslint.annotations)
+//		lintPublish(libs.dslint.checks)
 
-	testImplementation(project(":extension-resources"))
+//		testImplementation(project(":extension-resources"))
+	}
 }
