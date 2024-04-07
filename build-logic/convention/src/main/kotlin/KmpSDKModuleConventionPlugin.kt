@@ -2,9 +2,8 @@ import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.withType
+import org.gradle.kotlin.dsl.get
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
@@ -46,10 +45,13 @@ class KmpSDKModuleConventionPlugin : Plugin<Project> {
 				commonTest.dependencies {
 					implementation("io.kotest:kotest-framework-engine:5.8.1")
 					implementation("io.kotest:kotest-assertions-core:5.8.1")
-//					implementation("io.mockk:mockk:1.13.10")
 					if (moduleName != "kronos") {
 						implementation(project(":kronos"))
 					}
+				}
+
+				this["androidUnitTest"].dependencies {
+					implementation("io.kotest:kotest-runner-junit5:5.8.1")
 				}
 			}
 		}
@@ -65,6 +67,12 @@ class KmpSDKModuleConventionPlugin : Plugin<Project> {
 			compileOptions {
 				sourceCompatibility = JavaVersion.VERSION_1_8
 				targetCompatibility = JavaVersion.VERSION_1_8
+			}
+
+			testOptions {
+				unitTests.all {
+					it.useJUnitPlatform()
+				}
 			}
 		}
 	}

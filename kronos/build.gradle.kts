@@ -8,13 +8,5 @@ android {
 //		implementation(libs.dslint.annotations)
 //		lintPublish(libs.dslint.checks)
 //		testImplementation(project(":extension-resources"))
-
-		testImplementation("io.kotest:kotest-runner-junit5:5.8.1")
-	}
-
-	testOptions {
-		unitTests.all {
-			it.useJUnitPlatform()
-		}
 	}
 }
