@@ -10,7 +10,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 class KmpSDKModuleConventionPlugin : Plugin<Project> {
 
 	override fun apply(project: Project) = with(project) {
-		val parentName = project.parent?.name ?: ""
 		val moduleName = project.name
 
 		group = "com.hananrh.kronos"
@@ -62,7 +61,7 @@ class KmpSDKModuleConventionPlugin : Plugin<Project> {
 				minSdk = 21
 			}
 
-			namespace = if (moduleName == "kronos") "com.hananrh.kronos" else "com.hananrh.kronos.$parentName.${moduleName.replace("-", "_")}"
+			namespace = "com.hananrh.kronos.${moduleName.replace("-", "_")}"
 
 			compileOptions {
 				sourceCompatibility = JavaVersion.VERSION_1_8

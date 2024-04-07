@@ -1,9 +1,13 @@
 plugins {
 	id("org.jetbrains.kotlin.plugin.serialization")
-	id("sdk-module")
+	id("kmp-sdk-module")
 }
 
-dependencies {
-	implementation(project(":extension-json"))
-	api(libs.kotlinx.serialization)
+kotlin {
+	sourceSets {
+		commonMain.dependencies {
+			implementation(project(":extension-json"))
+			api(libs.kotlinx.serialization)
+		}
+	}
 }

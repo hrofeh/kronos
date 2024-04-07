@@ -11,7 +11,7 @@ import kotlin.reflect.KClass
  */
 public object Kronos {
 
-	internal var logger: KronosLogger? = null
+	public var logger: KronosLogger? = null
 		private set
 
 	/**

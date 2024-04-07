@@ -1,10 +1,16 @@
 plugins{
     id("org.jetbrains.kotlin.plugin.serialization")
-	id("sdk-module")
+	id("kmp-sdk-module")
 }
 
-dependencies{
-	implementation(libs.dslint.annotations)
-
-	testImplementation(project(":extension-json-kotlinx"))
+kotlin {
+	sourceSets {
+		commonTest.dependencies {
+			implementation(project(":extension-json-kotlinx"))
+		}
+	}
 }
+
+//dependencies{
+//	implementation(libs.dslint.annotations)
+//}
