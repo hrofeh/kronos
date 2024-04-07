@@ -8,7 +8,7 @@ import com.hananrh.kronos.config.intConfig
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.equals.shouldBeEqual
 
-object WhitelistConstraintTest : FunSpec({
+object AllowlistConstraintTest : FunSpec({
 
 	class Config : KronosConfig by mapConfig() {
 		val someInt by intConfig {
