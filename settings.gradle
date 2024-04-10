@@ -27,14 +27,8 @@ includeBuild("build-logic")
 
 include ':kronos'
 
-include ':extension-json'
 include ':extension-json-kotlinx'
-//include ':extension-property-api'
-//include ':extension-resources'
-
-//include 'source:firebase'
-
 project(":extension-json-kotlinx").projectDir = file("extension/json-kotlinx")
+
+include ':extension-json'
 project(":extension-json").projectDir = file("extension/json")
-//project(":extension-property-api").projectDir = file("extension/property-api")
-//project(":extension-resources").projectDir = file("extension/resources")

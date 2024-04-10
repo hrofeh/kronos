@@ -16,3 +16,9 @@ allprojects {
 		}
 	}
 }
+
+tasks.register("publishToMavenCentral"){
+	dependsOn(":kronos:publishAllPublicationsToMavenCentralRepository")
+	dependsOn(":extension-json:publishAllPublicationsToMavenCentralRepository")
+	dependsOn(":extension-json-kotlinx:publishAllPublicationsToMavenCentralRepository")
+}

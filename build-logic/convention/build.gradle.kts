@@ -17,5 +17,9 @@ gradlePlugin {
 			id = "kmp-sdk-module"
 			implementationClass = "KmpSDKModuleConventionPlugin"
 		}
+		register("maven") {
+			id = "maven"
+			implementationClass = "MavenConventionPlugin"
+		}
 	}
 }

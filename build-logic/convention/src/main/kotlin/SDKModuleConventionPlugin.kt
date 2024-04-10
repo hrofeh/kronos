@@ -12,7 +12,7 @@ class SDKModuleConventionPlugin : Plugin<Project> {
 		val parentName = project.parent?.name ?: ""
 		val moduleName = project.name
 
-		group = "com.hananrh.kronos"
+		group = "com.hrofeh.kronos"
 
 		pluginManager.apply {
 			apply("com.android.library")
@@ -34,7 +34,7 @@ class SDKModuleConventionPlugin : Plugin<Project> {
 				targetCompatibility = JavaVersion.VERSION_1_8
 			}
 
-			namespace = if (moduleName == "kronos") "com.hananrh.kronos" else "com.hananrh.kronos.$parentName.${moduleName.replace("-", "_")}"
+			namespace = if (moduleName == "kronos") "com.hrofeh.kronos" else "com.hrofeh.kronos.$parentName.${moduleName.replace("-", "_")}"
 
 			buildTypes {
 				getByName("release") {

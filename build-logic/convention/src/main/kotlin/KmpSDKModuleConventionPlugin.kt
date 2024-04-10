@@ -12,7 +12,8 @@ class KmpSDKModuleConventionPlugin : Plugin<Project> {
 	override fun apply(project: Project) = with(project) {
 		val moduleName = project.name
 
-		group = "com.hananrh.kronos"
+		group = "com.hrofeh.kronos"
+		version = "1.4.0-SNAPSHOT"
 
 		pluginManager.apply {
 			apply("com.android.library")
@@ -27,6 +28,7 @@ class KmpSDKModuleConventionPlugin : Plugin<Project> {
 			iosSimulatorArm64()
 
 			androidTarget {
+				publishAllLibraryVariants()
 				compilations.forEach {
 					it.kotlinOptions {
 						jvmTarget = "1.8"
@@ -61,7 +63,7 @@ class KmpSDKModuleConventionPlugin : Plugin<Project> {
 				minSdk = 21
 			}
 
-			namespace = "com.hananrh.kronos.${moduleName.replace("-", "_")}"
+			namespace = "com.hrofeh.kronos.${moduleName.replace("-", "_")}"
 
 			compileOptions {
 				sourceCompatibility = JavaVersion.VERSION_1_8
