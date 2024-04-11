@@ -13,7 +13,7 @@ class KmpSDKModuleConventionPlugin : Plugin<Project> {
 		val moduleName = project.name
 
 		group = "com.hrofeh.kronos"
-		version = "1.4.0"
+		version = "1.4.1-SNAPSHOT"
 
 		pluginManager.apply {
 			apply("com.android.library")
