@@ -176,7 +176,8 @@ dependencies {
 
 Extensions
 --------
-Kronos provides a set of extension modules to help you manage your configs with ease.
+The kronos base module is meant to be lean and serve common use-cases.
+As your app's remote config gets more advanced, you can use Kronos' extension modules:
 
 Json extension
 --------
