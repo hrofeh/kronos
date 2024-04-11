@@ -1,5 +1,6 @@
 Change Log
 ==========
 
-Version 1.0.0
+Version 1.4.0
 ----------------------------
+First multiplatform version!

@@ -1,24 +1,54 @@
 Kronos
 ============
 
-Control over the air
+Kotlin Multiplatform Mobile Remote Config Management Library
 ---
-Remote config management Android library based on Kotlin delegated properties.
-
-Supports adding any config source (FireBase support included in library).
-Supports custom validation and adaptation of config values.
+Kronos helps you manage your Android/iOS app's remote configs with ease.
+Adapt, process and validate remotely configured values so you can focus on your core business logic.
 
 Usage
 ---
 
+```kotlin
+interface SyncFeatureConfig {
+	val syncIntervalMinutes: Long
+}
+
+class SyncFeatureKronosConfig : SyncFeatureConfig, KronosConfig {
+	override val sourceDefinition = typedSource<FirebaseConfigSource>()
+
+	override val syncIntervalMinutes by longConfig {
+		default = 60
+		minValue = 15
+
+		process {
+			it.milliseconds.inWholeMinutes
+		}
+	}
+}
+
+val syncFeatureConfig: SyncFeatureConfig = SyncFeatureKronosConfig()
+syncFeatureConfig.syncIntervalMinutes
+```
+
 Initializing the SDK
 ---
+The SDK should be initialized once, preferably in the Application/AppDelegate class
+
+```kotlin
+Kronos.init {
+	logging {
+		enabled = true
+		logger = NapierLogger()
+	}
+
+	configSource { FirebaseConfigSource() }
+}
+```
 
 Supported config types
 --------
 
-Lint
---------
 
 Download
 --------
@@ -26,8 +56,7 @@ Download
 
 License
 -------
-
-Copyright (c) 2019 Hanan Rofe Haim
+Copyright (c) 2024 Hanan Rofe Haim
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
