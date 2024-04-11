@@ -1,10 +1,14 @@
+[![Maven Central](https://img.shields.io/maven-central/v/com.hrofeh.kronos/kronos)](https://mvnrepository.com/artifact/com.hrofeh.kronos)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.9.22-blue.svg?logo=kotlin)](http://kotlinlang.org)
+
 Kronos
 ============
 
 Kotlin Multiplatform Mobile Remote Config Management Library
 ---
 Kronos helps you manage your Android/iOS app's remote configs with ease.
-Adapt, process and validate remotely configured values so you can focus on your app's core business logic.
+
+Define your remote config contract using kotlin property delegation and keep you remote configs in order.
 
 Usage
 ---
