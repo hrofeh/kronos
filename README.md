@@ -21,9 +21,7 @@ class SyncFeatureKronosConfig : SyncFeatureConfig, KronosConfig {
 		default = 60
 		minValue = 15
 
-		process {
-			it.milliseconds.inWholeMinutes
-		}
+		process { it.milliseconds.inWholeMinutes }
 	}
 }
 
