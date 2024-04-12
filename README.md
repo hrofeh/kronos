@@ -125,8 +125,7 @@ val syncIntervalMinutes by longConfig {
 }
 ```
 
-Sometimes, as part of the config processing, we want to convert it to another type.
-Kronos supports this using adapted configs.
+Sometimes, as part of the config processing, we want to convert it to another type, Kronos supports this using adapted configs:
 
 ```kotlin
 val syncIntervalMinutes by adaptedIntConfig<String> {
@@ -136,6 +135,8 @@ val syncIntervalMinutes by adaptedIntConfig<String> {
 	}
 }
 ```
+
+If the adaptation process is not light, and you want to cache the resolved config value after its first read, you can set the ```cached``` property to ```true```.
 
 Config properties validation
 --------
