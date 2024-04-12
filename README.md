@@ -136,6 +136,8 @@ val syncIntervalMinutes by adaptedIntConfig<String> {
 }
 ```
 
+Setting a default value to an adapted config can either be done by assigning the ```default``` property or the ```primitiveDefault``` property if you wish to provide a primitive default which will be adapted as well.
+
 If the adaptation process is not light, and you want to cache the resolved config value after its first read, you can set the ```cached``` property to ```true```.
 
 Config properties validation
