@@ -18,7 +18,7 @@ interface SomeAppFeatureConfig {
 	val syncIntervalMinutes: Long
 }
 
-class SyncFeatureKronosConfig : SomeAppFeatureConfig, KronosConfig {
+class SomeAppFeatureKronosConfig : SomeAppFeatureConfig, KronosConfig {
 	override val sourceDefinition = typedSource<FirebaseConfigSource>()
 
 	override val syncIntervalMinutes by longConfig {
@@ -29,8 +29,8 @@ class SyncFeatureKronosConfig : SomeAppFeatureConfig, KronosConfig {
 	}
 }
 
-val SomeAppFeatureConfig: SomeAppFeatureConfig = SyncFeatureKronosConfig()
-SomeAppFeatureConfig.syncIntervalMinutes
+val someAppFeatureConfig: SomeAppFeatureConfig = SyncFeatureKronosConfig()
+someAppFeatureConfig.syncIntervalMinutes
 ```
 
 Initializing the SDK
@@ -51,7 +51,7 @@ Kronos.init {
 Config source
 --------
 Kronos can potentially support any config source, e.g Firebase Remote Config.
-To add a config sources to Kronos, implement the ```ConfigSource``` interface.
+To add a config sources to Kronos, implement either the ```ConfigSource``` or the ```MutableConfigSource``` interface.
 
 Config sources can be either added when initializing the SDK or at runtime by retrieving the config source repository and adding the source to it.
 
@@ -63,28 +63,20 @@ Constructing your config interface
 --------
 Implement the ```KronosConfig``` interface:
 
-1. Define sourceDefinition, i.e what source should be used to resolve the config values and
-2. Define your config properties using the provided config delegates.
+1. Define sourceDefinition, i.e what source should be used to resolve the config values.
+2. Define your config properties using Kronos config extension functions.
 
 ```kotlin
-class SyncFeatureKronosConfig : SomeAppFeatureConfig, KronosConfig {
+class SomeAppFeatureKronosConfig : SomeAppFeatureConfig, KronosConfig {
 	override val sourceDefinition = typedSource<FirebaseConfigSource>()
-
-	override val syncIntervalMinutes by longConfig {
-		default = 60
-	}
 }
 ```
 
 If a config source should only be scoped to a specific feature, you can define a scoped source and provide an instance:
 
 ```kotlin
-class SyncFeatureKronosConfig(source: ConfigSource) : SomeAppFeatureConfig, KronosConfig {
+class SomeAppFeatureKronosConfig(source: ConfigSource) : SomeAppFeatureConfig, KronosConfig {
 	override val sourceDefinition = scopedSource(source)
-
-	override val syncIntervalMinutes by longConfig {
-		default = 60
-	}
 }
 ```
 
@@ -93,28 +85,32 @@ Defining config properties
 Kronos uses Kotlin's property delegates to define the config contract.
 A class implementing the ```KronosConfig``` will get access to config properties extension functions.
 
-The the following config property types are supported:
-Int, Long, Float, Double, String, Boolean, Set<String>
-For each there's a config delegate builder function, i.e ```intConfig```, ```longConfig```, ```floatConfig```, ```doubleConfig```, ```stringConfig```, ```booleanConfig```, ```stringSetConfig```.
+The the following config property types are supported: Int, Long, Float, Double, String, Boolean, Set<String>
+For each there's a config delegate extension function, i.e ```intConfig```, ```longConfig```, ```floatConfig```, ```doubleConfig```, ```stringConfig```, ```booleanConfig```, ```stringSetConfig```.
 
 Config properties are not nullable, if you need to use nullable configs, you can use the nullable delegates, e.g ```nullableIntConfig```.
 
-Each config property must define a key and a default value.
+Each config property must define a default value.
+To provide a default value you can either assign the ```default``` property or provide a default value lambda to be resolved lazily.
 
 ```kotlin
-class SyncFeatureKronosConfig : SomeAppFeatureConfig, KronosConfig {
+class SomeAppFeatureKronosConfig : SomeAppFeatureConfig, KronosConfig {
 	override val sourceDefinition = typedSource<FirebaseConfigSource>()
 
 	override val syncIntervalMinutes by longConfig {
+		key = "some_feature_sync_interval_minutes"
 		default = 60
 	}
 }
 ```
 
-By default, Kronos will use the property name as a key to resolve the config value from the source.
-Alternatively, you can specify a custom key by providing assigning the key property.
+If a config key is not specified, Kronos will use the property name as a key to resolve the config value from the source.
+Alternatively, you can specify a custom key by assigning the key property.
 
-To provide a default value you can either assign the ```default``` property or provide a default value lambda to be resolved lazily.
+A config property can either be a ```val``` or a ```var```.
+If ```var``` is used, make sure the property config source implements ```MutableConfigSource```.
+
+A config property can override the sourceDefinition of it's containing class by assigning the sourceDefinition property inside its builder.
 
 Config properties processing and adapting
 --------
