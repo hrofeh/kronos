@@ -1,47 +1,48 @@
 package com.hrofeh.kronos.config
 
 import com.hrofeh.kronos.source.ConfigSource
+import com.hrofeh.kronos.source.MutableConfigSource
 
 
 public class ConfigSourceResolver<T> private constructor(
 	internal val sourceGetter: ConfigSource.(String) -> T?,
-	internal val sourceSetter: ConfigSource.(String, T?) -> Unit
+	internal val sourceSetter: MutableConfigSource.(String, T?) -> Unit
 ) {
 
 	public companion object {
 		public val Int: ConfigSourceResolver<Int> = ConfigSourceResolver(
 			ConfigSource::getInteger,
-			ConfigSource::putInteger
+			MutableConfigSource::putInteger
 		)
 
 		public val Long: ConfigSourceResolver<Long> = ConfigSourceResolver(
 			ConfigSource::getLong,
-			ConfigSource::putLong
+			MutableConfigSource::putLong
 		)
 
 		public val Float: ConfigSourceResolver<Float> = ConfigSourceResolver(
 			ConfigSource::getFloat,
-			ConfigSource::putFloat
+			MutableConfigSource::putFloat
 		)
 
 		public val Boolean: ConfigSourceResolver<Boolean> = ConfigSourceResolver(
 			ConfigSource::getBoolean,
-			ConfigSource::putBoolean
+			MutableConfigSource::putBoolean
 		)
 
 		public val String: ConfigSourceResolver<String> = ConfigSourceResolver(
 			ConfigSource::getString,
-			ConfigSource::putString
+			MutableConfigSource::putString
 		)
 
 		public val StringSet: ConfigSourceResolver<Set<String>> = ConfigSourceResolver(
 			ConfigSource::getStringSet,
-			ConfigSource::putStringSet
+			MutableConfigSource::putStringSet
 		)
 
 		public val Any: ConfigSourceResolver<Any> = ConfigSourceResolver(
 			ConfigSource::getAny,
-			ConfigSource::putAny
+			MutableConfigSource::putAny
 		)
 	}
 }

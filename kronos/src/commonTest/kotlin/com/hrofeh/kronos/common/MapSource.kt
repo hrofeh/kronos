@@ -1,11 +1,11 @@
 package com.hrofeh.kronos.common
 
-import com.hrofeh.kronos.source.ConfigSource
+import com.hrofeh.kronos.source.MutableConfigSource
 
 open class MapSource(
 	private val prefix: String = "",
 	private val map: MutableMap<String, Any?>
-) : ConfigSource {
+) : MutableConfigSource {
 
 	override fun getInteger(key: String) = testAndGet<Int>(key)
 

@@ -2,11 +2,12 @@
 
 package com.hrofeh.kronos.config
 
-import com.hrofeh.kronos.KronosConfig
 import com.hrofeh.kronos.Kronos
+import com.hrofeh.kronos.KronosConfig
 import com.hrofeh.kronos.config.constraint.Constraint
 import com.hrofeh.kronos.config.constraint.ConstraintBuilder
 import com.hrofeh.kronos.source.ConfigSource
+import com.hrofeh.kronos.source.MutableConfigSource
 import com.hrofeh.kronos.source.SourceDefinition
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -155,6 +156,10 @@ internal class ConfigDelegate<Raw, Actual> internal constructor(
 
 		val source = resolveSource(thisRef)
 		val key = resolveKey(property)
+
+		if (source !is MutableConfigSource) {
+			throw UnsupportedOperationException("Cannot set config value for $key, var config properties can only be used with mutable config sources")
+		}
 
 		Kronos.logger?.v("${source::class.simpleName}: Setting value \"$key\"=$value")
 
