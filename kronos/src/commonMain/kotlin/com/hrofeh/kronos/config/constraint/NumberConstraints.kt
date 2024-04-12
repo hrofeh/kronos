@@ -54,13 +54,10 @@ public enum class FallbackPolicy {
 	RANGE
 }
 
-//@DSLint
 public interface RangeConstraint<T> {
 
-	//	@set:DSLMandatory
 	public var value: T?
 
-	//	@set:DSLMandatory
 	public var fallbackPolicy: FallbackPolicy
 }
 

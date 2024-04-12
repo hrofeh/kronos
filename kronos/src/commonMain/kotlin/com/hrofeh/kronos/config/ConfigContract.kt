@@ -7,23 +7,12 @@ import kotlin.properties.ReadWriteProperty
 
 public typealias SimpleConfig<T> = Config<T, T>
 
-//@DSLint
 public interface Defaulted<Raw, Actual> {
 
-	//	@set:DSLMandatory(group = "default")
 	public var default: Actual
 
-	//	@set:DSLMandatory(group = "default")
-	public var primitiveDefault: Raw
-
-	//	@DSLMandatory(group = "default")
 	public fun default(
 		provider: () -> Actual
-	)
-
-	//	@DSLMandatory(group = "default")
-	public fun primitiveDefault(
-		provider: () -> Raw
 	)
 }
 
@@ -40,23 +29,18 @@ public interface Processable<T> {
 	public fun process(processor: (T) -> T)
 }
 
-//@DSLint
 public interface Adaptable<Raw, Actual> {
 
-	//	@DSLMandatory
 	public fun adapt(block: Adapter<Raw, Actual>.() -> Unit)
 }
 
-//@DSLint
 public interface Adapter<Raw, Actual> {
 
-	//	@DSLMandatory
 	public fun get(block: (Raw) -> Actual?)
 
 	public fun set(block: (Actual) -> Raw?)
 }
 
-//@DSLint
 public interface Config<Raw, Actual> :
 	Defaulted<Raw, Actual>,
 	Constrained<Raw, Actual>,
@@ -67,9 +51,15 @@ public interface Config<Raw, Actual> :
 	public var cached: Boolean
 }
 
-//@DSLint
 public interface AdaptedConfig<Raw, Actual> :
 	Config<Raw, Actual>,
-	Adaptable<Raw, Actual>
+	Adaptable<Raw, Actual> {
+
+	public var primitiveDefault: Raw
+
+	public fun primitiveDefault(
+		provider: () -> Raw
+	)
+}
 
 public interface ConfigProperty<T> : ReadWriteProperty<KronosConfig, T>

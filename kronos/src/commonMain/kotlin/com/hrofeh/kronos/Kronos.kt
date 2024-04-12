@@ -45,7 +45,6 @@ public object ExtensionsOptions
  *
  * @see Kronos.init
  */
-//@DSLint
 public interface Options {
 
 	/**

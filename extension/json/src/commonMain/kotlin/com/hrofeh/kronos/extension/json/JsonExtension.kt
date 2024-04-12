@@ -13,13 +13,11 @@ public fun ExtensionsOptions.json(block: JsonExtensionOptions.() -> Unit) {
 	}
 }
 
-//@DSLint
 public interface JsonExtensionOptions {
 
 	/**
 	 * Json serializer to be used with jsonConfig
 	 */
-//	@set:DSLMandatory
 	public var serializer: KronosJsonSerializer
 }
 

@@ -1,19 +1,13 @@
 package com.hrofeh.kronos.config.constraint
 
 
-//@DSLint
 public interface Constraint<Test, Fallback> {
 
 	public var fallbackToPrimitive: Test
 	public var fallbackTo: Fallback
 
-	//	@DSLMandatory(
-//		group = "constraint",
-//		message = "At least one constraint of type 'acceptIf' or 'denyIf' must be defined"
-//	)
 	public fun allowIf(block: (Test) -> Boolean)
 
-	//	@DSLMandatory(group = "constraint")
 	public fun rejectIf(block: (Test) -> Boolean)
 
 	public fun fallbackToPrimitive(fallbackProvider: (Test) -> Test)

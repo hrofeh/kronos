@@ -11,7 +11,3 @@ kotlin {
 		}
 	}
 }
-
-//dependencies{
-//	implementation(libs.dslint.annotations)
-//}
