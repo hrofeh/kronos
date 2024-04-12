@@ -14,11 +14,11 @@ Usage
 ---
 
 ```kotlin
-interface SyncFeatureConfig {
+interface SomeAppFeatureConfig {
 	val syncIntervalMinutes: Long
 }
 
-class SyncFeatureKronosConfig : SyncFeatureConfig, KronosConfig {
+class SyncFeatureKronosConfig : SomeAppFeatureConfig, KronosConfig {
 	override val sourceDefinition = typedSource<FirebaseConfigSource>()
 
 	override val syncIntervalMinutes by longConfig {
@@ -29,8 +29,8 @@ class SyncFeatureKronosConfig : SyncFeatureConfig, KronosConfig {
 	}
 }
 
-val syncFeatureConfig: SyncFeatureConfig = SyncFeatureKronosConfig()
-syncFeatureConfig.syncIntervalMinutes
+val SomeAppFeatureConfig: SomeAppFeatureConfig = SyncFeatureKronosConfig()
+SomeAppFeatureConfig.syncIntervalMinutes
 ```
 
 Initializing the SDK
@@ -62,11 +62,12 @@ Kronos.configSourceRepository.addSource(FirebaseConfigSource())
 Constructing your config interface
 --------
 Implement the ```KronosConfig``` interface:
-1. Define sourceDefinition, i.e what source should be used to resolve the config values and 
+
+1. Define sourceDefinition, i.e what source should be used to resolve the config values and
 2. Define your config properties using the provided config delegates.
 
 ```kotlin
-class SyncFeatureKronosConfig : SyncFeatureConfig, KronosConfig {
+class SyncFeatureKronosConfig : SomeAppFeatureConfig, KronosConfig {
 	override val sourceDefinition = typedSource<FirebaseConfigSource>()
 
 	override val syncIntervalMinutes by longConfig {
@@ -78,7 +79,7 @@ class SyncFeatureKronosConfig : SyncFeatureConfig, KronosConfig {
 If a config source should only be scoped to a specific feature, you can define a scoped source and provide an instance:
 
 ```kotlin
-class SyncFeatureKronosConfig(source:ConfigSource) : SyncFeatureConfig, KronosConfig {
+class SyncFeatureKronosConfig(source: ConfigSource) : SomeAppFeatureConfig, KronosConfig {
 	override val sourceDefinition = scopedSource(source)
 
 	override val syncIntervalMinutes by longConfig {
@@ -90,20 +91,23 @@ class SyncFeatureKronosConfig(source:ConfigSource) : SyncFeatureConfig, KronosCo
 Defining config properties
 --------
 Kronos uses Kotlin's property delegates to define the config contract.
-A class implementing the ```KronosConfig``` will get access to config properties extension functions. 
+A class implementing the ```KronosConfig``` will get access to config properties extension functions.
 
 The the following config property types are supported:
 Int, Long, Float, Double, String, Boolean, Set<String>
+For each there's a config delegate builder function, i.e ```intConfig```, ```longConfig```, ```floatConfig```, ```doubleConfig```, ```stringConfig```, ```booleanConfig```, ```stringSetConfig```.
+
+Config properties are not nullable, if you need to use nullable configs, you can use the nullable delegates, e.g ```nullableIntConfig```.
 
 Each config property must define a key and a default value.
 
 ```kotlin
-class SyncFeatureKronosConfig : SyncFeatureConfig, KronosConfig {
-    override val sourceDefinition = typedSource<FirebaseConfigSource>()
+class SyncFeatureKronosConfig : SomeAppFeatureConfig, KronosConfig {
+	override val sourceDefinition = typedSource<FirebaseConfigSource>()
 
-    override val syncIntervalMinutes by longConfig {
-        default = 60
-    }
+	override val syncIntervalMinutes by longConfig {
+		default = 60
+	}
 }
 ```
 
@@ -117,10 +121,11 @@ Config properties processing and adapting
 Kronos allows you to process the remotely config value before returning it.
 
 In the following example the remove value is configured in milliseconds, but the app uses minutes as the time unit.
+
 ```kotlin
 val syncIntervalMinutes by longConfig {
-    default = 60
-    process { it.milliseconds.inWholeMinutes }
+	default = 60
+	process { it.milliseconds.inWholeMinutes }
 }
 ```
 
@@ -129,8 +134,8 @@ Kronos supports this using adapted configs.
 
 ```kotlin
 val syncIntervalMinutes by adaptedIntConfig<String> {
-    default = 60
-    adapt { 
+	default = 60
+	adapt {
 		get { it.toString() }
 	}
 }
@@ -143,7 +148,7 @@ Kronos allows you to validate the remotely configured value before returning it 
 
 ```kotlin
 val syncIntervalMinutes by longConfig {
-    default = 60
+	default = 60
 	constraint {
 		allowIf { it >= 0 }
 		fallbackTo = 15
@@ -153,9 +158,10 @@ val syncIntervalMinutes by longConfig {
 
 If validation fails, Kronos will return the default value.
 Alternatively, you can provide a fallback value for each constraint to be returned in case of validation failure.
+
 ```kotlin
 val syncIntervalMinutes by longConfig {
-    default = 60
+	default = 60
 	constraint {
 		allowIf { it >= 0 }
 		fallbackTo = 15
@@ -166,7 +172,29 @@ val syncIntervalMinutes by longConfig {
 Sometimes you don't need a special implementation for your constraint, in that case you can use the built-in suite of constraints Kronos provides, such as:
 ```minValue```, ```maxValue```, ```allowList``` and more!
 
-If you have a custom constraint you want to reuse across configs, this can easily be achieved by creating an extension function/property on the ```com.hrofeh.kronos.config.Config class```.
+If you have a custom constraint you want to reuse across configs, this can easily be achieved by creating an extension function/property on the ```com.hrofeh.kronos.config.Config``` class.
+
+Custom config properties
+--------
+Sometimes you'll find yourself using the same adaptation and validation logic across multiple config properties.
+In such cases, Kronos offers a easy way to define custom config properties that can be reused.
+
+Define an extension function on the ```KronosConfig``` interface with your config name and use the ```ConfigPropertyFactory``` to create the config property delegate:
+
+```kotlin
+data class Label(val value: String)
+
+fun KronosConfig.labelConfig(block: Config<String, Label>.() -> Unit) =
+	ConfigPropertyFactory.from(
+		configSourceResolver = ConfigSourceResolver.String,
+		validator = { it.isNotEmpty() },
+		getterAdapter = { Label(it) },
+		setterAdapter = { it.value },
+		block = block
+	)
+```
+
+Custom config properties support all Kronos capabilities, such as processing, adapting and constraints.
 
 Download
 --------
@@ -188,28 +216,32 @@ Json extension
 Kronos provides a Json extension module to create json config properties.
 
 When initializing the SDK, you need to initialize the extension and provide a json serializer:
+
 ```kotlin
 Kronos.init {
-    extension {
-        json {
-            serializer = KronosKotlinxSerializer()
-        }
-    }
+	extension {
+		json {
+			serializer = KronosKotlinxSerializer()
+		}
+	}
 }
 ```
 
 Kronos doesn't have a built-in json serializer, but you can either:
+
 1. Use any json serializer that implements the ```KronosJsonSerializer``` interface.
 2. Use the kotlinx-serialization json serializer by adding the the extension module.
 
 Then you can use the ```jsonConfig``` extension to define json config properties:
+
 ```kotlin
 val syncDays by jsonConfig<List<Int>> {
-    default = emptyList()
+	default = emptyList()
 }
 ```
 
 Adding the json extension dependency:
+
 ```groovy
 dependencies {
     implementation 'com.hrofeh.kronos:extension-json:VERSION'
@@ -217,6 +249,7 @@ dependencies {
 ```
 
 To use the kotlinx-serialization json serializer, add the following dependency:
+
 ```groovy
 dependencies {
     implementation 'com.hrofeh.kronos:extension-json-kotlinx:VERSION'
