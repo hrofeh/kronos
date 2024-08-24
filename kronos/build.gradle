@@ -42,8 +42,8 @@ dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation "com.ironsource.aura.dslint:dslint-annotations:$dslint"
-    lintPublish "com.ironsource.aura.dslint:dslint-checks:$dslint"
+    implementation "com.github.hrofeh.dslint:dslint-annotations:$dslint"
+    lintPublish "com.github.hrofeh.dslint:dslint-checks:$dslint"
 
     // Test
     testImplementation "io.mockk:mockk:$mockk_version"

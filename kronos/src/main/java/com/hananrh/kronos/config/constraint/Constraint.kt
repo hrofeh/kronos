@@ -1,7 +1,8 @@
 package com.hananrh.kronos.config.constraint
 
-import com.ironsource.aura.dslint.annotations.DSLMandatory
-import com.ironsource.aura.dslint.annotations.DSLint
+import com.hananrh.dslint.annotations.DSLMandatory
+import com.hananrh.dslint.annotations.DSLint
+
 
 @DSLint
 interface Constraint<Test, Fallback> {
