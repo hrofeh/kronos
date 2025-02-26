@@ -39,8 +39,7 @@ apply from: rootProject.file('gradle/mvn_push.gradle')
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.core:core-ktx:1.13.1"
 
     implementation "com.github.hrofeh.dslint:dslint-annotations:$dslint"
     lintPublish "com.github.hrofeh.dslint:dslint-checks:$dslint"
