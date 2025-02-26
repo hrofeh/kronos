@@ -200,6 +200,7 @@ interface DefaultOptions {
 
     /**
      * Set whether configs are cached by default, can be overridden per config.
+     * False by default.
      */
     var cachedConfigs: Boolean
 }
