@@ -9,39 +9,45 @@ import io.mockk.every
 import io.mockk.mockkStatic
 import org.spekframework.spek2.dsl.Root
 
-fun kronosTest(block: Root.() -> Unit): Root.() -> Unit {
-	return {
+fun kronosTest(cached: Boolean = false, block: Root.() -> Unit): Root.() -> Unit {
+    return {
+        beforeGroup {
+            mockkStatic(ResourcesCompat::class)
+            every { ResourcesCompat.getFloat(any(), any()) } returns 0f
 
-		beforeGroup {
-			mockkStatic(ResourcesCompat::class)
-			every { ResourcesCompat.getFloat(any(),any()) } returns 0f
+            withRemoteMap()
+        }
 
-			Kronos.init {
-				context = mockContext()
-				logging {
-					logger = ConsoleLogger()
-				}
-				jsonConverter = KotlinxSerializationConverter()
-			}
+        Kronos.init {
+            context = mockContext()
 
-			withRemoteMap()
-		}
+            defaultOptions {
+                cachedConfigs = cached
+            }
 
-		block()
-	}
+            logging {
+                logger = ConsoleLogger()
+            }
+
+            jsonConverter = KotlinxSerializationConverter()
+
+        }
+
+        block()
+    }
 }
 
 class MapConfig : FeatureRemoteConfig {
 
-	override val sourceDefinition = typedSource<MapSource>()
+    override val sourceDefinition = typedSource<MapSource>()
 }
 
 fun mapConfig() = MapConfig()
 
 fun withRemoteMap(vararg pairs: Pair<String, Any?>) {
-	Kronos.configSourceRepository.addSource(MapSource(map = mutableMapOf(*pairs)))
+    Kronos.configSourceRepository.addSource(MapSource(map = mutableMapOf(*pairs)))
 }
 
 fun withRemoteMap2(vararg pairs: Pair<String, Any?>) {
-	Kronos.configSourceRepository.addSource(MapSource2(mutableMapOf(*pairs)))
+    Kronos.configSourceRepository.addSource(MapSource2(mutableMapOf(*pairs)))
 }

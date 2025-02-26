@@ -23,6 +23,9 @@ object Kronos {
     lateinit var context: Context
         private set
 
+    internal lateinit var defaultOptions: DefaultOptions
+        private set
+
     var logger: Logger? = null
         private set
 
@@ -56,6 +59,8 @@ object Kronos {
         val options = OptionsBuilder(block)
 
         context = options.context.applicationContext
+
+        defaultOptions = options.defaultOptions
 
         if (options.loggingOptions.enabled) {
             logger = options.loggingOptions.logger
@@ -91,6 +96,11 @@ interface Options {
     fun logging(block: LoggingOptions.() -> Unit)
 
     /**
+     * Define defaults for all configs.
+     */
+    fun defaultOptions(block: DefaultOptions.() -> Unit)
+
+    /**
      * Add a config source.
      * A config can have only one instance of the same class.
      * Use configSourceFactory to support multiple instances for the same source.
@@ -119,14 +129,20 @@ private class OptionsBuilder : Options {
 
     override lateinit var jsonConverter: JsonConverter
 
-    internal val configSourceRepository = ConfigSourceRepository()
+    val configSourceRepository = ConfigSourceRepository()
 
-    internal fun hasJsonConverter() = ::jsonConverter.isInitialized
+    fun hasJsonConverter() = ::jsonConverter.isInitialized
 
-    internal var loggingOptions: LoggingOptions = LoggingOptionsBuilder {}
+    var loggingOptions: LoggingOptions = LoggingOptionsBuilder {}
+
+    var defaultOptions: DefaultOptions = DefaultOptionsBuilder {}
 
     override fun logging(block: LoggingOptions.() -> Unit) {
         loggingOptions = LoggingOptionsBuilder(block)
+    }
+
+    override fun defaultOptions(block: DefaultOptions.() -> Unit) {
+        defaultOptions = DefaultOptionsBuilder(block)
     }
 
     override fun configSource(configSource: () -> ConfigSource) {
@@ -178,4 +194,22 @@ private class LoggingOptionsBuilder : LoggingOptions {
      * If a logger is not supplied [com.hananrh.kronos.logging.AndroidLogger] is used.
      */
     override var logger: Logger = AndroidLogger()
+}
+
+interface DefaultOptions {
+
+    /**
+     * Set whether configs are cached by default, can be overridden per config.
+     */
+    var cachedConfigs: Boolean
+}
+
+private class DefaultOptionsBuilder : DefaultOptions {
+
+    companion object {
+        operator fun invoke(block: DefaultOptionsBuilder.() -> Unit) =
+            DefaultOptionsBuilder().apply(block)
+    }
+
+    override var cachedConfigs = false
 }

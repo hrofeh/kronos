@@ -39,7 +39,7 @@ internal class ConfigDelegate<Raw, Actual> internal constructor(
 
 	private lateinit var defaultProvider: (() -> Actual)
 
-	override var cached: Boolean = false
+	override var cached: Boolean = Kronos.defaultOptions.cachedConfigs
 
 	private var processor: ((Actual) -> Actual)? = null
 	private var adapter: AdapterBuilder<Raw, Actual>? = null
