@@ -1,5 +1,8 @@
+@file:Suppress("UnusedReceiverParameter")
+
 package com.hananrh.kronos.source
 
+import com.hananrh.kronos.Kronos
 import com.hananrh.kronos.config.FeatureRemoteConfig
 import kotlin.reflect.KClass
 
@@ -73,14 +76,14 @@ class ConfigSourceRepository internal constructor() {
 				sourceDefinition.sourceClass
 			)] as ConfigSourceFactory<*, T>?
 			configSourceFactory?.let { factory ->
-				com.hananrh.kronos.Kronos.logger?.v("Found factory for id = ${sourceDefinition.id}, generating source")
+				Kronos.logger?.v("Found factory for id = ${sourceDefinition.id}, generating source")
 				return factory.create(sourceDefinition.id).also {
 					configSourcesMap[sourceDefinition] = it
 				}
 			}
 		}
 
-		com.hananrh.kronos.Kronos.logger?.v("Unable to find source for id = $sourceDefinition, returning stub source")
+		Kronos.logger?.v("Unable to find source for id = $sourceDefinition, returning stub source")
 		return STUB_CONFIG_SOURCE
 	}
 

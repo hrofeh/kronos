@@ -44,8 +44,8 @@ class MapConfig : FeatureRemoteConfig {
 
 fun mapConfig() = MapConfig()
 
-fun withRemoteMap(vararg pairs: Pair<String, Any?>) {
-    Kronos.configSourceRepository.addSource(MapSource(map = mutableMapOf(*pairs)))
+fun withRemoteMap(vararg pairs: Pair<String, Any?>, version: Int = 0) {
+    Kronos.configSourceRepository.addSource(MapSource(map = mutableMapOf(*pairs), version = version))
 }
 
 fun withRemoteMap2(vararg pairs: Pair<String, Any?>) {

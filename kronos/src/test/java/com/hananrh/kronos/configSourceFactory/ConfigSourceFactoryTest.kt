@@ -13,33 +13,33 @@ import kotlin.test.assertEquals
 
 object ConfigSourceFactoryTest : Spek({
 
-	beforeGroup {
-		Kronos.init {
-			context = mockContext()
-			logging {
-				logger = ConsoleLogger()
-			}
-			configSourceFactory<MapSource, String>(MapSource::class) {
-				MapSource(it, mutableMapOf("prefixSomeInt" to 1))
-			}
-		}
-	}
+    beforeGroup {
+        Kronos.init {
+            context = mockContext()
+            logging {
+                logger = ConsoleLogger()
+            }
+            configSourceFactory<MapSource, String>(MapSource::class) {
+                MapSource(prefix = it, map = mutableMapOf("prefixSomeInt" to 1), 0)
+            }
+        }
+    }
 
-	describe("Using config source with prefix") {
+    describe("Using config source with prefix") {
 
-		class Config : FeatureRemoteConfig {
+        class Config : FeatureRemoteConfig {
 
-			override val sourceDefinition = identifiableTypedSource<MapSource, String>("prefix")
+            override val sourceDefinition = identifiableTypedSource<MapSource, String>("prefix")
 
-			val someInt by intConfig {
-				default = 0
-			}
-		}
+            val someInt by intConfig {
+                default = 0
+            }
+        }
 
-		val config = Config()
+        val config = Config()
 
-		it("Should return configured value with prefix") {
-			assertEquals(1, config.someInt)
-		}
-	}
+        it("Should return configured value with prefix") {
+            assertEquals(1, config.someInt)
+        }
+    }
 })

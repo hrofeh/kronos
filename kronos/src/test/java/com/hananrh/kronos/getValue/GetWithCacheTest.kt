@@ -1,6 +1,8 @@
 package com.hananrh.kronos.getValue
 
+import com.hananrh.kronos.Kronos
 import com.hananrh.kronos.common.Label
+import com.hananrh.kronos.common.MapSource
 import com.hananrh.kronos.common.kronosTest
 import com.hananrh.kronos.common.mapConfig
 import com.hananrh.kronos.common.withRemoteMap
@@ -11,6 +13,7 @@ import com.hananrh.kronos.config.type.intConfig
 import com.hananrh.kronos.config.type.longConfig
 import com.hananrh.kronos.config.type.stringConfig
 import com.hananrh.kronos.config.type.typedConfig
+import com.hananrh.kronos.source.SourceDefinition
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import java.util.Random
@@ -96,10 +99,6 @@ object GetCache : Spek(kronosTest(cached = true) {
                 default = ""
                 cached = false
             }
-            val someBoolean by booleanConfig {
-                default = false
-                cached = false
-            }
             val someTyped by typedConfig<Label> {
                 default = Label("")
                 cached = false
@@ -142,10 +141,73 @@ object GetCache : Spek(kronosTest(cached = true) {
             assertNotEquals(value, nonCacheConfig.someTyped)
         }
     }
+
+    describe("Cached config should return new value if config source version is changed") {
+
+        class Config : FeatureRemoteConfig by mapConfig() {
+            val someInt by intConfig {
+                default = 1
+            }
+            val someLong by longConfig {
+                default = 1
+            }
+            val someFloat by floatConfig {
+                default = 1f
+            }
+            val someString by stringConfig {
+                default = ""
+            }
+            val someTyped by typedConfig<Label> {
+                default = Label("")
+            }
+        }
+
+        val config = Config()
+
+        beforeGroup {
+            recalcMap()
+        }
+
+        it("Should return updated value after map is updated - intConfig") {
+            val value = config.someInt
+            recalcMap(true)
+            assertNotEquals(value, config.someInt)
+        }
+
+        it("Should return updated value after map is updated - longConfig") {
+            val value = config.someLong
+            recalcMap(true)
+            assertNotEquals(value, config.someLong)
+        }
+
+        it("Should return updated value after map is updated - floatConfig") {
+            val value = config.someFloat
+            recalcMap(true)
+            assertNotEquals(value, config.someFloat)
+        }
+
+        it("Should return updated value after map is updated - stringConfig") {
+            val value = config.someString
+            recalcMap(true)
+            assertNotEquals(value, config.someString)
+        }
+
+        it("Should return updated value after map is updated - typedConfig") {
+            val value = config.someTyped
+            recalcMap(true)
+            assertNotEquals(value, config.someTyped)
+        }
+    }
 })
 
-private fun recalcMap() {
+private fun recalcMap(bumpVersion: Boolean = false) {
     val random = Random()
+    var version = Kronos.configSourceRepository.getSource(
+        SourceDefinition.Class(MapSource::class)
+    ).version
+    if (bumpVersion) {
+        version++
+    }
 
     withRemoteMap(
         "someInt" to random.nextInt(),
@@ -153,6 +215,7 @@ private fun recalcMap() {
         "someFloat" to random.nextFloat(),
         "someString" to "${random.nextLong()}",
         "someBoolean" to random.nextBoolean(),
-        "someTyped" to Label(UUID.randomUUID().toString())
+        "someTyped" to Label(UUID.randomUUID().toString()),
+        version = version
     )
 }
