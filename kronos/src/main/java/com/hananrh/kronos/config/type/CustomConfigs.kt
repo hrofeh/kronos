@@ -5,6 +5,7 @@ package com.hananrh.kronos.config.type
 import android.content.res.Resources
 import android.graphics.Color
 import android.webkit.URLUtil
+import com.hananrh.kronos.Kronos
 import com.hananrh.kronos.config.Config
 import com.hananrh.kronos.config.ConfigPropertyFactory
 import com.hananrh.kronos.config.FeatureRemoteConfig
@@ -29,18 +30,18 @@ inline fun <reified T> FeatureRemoteConfig.jsonConfig(noinline block: Config<Str
 	validator = { it.isNotEmpty() },
 	getterAdapter = {
 		try {
-			com.hananrh.kronos.Kronos.jsonConverter!!.fromJson<T>(it, typeOf<T>())
+			Kronos.jsonConverter!!.fromJson<T>(it, typeOf<T>())
 		} catch (e: Exception) {
-			com.hananrh.kronos.Kronos.logger?.e("Failed to parse json: $it", e)
+			Kronos.logger?.e("Failed to parse json: $it", e)
 			null
 		}
 	},
 	setterAdapter = { value ->
 		value?.let {
 			try {
-				com.hananrh.kronos.Kronos.jsonConverter!!.toJson(it, typeOf<T>())
+				Kronos.jsonConverter!!.toJson(it, typeOf<T>())
 			} catch (e: Exception) {
-				com.hananrh.kronos.Kronos.logger?.e("Failed to convert to json", e)
+				Kronos.logger?.e("Failed to convert to json", e)
 				null
 			}
 		}
@@ -59,7 +60,7 @@ fun FeatureRemoteConfig.colorConfig(block: Config<String, ColorInt>.() -> Unit) 
 				Color.parseColor(it)
 			)
 		} catch (e: Exception) {
-			com.hananrh.kronos.Kronos.logger?.e("Failed to parse color hex: $it", e)
+			Kronos.logger?.e("Failed to parse color hex: $it", e)
 			null
 		}
 	},
