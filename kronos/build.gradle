@@ -10,7 +10,7 @@ apply plugin: "org.jetbrains.kotlin.plugin.serialization"
 android {
     compileSdk COMPILE_SDK_VERSION
 
-    namespace "com.hananrh.kronos"
+    namespace "com.hrofeh.kronos"
 
     defaultConfig {
         minSdkVersion MIN_SDK_VERSION

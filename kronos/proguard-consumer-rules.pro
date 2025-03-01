@@ -1,4 +1,4 @@
 # Rules that need to be applied on the main app
--keep class com.hananrh.kronos.** { *; }
+-keep class com.hrofeh.kronos.** { *; }
 
--keepclassmembernames class * implements com.hananrh.kronos.config.FeatureRemoteConfig { *; }
+-keepclassmembernames class * implements com.hrofeh.kronos.config.FeatureRemoteConfig { *; }

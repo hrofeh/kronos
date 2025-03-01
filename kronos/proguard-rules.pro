@@ -30,26 +30,26 @@
 # Preserve all public classes, and their public and protected fields and
 # methods.
 
--keep public class com.hananrh.kronos.** {
+-keep public class com.hrofeh.kronos.** {
     public protected *;
 }
 
 # Preserve all .class method names.
 
--keepclassmembernames class com.hananrh.kronos.** {
+-keepclassmembernames class com.hrofeh.kronos.** {
     java.lang.Class class$(java.lang.String);
     java.lang.Class class$(java.lang.String, boolean);
 }
 
 # Preserve all native method names and the names of their classes.
 
--keepclasseswithmembernames class com.hananrh.kronos.** {
+-keepclasseswithmembernames class com.hrofeh.kronos.** {
     native <methods>;
 }
 
 # Preserve the special static methods that are required in all enumeration classes.
 
--keepclassmembers class com.hananrh.kronos.** extends java.lang.Enum {
+-keepclassmembers class com.hrofeh.kronos.** extends java.lang.Enum {
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
@@ -60,7 +60,7 @@
 # If your code contains serializable classes that have to be backward
 # compatible, please refer to the manual.
 
--keepclassmembers class com.hananrh.kronos.** implements java.io.Serializable {
+-keepclassmembers class com.hrofeh.kronos.** implements java.io.Serializable {
     static final long serialVersionUID;
     static final java.io.ObjectStreamField[] serialPersistentFields;
     private void writeObject(java.io.ObjectOutputStream);

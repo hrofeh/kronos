@@ -6,7 +6,7 @@ apply plugin: "de.mannodermaus.android-junit5"
 android {
     compileSdk COMPILE_SDK_VERSION
 
-    namespace "com.hananrh.kronos.extensions.core"
+    namespace "com.hrofeh.kronos.extensions.core"
 
     defaultConfig {
         minSdkVersion MIN_SDK_VERSION

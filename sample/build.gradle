@@ -6,11 +6,11 @@ plugins {
 apply from: '../versions.gradle'
 
 android {
-    namespace 'com.hananrh.kronos'
+    namespace 'com.hrofeh.kronos'
     compileSdk COMPILE_SDK_VERSION
 
     defaultConfig {
-        applicationId "com.hananrh.kronos"
+        applicationId "com.hrofeh.kronos"
         minSdk MIN_SDK_VERSION
         targetSdk TARGET_SDK_VERSION
         versionCode 1
