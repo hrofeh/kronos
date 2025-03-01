@@ -1,7 +1,7 @@
 package com.hrofeh.kronos.config.constraint
 
-import com.hananrh.dslint.annotations.DSLMandatory
-import com.hananrh.dslint.annotations.DSLint
+import com.hrofeh.dslint.annotations.DSLMandatory
+import com.hrofeh.dslint.annotations.DSLint
 import com.hrofeh.kronos.config.Config
 
 var <T> Config<T, *>.minValue: T

@@ -1,7 +1,7 @@
 package com.hrofeh.kronos.config
 
-import com.hananrh.dslint.annotations.DSLMandatory
-import com.hananrh.dslint.annotations.DSLint
+import com.hrofeh.dslint.annotations.DSLMandatory
+import com.hrofeh.dslint.annotations.DSLint
 import com.hrofeh.kronos.config.constraint.Constraint
 import com.hrofeh.kronos.source.SourceDefinition
 import kotlin.properties.ReadWriteProperty

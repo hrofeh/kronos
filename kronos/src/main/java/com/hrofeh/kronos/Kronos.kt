@@ -2,8 +2,8 @@ package com.hrofeh.kronos
 
 import android.annotation.SuppressLint
 import android.content.Context
-import com.hananrh.dslint.annotations.DSLMandatory
-import com.hananrh.dslint.annotations.DSLint
+import com.hrofeh.dslint.annotations.DSLMandatory
+import com.hrofeh.dslint.annotations.DSLint
 import com.hrofeh.kronos.config.type.util.JsonConverter
 import com.hrofeh.kronos.logging.AndroidLogger
 import com.hrofeh.kronos.logging.Logger
