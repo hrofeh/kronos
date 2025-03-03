@@ -21,11 +21,11 @@ import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
-object GetCache : Spek(com.hrofeh.kronos.common.kronosTest(cached = true) {
+object GetCache : Spek(kronosTest(cached = true) {
 
     describe("Cached config should calculate value only once") {
 
-        class CacheConfig : FeatureRemoteConfig by com.hrofeh.kronos.common.mapConfig() {
+        class CacheConfig : FeatureRemoteConfig by mapConfig() {
             val someInt by intConfig {
                 default = 1
             }
@@ -82,7 +82,7 @@ object GetCache : Spek(com.hrofeh.kronos.common.kronosTest(cached = true) {
 
     describe("Non cached config should resolve value on every field read") {
 
-        class NoCacheConfig : FeatureRemoteConfig by com.hrofeh.kronos.common.mapConfig() {
+        class NoCacheConfig : FeatureRemoteConfig by mapConfig() {
             val someInt by intConfig {
                 default = 1
                 cached = false
@@ -144,7 +144,7 @@ object GetCache : Spek(com.hrofeh.kronos.common.kronosTest(cached = true) {
 
     describe("Cached config should return new value if config source version is changed") {
 
-        class Config : FeatureRemoteConfig by com.hrofeh.kronos.common.mapConfig() {
+        class Config : FeatureRemoteConfig by mapConfig() {
             val someInt by intConfig {
                 default = 1
             }
@@ -209,7 +209,7 @@ private fun recalcMap(bumpVersion: Boolean = false) {
         version++
     }
 
-    com.hrofeh.kronos.common.withRemoteMap(
+    withRemoteMap(
         "someInt" to random.nextInt(),
         "someLong" to random.nextLong(),
         "someFloat" to random.nextFloat(),

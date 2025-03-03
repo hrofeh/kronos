@@ -100,7 +100,7 @@ interface Config<Raw, Actual> :
      * If true, value will be cached and returned from cache until cache is invalidated.
      * Default value for all configs can be defined when initializing the SDK.
      */
-    var cached: Boolean
+    var cached: Boolean?
 }
 
 @DSLint

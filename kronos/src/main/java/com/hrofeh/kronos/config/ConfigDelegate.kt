@@ -32,7 +32,7 @@ internal class ConfigDelegate<Raw, Actual> internal constructor(
 
     private lateinit var defaultProvider: (() -> Actual)
 
-    override var cached: Boolean = Kronos.defaultOptions.cachedConfigs
+    override var cached: Boolean? = null
 
     private var processor: ((Actual) -> Actual)? = null
     private var adapter: AdapterBuilder<Raw, Actual>? = null
@@ -140,12 +140,14 @@ internal class ConfigDelegate<Raw, Actual> internal constructor(
         Kronos.logger?.v("${source::class.simpleName}: Remote value configured - using remote value \"$key\"=$value")
 
         return adaptedValue.also {
-            if (cached) {
+            if (shouldCache()) {
                 this.value = it
                 this.cacheVersion = source.version
             }
         }
     }
+
+    private fun shouldCache() = cached ?: Kronos.defaultOptions.cachedConfigs
 
     private fun assertRequiredGetterValues(property: KProperty<*>) {
         checkNotNull(property, defaultProvider, "get", "default value")

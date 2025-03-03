@@ -15,22 +15,21 @@ fun kronosTest(cached: Boolean = false, block: Root.() -> Unit): Root.() -> Unit
             mockkStatic(ResourcesCompat::class)
             every { ResourcesCompat.getFloat(any(), any()) } returns 0f
 
-            com.hrofeh.kronos.common.withRemoteMap()
-        }
+            Kronos.init {
+                context = mockContext()
 
-        Kronos.init {
-            context = com.hrofeh.kronos.common.mockContext()
+                defaultOptions {
+                    cachedConfigs = cached
+                }
 
-            defaultOptions {
-                cachedConfigs = cached
+                logging {
+                    logger = ConsoleLogger()
+                }
+
+                jsonConverter = KotlinxSerializationConverter()
             }
 
-            logging {
-                logger = com.hrofeh.kronos.common.ConsoleLogger()
-            }
-
-            jsonConverter = KotlinxSerializationConverter()
-
+            withRemoteMap()
         }
 
         block()
@@ -39,14 +38,14 @@ fun kronosTest(cached: Boolean = false, block: Root.() -> Unit): Root.() -> Unit
 
 class MapConfig : FeatureRemoteConfig {
 
-    override val sourceDefinition = typedSource<com.hrofeh.kronos.common.MapSource>()
+    override val sourceDefinition = typedSource<MapSource>()
 }
 
-fun mapConfig() = com.hrofeh.kronos.common.MapConfig()
+fun mapConfig() = MapConfig()
 
 fun withRemoteMap(vararg pairs: Pair<String, Any?>, version: Int = 0) {
     Kronos.configSourceRepository.addSource(
-        com.hrofeh.kronos.common.MapSource(
+        MapSource(
             map = mutableMapOf(*pairs),
             version = version
         )
@@ -54,5 +53,5 @@ fun withRemoteMap(vararg pairs: Pair<String, Any?>, version: Int = 0) {
 }
 
 fun withRemoteMap2(vararg pairs: Pair<String, Any?>) {
-    Kronos.configSourceRepository.addSource(com.hrofeh.kronos.common.MapSource2(mutableMapOf(*pairs)))
+    Kronos.configSourceRepository.addSource(MapSource2(mutableMapOf(*pairs)))
 }
